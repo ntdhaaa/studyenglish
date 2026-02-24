@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛍️ SHOPPING & CONSUMER HABITS | 60 câu luyện tập</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        body {
+            background-color: #fef9f0;
+            color: #1e2a41;
+            line-height: 1.6;
+            padding: 30px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 34px;
+            color: #2a6f97;
+            border-left: 12px solid #ffb347;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        .sub {
+            color: #4b6a88;
+            margin-bottom: 30px;
+            font-size: 18px;
+            padding-left: 32px;
+            font-weight: 500;
+        }
+        .mode-badge {
+            background: linear-gradient(145deg, #1e6091, #184e77);
+            display: inline-block;
+            padding: 10px 32px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 0 #0b3b4b;
+            letter-spacing: 2px;
+        }
+        .question-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .question-card {
+            background: white;
+            border-radius: 28px;
+            padding: 25px 30px;
+            box-shadow: 0 8px 20px rgba(0,20,30,0.08);
+            border: 2px solid #ffdab9;
+            transition: 0.2s;
+        }
+        .question-card:hover {
+            border-color: #ffb085;
+        }
+        .q-header {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .q-num {
+            background: #2a6f97;
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 20px;
+            box-shadow: 0 5px 0 #1a4a62;
+        }
+        .q-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0d3b4c;
+            flex: 1;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 15px 0 10px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 14px 22px;
+            border: 2px solid #d4e6f1;
+            border-radius: 18px;
+            background: #fbfeff;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 17px;
+            font-weight: 500;
+        }
+        .option:hover:not(.answered) {
+            background: #e3f0ff;
+            border-color: #2a6f97;
+            transform: translateX(8px);
+        }
+        .option-letter {
+            background: #5f9ea0;
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            margin-right: 18px;
+            font-size: 18px;
+        }
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            border-width: 3px;
+            font-weight: 600;
+        }
+        .option.correct .option-letter {
+            background: #28a745;
+        }
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            border-width: 3px;
+        }
+        .option.incorrect .option-letter {
+            background: #dc3545;
+        }
+        .option.selected {
+            border-width: 3px;
+            border-color: #ffb347;
+        }
+        .explanation-box {
+            background: #fffae6;
+            border-left: 10px solid #ff9f1c;
+            border-radius: 0 20px 20px 0;
+            padding: 22px 25px;
+            margin-top: 20px;
+            display: none;
+            box-shadow: 0 6px 14px rgba(255,159,28,0.1);
+        }
+        .explanation-box.visible {
+            display: block;
+        }
+        .exp-title {
+            font-weight: 800;
+            font-size: 20px;
+            color: #bc4c2e;
+            margin-bottom: 12px;
+        }
+        .exp-detail {
+            font-size: 16.5px;
+            background: white;
+            padding: 16px 20px;
+            border-radius: 16px;
+            color: #1e3a4e;
+            line-height: 1.7;
+        }
+        .highlight {
+            background: #ffe3b0;
+            color: #9c5510;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 30px;
+        }
+        .viet {
+            color: #2c6e49;
+            font-weight: 600;
+            background: #e9f5e9;
+            padding: 6px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 12px;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #5e7c8c;
+            font-weight: 600;
+        }
+        .btn-reset {
+            background: #ffb347;
+            border: none;
+            color: #1e3a4e;
+            padding: 14px 36px;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 800;
+            border-bottom: 6px solid #e08e1f;
+            cursor: pointer;
+            transition: 0.1s;
+            margin-top: 20px;
+        }
+        .btn-reset:hover {
+            border-bottom-width: 2px;
+            transform: translateY(4px);
+            background: #ffa01c;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛒 SHOPPING & CONSUMER HABITS</h1>
+    <div class="sub">📘 60 câu trắc nghiệm từ vựng – ngữ pháp • Chế độ LUYỆN TẬP</div>
+    <div class="mode-badge">⚡ ĐANG LUYỆN TẬP — bấm chọn đáp án xem ngay kết quả</div>
+
+    <div id="questionList" class="question-grid"></div>
+
+    <div style="text-align: center;">
+        <button class="btn-reset" onclick="resetAll()">🔄 LÀM LẠI TOÀN BỘ</button>
+    </div>
+    <div class="footer">© 60 câu mua sắm – giải thích song ngữ • Dịch nghĩa & từ vựng nổi bật</div>
+
+    <script>
+        // ---------- TOÀN BỘ DỮ LIỆU 60 CÂU ----------
+        const questions = [
+            { q: "My mother always writes a shopping _____ before going to the supermarket to buy food.", 
+              options: ["book", "list", "paper", "note"], correct: 1, 
+              explain: "<span class='highlight'>shopping list</span> = danh sách mua sắm. Cụm từ cố định. Dịch: Mẹ tôi luôn viết danh sách mua sắm trước khi đi siêu thị." },
+            { q: "This fashion shop has a big window _____ showing all the new summer clothes.", 
+              options: ["display", "picture", "sign", "poster"], correct: 0,
+              explain: "<span class='highlight'>window display</span> = trưng bày trong tủ kính. Dịch: Cửa hàng thời trang này có tủ kính trưng bày lớn trưng tất cả quần áo hè mới." },
+            { q: "I need to buy a new _____ to carry my heavy books to school every day.", 
+              options: ["basket", "pocket", "bag", "backpack"], correct: 3,
+              explain: "<span class='highlight'>backpack</span> = ba lô (đeo hai quai). Dịch: Tôi cần mua ba lô mới để mang sách nặng đi học mỗi ngày." },
+            { q: "The small _____ on this blue shirt says it costs $15 after discount.", 
+              options: ["label", "price tag", "sticker", "mark"], correct: 1,
+              explain: "<span class='highlight'>price tag</span> = thẻ giá. Dịch: Thẻ giá nhỏ trên áo sơ mi xanh ghi giá 15 đô sau giảm giá." },
+            { q: "My sister is a real _____ — she goes shopping at the mall every single day!", 
+              options: ["shopaholic", "buyer", "spender", "collector"], correct: 0,
+              explain: "<span class='highlight'>shopaholic</span> = người nghiện mua sắm. Dịch: Chị tôi là tín đồ mua sắm thực thụ — ngày nào cũng đi trung tâm thương mại." },
+            { q: "You can _____ through different websites to compare prices before buying online.", 
+              options: ["search", "look", "browse", "check"], correct: 2,
+              explain: "<span class='highlight'>browse through</span> = lướt / duyệt qua. Dịch: Bạn có thể duyệt qua các trang web khác nhau để so sánh giá trước khi mua online." },
+            { q: "The new shopping _____ near my house has over 100 stores and restaurants.", 
+              options: ["center", "place", "area", "building"], correct: 0,
+              explain: "<span class='highlight'>shopping center</span> = trung tâm mua sắm. Dịch: Trung tâm mua sắm mới gần nhà tôi có hơn 100 cửa hàng và nhà hàng." },
+            { q: "This winter jacket is _____ this week — it was $50, now it's only $30!", 
+              options: ["cheap", "on sale", "free", "reduced"], correct: 1,
+              explain: "<span class='highlight'>on sale</span> = đang được bán giảm giá. Dịch: Áo khoác mùa đông này đang giảm giá tuần này — giá gốc 50 đô, giờ chỉ còn 30 đô!" },
+            { q: "I buy fresh vegetables and fruits at the local _____ market every Saturday morning.", 
+              options: ["farmers'", "sellers'", "growers'", "planters'"], correct: 0,
+              explain: "<span class='highlight'>farmers' market</span> = chợ nông sản (nông dân tự bán). Dịch: Tôi mua rau quả tươi ở chợ nông sản địa phương mỗi sáng thứ Bảy." },
+            { q: "You should always _____ the shoes in the store before buying them.", 
+              options: ["wear", "put", "try on", "test"], correct: 2,
+              explain: "<span class='highlight'>try on</span> = mang thử (giày, quần áo). Dịch: Bạn luôn nên mang thử giày ở cửa hàng trước khi mua." },
+            { q: "Many young people prefer shopping at an _____ shop because it's convenient and fast.", 
+              options: ["internet", "online", "web", "digital"], correct: 1,
+              explain: "<span class='highlight'>online shop</span> = cửa hàng trực tuyến. Dịch: Nhiều bạn trẻ thích mua sắm ở cửa hàng trực tuyến vì tiện lợi và nhanh." },
+            { q: "The big _____ in our town sells everything from fresh food to electronics.", 
+              options: ["supermarket", "restaurant", "library", "hospital"], correct: 0,
+              explain: "<span class='highlight'>supermarket</span> = siêu thị. Dịch: Siêu thị lớn trong thị trấn bán mọi thứ từ đồ tươi sống đến đồ điện tử." },
+            { q: "I saw an interesting TV _____ for a new smartphone yesterday evening.", 
+              options: ["advertisement", "show", "program", "movie"], correct: 0,
+              explain: "<span class='highlight'>advertisement (ad)</span> = quảng cáo. Dịch: Tôi đã xem một quảng cáo TV thú vị về điện thoại thông minh mới tối qua." },
+            { q: "This organic store only sells _____ vegetables grown by local farmers without chemicals.", 
+              options: ["house-made", "home-grown", "self-made", "hand-picked"], correct: 1,
+              explain: "<span class='highlight'>home-grown</span> = trồng tại nhà / địa phương. Dịch: Cửa hàng hữu cơ này chỉ bán rau củ địa phương do nông dân trồng không dùng hóa chất." },
+            { q: "All the _____ at this luxury shop are high quality but quite expensive.", 
+              options: ["things", "objects", "goods", "materials"], correct: 2,
+              explain: "<span class='highlight'>goods</span> = hàng hóa. Dịch: Tất cả hàng hóa ở cửa hàng cao cấp này chất lượng cao nhưng khá đắt." },
+            { q: "You need a valid _____ to pay for things online without using cash.", 
+              options: ["bank note", "credit card", "check book", "pay slip"], correct: 1,
+              explain: "<span class='highlight'>credit card</span> = thẻ tín dụng. Dịch: Bạn cần thẻ tín dụng hợp lệ để thanh toán trực tuyến mà không dùng tiền mặt." },
+            { q: "My grandmother makes delicious _____ jam from fresh fruits in her garden.", 
+              options: ["home-made", "self-done", "house-built", "hand-done"], correct: 0,
+              explain: "<span class='highlight'>home-made</span> = tự làm tại nhà. Dịch: Bà tôi làm mứt tự làm ngon tuyệt từ trái cây tươi trong vườn." },
+            { q: "The milk in the fridge will _____ tomorrow, so please drink it today.", 
+              options: ["finish", "end", "expire", "stop"], correct: 2,
+              explain: "<span class='highlight'>expire</span> = hết hạn (thực phẩm). Dịch: Sữa trong tủ lạnh sẽ hết hạn vào ngày mai, vậy hãy uống hôm nay." },
+            { q: "Nike is a very famous international _____ for sports shoes and clothing.", 
+              options: ["name", "brand", "type", "model"], correct: 1,
+              explain: "<span class='highlight'>brand</span> = nhãn hiệu, thương hiệu. Dịch: Nike là thương hiệu quốc tế rất nổi tiếng về giày thể thao và quần áo." },
+            { q: "This is a cheese _____ shop that only sells different types of cheese.", 
+              options: ["special", "unique", "single", "speciality"], correct: 3,
+              explain: "<span class='highlight'>speciality shop</span> = cửa hàng chuyên doanh. Dịch: Đây là cửa hàng chuyên về phô mai chỉ bán các loại phô mai khác nhau." },
+            { q: "The convenience store near the station is open _____ — even during holidays.", 
+              options: ["all-time", "year-round", "every-season", "full-year"], correct: 1,
+              explain: "<span class='highlight'>year-round</span> = quanh năm. Dịch: Cửa hàng tiện lợi gần nhà ga mở cửa quanh năm — kể cả ngày lễ." },
+            { q: "The 7-Eleven near my apartment is a 24-hour _____ store.", 
+              options: ["comfort", "easy", "convenience", "simple"], correct: 2,
+              explain: "<span class='highlight'>convenience store</span> = cửa hàng tiện lợi. Dịch: 7-Eleven gần căn hộ tôi là cửa hàng tiện lợi mở 24 giờ." },
+            { q: "I bought only three _____ at the store today: milk, bread, and eggs.", 
+              options: ["items", "pieces", "units", "parts"], correct: 0,
+              explain: "<span class='highlight'>items</span> = món hàng, mặt hàng. Dịch: Hôm nay tôi chỉ mua ba món hàng ở cửa hàng: sữa, bánh mì và trứng." },
+            { q: "Everything at the _____ store on Main Street costs exactly one dollar.", 
+              options: ["cheap", "dollar", "single", "penny"], correct: 1,
+              explain: "<span class='highlight'>dollar store</span> = cửa hàng bán đồ giá 1 đô. Dịch: Mọi thứ ở cửa hàng 1 đô trên phố Main đều có giá chính xác một đô la." },
+            { q: "The weekend _____ market sells fresh local produce in the open air.", 
+              options: ["outside", "outdoor", "external", "outer"], correct: 1,
+              explain: "<span class='highlight'>outdoor market</span> = chợ ngoài trời. Dịch: Chợ cuối tuần ngoài trời bán nông sản tươi của địa phương." },
+            { q: "Bright window displays _____ more customers to enter the store.", 
+              options: ["pull", "bring", "attract", "call"], correct: 2,
+              explain: "<span class='highlight'>attract</span> = thu hút. Dịch: Trưng bày cửa sổ sáng sủa thu hút nhiều khách hàng vào cửa hàng." },
+            { q: "This store has _____ prices — you cannot negotiate or ask for discounts.", 
+              options: ["fixed", "stuck", "solid", "hard"], correct: 0,
+              explain: "<span class='highlight'>fixed prices</span> = giá cố định. Dịch: Cửa hàng này có giá cố định — bạn không thể mặc cả hay xin giảm giá." },
+            { q: "This TV was a real _____ — I saved $200 during the clearance sale!", 
+              options: ["purchase", "bargain", "price", "cost"], correct: 1,
+              explain: "<span class='highlight'>bargain</span> = món hời. Dịch: Cái TV này là món hời thực sự — tôi tiết kiệm được 200 đô trong đợt thanh lý!" },
+            { q: "The opening _____ on the door shows the store hours for each day.", 
+              options: ["timetable", "schedule", "list", "plan"], correct: 1,
+              explain: "<span class='highlight'>schedule</span> = lịch trình. Dịch: Lịch mở cửa trên cửa cho thấy giờ mở cửa hàng mỗi ngày." },
+            { q: "Many companies _____ their new products on social media to reach young customers.", 
+              options: ["show", "advertise", "present", "announce"], correct: 1,
+              explain: "<span class='highlight'>advertise</span> = quảng cáo. Dịch: Nhiều công ty quảng cáo sản phẩm mới trên mạng xã hội để tiếp cận khách hàng trẻ." },
+            { q: "I _____ make a complaint when the service is bad at a store.", 
+              options: ["rarely", "rare", "rarer", "rarity"], correct: 0,
+              explain: "<span class='highlight'>rarely</span> = hiếm khi (trạng từ). Dịch: Tôi hiếm khi khiếu nại khi dịch vụ ở cửa hàng tệ." },
+            { q: "She _____ goes to the farmers' market because she prefers fresh vegetables.", 
+              options: ["never", "always", "not", "no"], correct: 1,
+              explain: "<span class='highlight'>always</span> = luôn luôn. Dịch: Cô ấy luôn đi chợ nông sản vì cô ấy thích rau quả tươi." },
+            { q: "My mom is _____ careful when checking the price tag before buying.", 
+              options: ["usually", "usual", "unusually", "use"], correct: 0,
+              explain: "<span class='highlight'>usually</span> = thường xuyên. Dịch: Mẹ tôi thường cẩn thận khi kiểm tra thẻ giá trước khi mua." },
+            { q: "The discount shop _____ opens at 9 AM every morning, including weekends.", 
+              options: ["usual", "usually", "always", "ever"], correct: 1,
+              explain: "<span class='highlight'>usually</span> = thường. Dịch: Cửa hàng giảm giá thường mở cửa lúc 9 giờ sáng mỗi ngày, kể cả cuối tuần." },
+            { q: "We _____ shop at the convenience store because it's expensive.", 
+              options: ["often don't", "don't often", "not often", "doesn't often"], correct: 1,
+              explain: "Trạng từ tần suất <span class='highlight'>often</span> đứng sau trợ động từ. Dịch: Chúng tôi không thường mua ở cửa hàng tiện lợi vì nó đắt." },
+            { q: "_____ do you browse online shops for new clothes?", 
+              options: ["How often", "How many", "How much", "How long"], correct: 0,
+              explain: "<span class='highlight'>How often</span> = bao lâu một lần (hỏi tần suất). Dịch: Bạn có thường lướt shop online để tìm quần áo mới không?" },
+            { q: "The shopping center _____ at 10 PM tomorrow for the special sale event.", 
+              options: ["close", "closes", "is closing", "will closing"], correct: 1,
+              explain: "Lịch trình, thời gian biểu → dùng <span class='highlight'>hiện tại đơn</span>. Dịch: Trung tâm mua sắm đóng cửa lúc 10 tối mai cho sự kiện giảm giá đặc biệt." },
+            { q: "My sister _____ forgets to bring her shopping list to the supermarket.", 
+              options: ["sometimes", "sometime", "some time", "some times"], correct: 0,
+              explain: "<span class='highlight'>sometimes</span> = thỉnh thoảng. Dịch: Chị tôi thỉnh thoảng quên mang danh sách mua sắm đến siêu thị." },
+            { q: "The outdoor market _____ from 6 AM to noon on Saturdays.", 
+              options: ["open", "opens", "is open", "opening"], correct: 1,
+              explain: "Hiện tại đơn với lịch cố định. Dịch: Chợ ngoài trời mở cửa từ 6 giờ sáng đến trưa thứ Bảy." },
+            { q: "He _____ tries on clothes before buying them from the store.", 
+              options: ["usual", "usually", "is usually", "does usually"], correct: 1,
+              explain: "<span class='highlight'>usually</span> (trạng từ) đứng trước động từ thường. Dịch: Anh ấy thường mặc thử quần áo trước khi mua." },
+            { q: "_____ your neighborhood have a dollar store nearby?", 
+              options: ["Do", "Does", "Is", "Are"], correct: 1,
+              explain: "Chủ ngữ 'your neighborhood' số ít → dùng <span class='highlight'>Does</span>. Dịch: Khu phố của bạn có cửa hàng 1 đô gần đó không?" },
+            { q: "The fair _____ next Monday at the town square at exactly 8 AM.", 
+              options: ["start", "starts", "is starting", "will starting"], correct: 1,
+              explain: "Lịch trình tương lai dùng hiện tại đơn. Dịch: Hội chợ bắt đầu vào thứ Hai tới tại quảng trường lúc đúng 8 giờ sáng." },
+            { q: "I am _____ satisfied with the goods from this shop.", 
+              options: ["always", "every time", "all time", "each time"], correct: 0,
+              explain: "<span class='highlight'>always</span> đứng sau động từ to be. Dịch: Tôi luôn hài lòng với hàng hóa từ cửa hàng này." },
+            { q: "She doesn't _____ advertise her products on social media.", 
+              options: ["usually", "usual", "never", "ever"], correct: 0,
+              explain: "Câu phủ định: doesn't + <span class='highlight'>usually</span>. Dịch: Cô ấy không thường quảng cáo sản phẩm trên mạng xã hội." },
+            { q: "The open-air market is _____ crowded on Sunday mornings.", 
+              options: ["usual", "usually", "ever", "every"], correct: 1,
+              explain: "is + <span class='highlight'>usually</span> (trạng từ). Dịch: Chợ ngoài trời thường đông đúc vào sáng Chủ nhật." },
+            { q: "What time _____ the speciality shop open tomorrow morning?", 
+              options: ["do", "does", "is", "are"], correct: 1,
+              explain: "Chủ ngữ 'the speciality shop' số ít → <span class='highlight'>does</span>. Dịch: Mấy giờ cửa hàng chuyên doanh mở cửa sáng mai?" },
+            { q: "My credit card _____ expires after two years, so I renew it regularly.", 
+              options: ["never", "usually", "always", "rarely"], correct: 1,
+              explain: "<span class='highlight'>usually</span> = thường. Dịch: Thẻ tín dụng của tôi thường hết hạn sau hai năm, vì vậy tôi làm mới thường xuyên." },
+            { q: "They _____ go shopping together because they have different schedules.", 
+              options: ["rare", "rarely", "never often", "not"], correct: 1,
+              explain: "<span class='highlight'>rarely</span> = hiếm khi. Dịch: Họ hiếm khi đi mua sắm cùng nhau vì lịch trình khác nhau." },
+            { q: "The store's schedule _____ that it opens at 9 AM on weekdays.", 
+              options: ["say", "says", "is saying", "will say"], correct: 1,
+              explain: "Chủ ngữ số ít → <span class='highlight'>says</span>. Dịch: Lịch của cửa hàng ghi rằng nó mở cửa lúc 9 giờ sáng các ngày trong tuần." },
+            { q: "We _____ access this website to check product prices.", 
+              options: ["often", "are often", "often are", "do often"], correct: 0,
+              explain: "<span class='highlight'>often</span> đứng trước động từ thường. Dịch: Chúng tôi thường truy cập trang web này để kiểm tra giá sản phẩm." },
+            { q: "_____, I find a bargain at the weekend market.", 
+              options: ["Sometimes", "Sometime", "Some time", "Some times"], correct: 0,
+              explain: "<span class='highlight'>Sometimes</span> = thỉnh thoảng (đầu câu). Dịch: Thỉnh thoảng tôi tìm được món hời ở chợ cuối tuần." },
+            { q: "The year-round sale _____ tomorrow at all brand stores.", 
+              options: ["begin", "begins", "is begin", "beginning"], correct: 1,
+              explain: "Hiện tại đơn với lịch trình. Dịch: Đợt giảm giá quanh năm bắt đầu vào ngày mai tại tất cả cửa hàng thương hiệu." },
+            { q: "My backpack _____ lasts more than two years because I'm careful.", 
+              options: ["usual", "usually", "is usually", "does usually"], correct: 1,
+              explain: "<span class='highlight'>usually</span> đứng trước động từ lasts. Dịch: Ba lô của tôi thường bền hơn hai năm vì tôi cẩn thận." },
+            { q: "She is _____ a shopaholic — she can't stop buying things!", 
+              options: ["always", "never", "definitely", "surely"], correct: 0,
+              explain: "is <span class='highlight'>always</span> a shopaholic = luôn là tín đồ mua sắm. Dịch: Cô ấy lúc nào cũng là tín đồ mua sắm — không thể ngừng mua đồ!" },
+            { q: "The advertisement _____ on TV every evening at 7 PM.", 
+              options: ["show", "shows", "is show", "showing"], correct: 1,
+              explain: "Hiện tại đơn, chủ ngữ số ít → <span class='highlight'>shows</span>. Dịch: Quảng cáo chiếu trên TV mỗi tối lúc 7 giờ." },
+            { q: "Do you _____ buy home-made products from local sellers?", 
+              options: ["often", "often do", "do often", "are often"], correct: 0,
+              explain: "<span class='highlight'>often</span> đứng sau chủ ngữ. Dịch: Bạn có thường mua sản phẩm tự làm từ người bán địa phương không?" },
+            { q: "The new shopping mall _____ next month with fixed prices for all items.", 
+              options: ["open", "opens", "is open", "opening"], correct: 1,
+              explain: "Sự kiện theo lịch → hiện tại đơn. Dịch: Trung tâm mua sắm mới khai trương vào tháng tới với giá cố định cho tất cả mặt hàng." },
+            { q: "I _____ never late for the store's outstanding clearance sales.", 
+              options: ["am", "do", "have", "will"], correct: 0,
+              explain: "Cấu trúc: <span class='highlight'>be + never + adj</span>. Dịch: Tôi không bao giờ trễ các đợt thanh lý tuyệt vời của cửa hàng." },
+            { q: "_____ the online shop attract many customers with free shipping?", 
+              options: ["Do", "Does", "Is", "Are"], correct: 1,
+              explain: "Chủ ngữ 'the online shop' số ít → <span class='highlight'>Does</span>. Dịch: Cửa hàng trực tuyến có thu hút nhiều khách hàng bằng miễn phí vận chuyển không?" },
+            { q: "She _____ shops for specific items; she just buys whatever she likes.", 
+              options: ["always", "usually", "often", "never"], correct: 3,
+              explain: "<span class='highlight'>never</span> = không bao giờ. Dịch: Cô ấy không bao giờ mua những món hàng cụ thể; cô ấy chỉ mua bất cứ thứ gì thích." }
+        ];
+
+        // ---------- RENDER DANH SÁCH 60 CÂU ----------
+        const container = document.getElementById('questionList');
+        function renderQuestions() {
+            let html = '';
+            questions.forEach((q, idx) => {
+                const qNumber = idx + 1;
+                html += `<div class="question-card" id="q${qNumber}">
+                    <div class="q-header">
+                        <div class="q-num">${qNumber}</div>
+                        <div class="q-text">${q.q}</div>
+                    </div>
+                    <div class="options" id="opt${qNumber}">`;
+                q.options.forEach((opt, optIdx) => {
+                    const letter = String.fromCharCode(65 + optIdx); // A,B,C,D
+                    html += `<div class="option" data-correct="${optIdx === q.correct}" onclick="selectAnswer(this, ${qNumber}, ${optIdx})">
+                                <span class="option-letter">${letter}</span>${opt}
+                            </div>`;
+                });
+                html += `</div>
+                    <div class="explanation-box" id="exp${qNumber}">
+                        <div class="exp-title">📌 Giải thích đáp án</div>
+                        <div class="exp-detail">
+                            ✅ Đáp án đúng: <strong style="color:#1e6f5c;">${q.options[q.correct]}</strong><br>
+                            🔍 ${q.explain}
+                        </div>
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        }
+        renderQuestions();
+
+        // ---------- HÀM XỬ LÝ CHỌN ĐÁP ÁN (LUYỆN TẬP) ----------
+        window.selectAnswer = function(optionElement, qNumber, selectedIdx) {
+            const questionCard = document.getElementById('q' + qNumber);
+            const allOptions = questionCard.querySelectorAll('.option');
+            
+            // Nếu câu này đã được trả lời (có class answered) thì không cho chọn lại
+            if (questionCard.classList.contains('answered')) return;
+            
+            // Đánh dấu đã trả lời
+            questionCard.classList.add('answered');
+            
+            // Bỏ selected cũ (nếu có)
+            allOptions.forEach(opt => opt.classList.remove('selected'));
+            optionElement.classList.add('selected');
+            
+            // Lấy đúng/sai
+            const isCorrect = optionElement.dataset.correct === 'true';
+            
+            // Thêm class correct/incorrect
+            optionElement.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Nếu sai -> highlight đáp án đúng (thêm class correct vào option đúng)
+            if (!isCorrect) {
+                allOptions.forEach(opt => {
+                    if (opt.dataset.correct === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            // Vô hiệu hóa các option khác (không bấm được nữa)
+            allOptions.forEach(opt => opt.style.cursor = 'default');
+            
+            // Hiện khung giải thích
+            const expBox = document.getElementById('exp' + qNumber);
+            expBox.classList.add('visible');
+        };
+
+        // ---------- RESET TOÀN BỘ ----------
+        window.resetAll = function() {
+            for (let i = 1; i <= questions.length; i++) {
+                const qDiv = document.getElementById('q' + i);
+                if (!qDiv) continue;
+                qDiv.classList.remove('answered');
+                const opts = qDiv.querySelectorAll('.option');
+                opts.forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect', 'selected');
+                    opt.style.cursor = 'pointer';
+                });
+                const exp = document.getElementById('exp' + i);
+                exp.classList.remove('visible');
+            }
+        };
+    </script>
+</body>
+</html>

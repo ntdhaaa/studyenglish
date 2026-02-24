@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A GAP BETWEEN BELIEFS AND ACTIONS - Đọc hiểu 10 câu</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            scroll-behavior: smooth;
+        }
+        
+        /* Mode Selection - SỬA: cùng 1 dòng, màu tươi sáng */
+        .mode-selection {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            border: 2px solid #fff;
+        }
+        
+        .mode-selection h3 {
+            color: white;
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .mode-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .mode-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            letter-spacing: 1px;
+        }
+        
+        .mode-btn.practice {
+            background: linear-gradient(145deg, #FFD93D, #FFB347);
+            color: #2c3e50;
+            border: 2px solid #FF8C42;
+        }
+        
+        .mode-btn.practice:hover, .mode-btn.practice.active {
+            background: linear-gradient(145deg, #FFB347, #FF8C42);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 140, 66, 0.4);
+        }
+        
+        .mode-btn.exam {
+            background: linear-gradient(145deg, #FF6B6B, #E84855);
+            color: white;
+            border: 2px solid #9B1D20;
+        }
+        
+        .mode-btn.exam:hover, .mode-btn.exam.active {
+            background: linear-gradient(145deg, #E84855, #C51A1A);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(232, 72, 85, 0.4);
+        }
+        
+        .mode-indicator {
+            display: inline-block;
+            margin-left: 15px;
+            padding: 8px 20px;
+            background: linear-gradient(145deg, #FFE66D, #FFD93D);
+            color: #2c3e50;
+            border-radius: 30px;
+            font-weight: 800;
+            border: 2px solid #FFB347;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .reset-icon {
+            display: inline-block;
+            margin-left: 15px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.5s;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .reset-icon:hover {
+            transform: rotate(180deg) scale(1.2);
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(180deg); }
+        }
+        
+        /* GIỮ NGUYÊN toàn bộ CSS cũ từ đây trở xuống, CHỈ SỬA glossary-title font-size */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4a6fa5;
+        }
+        
+        .main-title {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+            line-height: 1.4;
+        }
+        
+        .sub-title {
+            color: #7f8c8d;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .source {
+            text-align: right;
+            color: #95a5a6;
+            font-size: 14px;
+            font-style: italic;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .passage-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .passage-content {
+            font-size: 16px;
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+        
+        .passage-content p {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .sentence {
+            position: relative;
+            display: inline;
+        }
+        
+        .sentence.highlight {
+            background-color: #f1c40f;
+            color: #2c3e50;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 3px;
+            border: 2px solid #d68910;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { background-color: #f1c40f; }
+            50% { background-color: #f7dc6f; }
+            100% { background-color: #f1c40f; }
+        }
+        
+        /* Glossary Section - CHỈ SỬA font-size ở đây */
+        .glossary-section {
+            margin-top: 20px;
+        }
+        
+        .glossary-title {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 16px; /* SỬA: từ 20px xuống 16px */
+            font-weight: 700;
+            margin: 20px 0;
+            padding: 10px;
+            border-top: 2px solid #d69e2e;
+            border-bottom: 2px solid #d69e2e;
+        }
+        
+        .glossary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px; /* GIỮ NGUYÊN 14px */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .glossary-table th {
+            background-color: #2c3e50;
+            color: white;
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: 600;
+        }
+        
+        .glossary-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: top;
+        }
+        
+        .glossary-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .glossary-table tr:hover {
+            background-color: #e8f4fc;
+        }
+        
+        /* GIỮ NGUYÊN toàn bộ CSS từ đây đến hết - KHÔNG THAY ĐỔI */
+        .question-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .question:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            font-size: 17px;
+            color: #2c3e50;
+            flex: 1;
+        }
+        
+        .question-number {
+            background-color: #4a6fa5;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+        }
+        
+        .option:hover {
+            background-color: #f1f5f9;
+            border-color: #4a6fa5;
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            background-color: #fff9e6;
+            border-color: #f1c40f;
+            border-width: 3px;
+        }
+        
+        .option.answered {
+            cursor: default;
+        }
+        
+        .option.correct {
+            background-color: #e7f7ef;
+            border-color: #27ae60;
+            font-weight: 500;
+        }
+        
+        .option.incorrect {
+            background-color: #fdeaea;
+            border-color: #e74c3c;
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            background-color: #4a6fa5;
+            color: white;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .option.selected .option-letter {
+            background-color: #f1c40f;
+        }
+        
+        .option.correct .option-letter {
+            background-color: #27ae60;
+        }
+        
+        .option.incorrect .option-letter {
+            background-color: #e74c3c;
+        }
+        
+        /* Explanation Tabs - chỉ hiện sau khi nộp bài */
+        .explanation-tabs {
+            display: none;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .explanation-tabs.visible {
+            display: flex;
+        }
+        
+        .explanation-tab {
+            padding: 8px 16px;
+            border: 2px solid #4a6fa5;
+            border-radius: 6px;
+            background-color: white;
+            color: #4a6fa5;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .explanation-tab:hover, .explanation-tab.active {
+            background-color: #4a6fa5;
+            color: white;
+        }
+        
+        .explanation-content {
+            display: none;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #4a6fa5;
+            margin-top: 10px;
+            font-size: 15px;
+        }
+        
+        .explanation-content.active {
+            display: block;
+        }
+        
+        .explanation-content h4 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+        
+        /* Exam Controls */
+        .exam-controls {
+            display: none;
+            justify-content: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        .submit-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #219653;
+        }
+        
+        /* Results */
+        .results {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .score {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .score-details {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .correct-count {
+            color: #27ae60;
+            font-weight: 700;
+        }
+        
+        .incorrect-count {
+            color: #e74c3c;
+            font-weight: 700;
+        }
+        
+        .btn-reset {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-reset:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .main-title {
+                font-size: 24px;
+            }
+            
+            .passage-section, .question-section, .results {
+                padding: 20px;
+            }
+            
+            .option {
+                padding: 10px 12px;
+            }
+            
+            .question-header {
+                flex-direction: column;
+            }
+            
+            .question-number {
+                margin-bottom: 10px;
+            }
+            
+            .mode-selection {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .mode-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SỬA: khung chọn chế độ cùng 1 dòng, màu sắc tươi sáng -->
+    <div class="mode-selection">
+        <h3>🎮 Chọn chế độ:</h3>
+        <div class="mode-buttons">
+            <button class="mode-btn practice active" onclick="setMode('practice')">📘 LUYỆN TẬP</button>
+            <button class="mode-btn exam" onclick="setMode('exam')">📝 KIỂM TRA</button>
+            <span class="mode-indicator" id="modeIndicator">⚡ LUYỆN TẬP</span>
+            <span class="reset-icon" id="resetIcon" onclick="resetQuiz()">⟳</span>
+        </div>
+    </div>
+    
+    <!-- GIỮ NGUYÊN toàn bộ phần còn lại - KHÔNG THAY ĐỔI -->
+    <div class="header">
+        <h1 class="main-title">A GAP BETWEEN BELIEFS AND ACTIONS</h1>
+        <p class="sub-title">Đọc hiểu 10 câu</p>
+    </div>
+    
+    <div class="container">
+        <div class="passage-section">
+            <h2 class="section-title">📖 Reading Passage:</h2>
+            <div class="passage-content" id="passage-content">
+                <p><strong>A Gap Between Beliefs and Actions</strong></p>
+                
+                <p id="para1">
+                    <span class="sentence" id="s1-1" data-questions="31,34">[I] Parents carry the important responsibility of guiding children toward independence, yet recent findings show a striking gap between what adults say they value and what they actually allow their children to experience.</span> 
+                    <span class="sentence" id="s1-2" data-questions="31">[II] Many parents of younger children claim they want their kids to manage tasks on their own; however, far fewer report that their children routinely speak with healthcare providers, make simple financial choices, or place their own orders in public.</span> 
+                    <span class="sentence" id="s1-3" data-questions="31">[III] Although most agree that unsupervised free time is beneficial, only a portion of these children spend time at home alone, move through stores independently, or meet friends without adult supervision.</span> 
+                    <span class="sentence" id="s1-4" data-questions="31">[IV]</span>
+                </p>
+                
+                <p id="para2">
+                    <span class="sentence" id="s2-1" data-questions="35">A major barrier appears to be worry.</span> 
+                    <span class="sentence" id="s2-2" data-questions="35">Many parents hesitate because they fear their child could be harmed, followed, or frightened by others—even though only a small percentage believe their neighborhood is unsafe.</span> 
+                    <span class="sentence" id="s2-3" data-questions="35,36">Some adults cite concerns about immaturity, potential judgment from others, or even misunderstandings about local laws.</span> 
+                    <span class="sentence" id="s2-4" data-questions="36,39">These factors create a "blame culture" in which parents feel pressure to supervise constantly, making them less willing to give their children the gradual, low-risk experiences necessary for building autonomy and responsibility.</span> 
+                    <span class="sentence" id="s2-5" data-questions="36">As a result, children may miss important opportunities to practice communication, decision-making, and self-management.</span>
+                </p>
+                
+                <p id="para3">
+                    <span class="sentence" id="s3-1" data-questions="32,37,38">Research consistently shows that independence strengthens confidence, resilience, and mental health, and parents play a critical role in guiding these early steps.</span> 
+                    <span class="sentence" id="s3-2" data-questions="37,40">However, many unintentionally restrict progress by continuing to perform tasks children can manage themselves.</span> 
+                    <span class="sentence" id="s3-3" data-questions="37,40">This pattern resembles "helicopter parenting," where constant involvement, though well-intentioned, limits a child's chance to develop competence through real-world practice.</span> 
+                    <span class="sentence" id="s3-4" data-questions="37">Experts suggest that rising anxiety levels in young people may be linked to a lack of such experiences.</span>
+                </p>
+                
+                <p id="para4">
+                    <span class="sentence" id="s4-1" data-questions="33,40">To bridge the gap between beliefs and behaviors, parents can start by asking whether there is a good reason to prevent a child from doing a task independently.</span> 
+                    <span class="sentence" id="s4-2" data-questions="40">From there, they can create purposeful opportunities during everyday routines—meal preparation, simple errands, or interacting with trusted adults in public spaces.</span> 
+                    <span class="sentence" id="s4-3" data-questions="37,40">Choosing calm moments rather than rushed situations gives children the space to try, make mistakes, and learn.</span> 
+                    <span class="sentence" id="s4-4" data-questions="40">Over time, stepping back thoughtfully allows children to gain the experience needed to become confident, capable, and self-reliant.</span>
+                </p>
+                
+                <p class="source">[Adapted from https://mottpoll.org/]</p>
+            </div>
+            
+            <!-- GLOSSARY SECTION - font-size đã sửa thành 16px (title) và 14px (table) -->
+            <div class="glossary-section">
+                <div class="glossary-title">📚 GLOSSARY (B2-C1)</div>
+                <table class="glossary-table">
+                    <thead>
+                        <tr>
+                            <th>Word / Phrase</th>
+                            <th>Type</th>
+                            <th>Meaning (Vietnamese)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>autonomy</td><td>(n)</td><td>quyền tự chủ, khả năng tự quản</td></tr>
+                        <tr><td>resilience</td><td>(n)</td><td>khả năng phục hồi, sự kiên cường</td></tr>
+                        <tr><td>unsupervised</td><td>(adj)</td><td>không có sự giám sát, tự do không người trông coi</td></tr>
+                        <tr><td>pervasive</td><td>(adj)</td><td>lan tỏa, thấm sâu, có mặt ở khắp nơi</td></tr>
+                        <tr><td>helicopter parenting</td><td>(n)</td><td>phong cách nuôi dạy con "trực thăng" (cha mẹ bao bọc, can thiệp quá mức)</td></tr>
+                        <tr><td>competence</td><td>(n)</td><td>năng lực, sự thành thạo</td></tr>
+                        <tr><td>self-reliant</td><td>(adj)</td><td>tự lực, dựa vào chính mình</td></tr>
+                        <tr><td>empirical</td><td>(adj)</td><td>(thuộc về) kinh nghiệm, dựa trên quan sát hoặc thử nghiệm thực tế</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- GIỮ NGUYÊN 100% phần questions 31-40 từ code cũ -->
+        <div class="question-section" id="question-section">
+            <h2 class="section-title">❓ Questions (31-40):</h2>
+            
+            <!-- Question 31 -->
+            <div class="question" id="q31">
+                <div class="question-header">
+                    <div class="question-number">31</div>
+                    <div class="question-text">Where in paragraph 1 does the following sentence best fit?<br><em>"The pattern remains similar for parents of older children."</em></div>
+                </div>
+                <div class="options" id="options31">
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 31)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">[I]</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 31)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">[II]</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 31)">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">[III]</span>
+                    </div>
+                    <div class="option" data-correct="true" onclick="handleOptionClick(this, 31)">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">[IV]</span>
+                    </div>
+                </div>
+                <div class="explanation-tabs" id="tabs31">
+                    <button class="explanation-tab" onclick="showReference(31)">📍 Vị trí trong bài</button>
+                    <button class="explanation-tab" onclick="showExplanation(31)">📝 Giải thích đáp án</button>
+                </div>
+                <div class="explanation-content" id="explanation31">
+                    <h4>✓ Đáp án đúng: D. [IV]</h4>
+                    <p><strong>A. [I]</strong> Sai vì câu [I] là câu chủ đề, giới thiệu ý chung về "striking gap". Câu cần chèn nói về "pattern" (mô hình) cụ thể, nên chưa thể xuất hiện ngay từ đầu.</p>
+                    <p><strong>B. [II]</strong> Sai vì câu [II] đang đưa ví dụ cụ thể về cha mẹ có con nhỏ ("younger children"). Chèn câu về cha mẹ có con lớn hơn vào giữa dòng ví dụ về con nhỏ sẽ làm đứt mạch văn.</p>
+                    <p><strong>C. [III]</strong> Sai vì tương tự câu [II], câu [III] vẫn đang tiếp tục đưa ví dụ về nhóm cha mẹ có con nhỏ ("these children" chỉ "younger children" ở câu trước).</p>
+                    <p><strong>D. [IV]</strong> Đúng vì vị trí cuối đoạn là nơi thích hợp để đưa ra nhận xét mở rộng hoặc kết luận.</p>
+                </div>
+            </div>
+            
+            <!-- Question 32 -->
+            <div class="question" id="q32">
+                <div class="question-header">
+                    <div class="question-number">32</div>
+                    <div class="question-text">The word "critical" in paragraph 3 is OPPOSITE in meaning to __________.</div>
+                </div>
+                <div class="options" id="options32">
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 32)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">essential</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 32)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">crucial</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 32)">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">fundamental</span>
+                    </div>
+                    <div class="option" data-correct="true" onclick="handleOptionClick(this, 32)">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">minor</span>
+                    </div>
+                </div>
+                <div class="explanation-tabs" id="tabs32">
+                    <button class="explanation-tab" onclick="showReference(32)">📍 Vị trí trong bài</button>
+                    <button class="explanation-tab" onclick="showExplanation(32)">📝 Giải thích đáp án</button>
+                </div>
+                <div class="explanation-content" id="explanation32">
+                    <h4>✓ Đáp án đúng: D. minor</h4>
+                    <p><strong>A. essential</strong> (thiết yếu) - từ đồng nghĩa với "critical".</p>
+                    <p><strong>B. crucial</strong> (cốt yếu) - từ đồng nghĩa với "critical".</p>
+                    <p><strong>C. fundamental</strong> (cơ bản) - từ đồng nghĩa với "critical".</p>
+                    <p><strong>D. minor</strong> (nhỏ, không quan trọng) - từ trái nghĩa trực tiếp.</p>
+                </div>
+            </div>
+            
+            <!-- Question 33 -->
+            <div class="question" id="q33">
+                <div class="question-header">
+                    <div class="question-number">33</div>
+                    <div class="question-text">The phrase "bridge the gap" in paragraph 4 could best be replaced by __________.</div>
+                </div>
+                <div class="options" id="options33">
+                    <div class="option" data-correct="true" onclick="handleOptionClick(this, 33)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">reduce the mismatch</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 33)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">widen the difference</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 33)">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">highlight the contrast</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 33)">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">ignore the conflict</span>
+                    </div>
+                </div>
+                <div class="explanation-tabs" id="tabs33">
+                    <button class="explanation-tab" onclick="showReference(33)">📍 Vị trí trong bài</button>
+                    <button class="explanation-tab" onclick="showExplanation(33)">📝 Giải thích đáp án</button>
+                </div>
+                <div class="explanation-content" id="explanation33">
+                    <h4>✓ Đáp án đúng: A. reduce the mismatch</h4>
+                    <p><strong>A. reduce the mismatch</strong> (giảm sự không phù hợp) - nghĩa tương đương "bridge the gap".</p>
+                    <p><strong>B. widen the difference</strong> (mở rộng khác biệt) - trái nghĩa.</p>
+                    <p><strong>C. highlight the contrast</strong> (nhấn mạnh tương phản) - không phù hợp.</p>
+                    <p><strong>D. ignore the conflict</strong> (phớt lờ mâu thuẫn) - trái nghĩa.</p>
+                </div>
+            </div>
+            
+            <!-- Question 34 -->
+            <div class="question" id="q34">
+                <div class="question-header">
+                    <div class="question-number">34</div>
+                    <div class="question-text">The word "they" in paragraph 1 refers to __________.</div>
+                </div>
+                <div class="options" id="options34">
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 34)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">experience</span>
+                    </div>
+                    <div class="option" data-correct="true" onclick="handleOptionClick(this, 34)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">parents</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 34)">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">tasks</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 34)">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">younger children</span>
+                    </div>
+                </div>
+                <div class="explanation-tabs" id="tabs34">
+                    <button class="explanation-tab" onclick="showReference(34)">📍 Vị trí trong bài</button>
+                    <button class="explanation-tab" onclick="showExplanation(34)">📝 Giải thích đáp án</button>
+                </div>
+                <div class="explanation-content" id="explanation34">
+                    <h4>✓ Đáp án đúng: B. parents</h4>
+                    <p>"They" là chủ ngữ của động từ "want", thay thế cho "Many parents" ở phía trước.</p>
+                </div>
+            </div>
+            
+            <!-- Question 35 -->
+            <div class="question" id="q35">
+                <div class="question-header">
+                    <div class="question-number">35</div>
+                    <div class="question-text">According to the passage, all of the following are cited as reasons parents hesitate to grant independence to their children EXCEPT:</div>
+                </div>
+                <div class="options" id="options35">
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 35)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">concerns about a child's lack of maturity</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 35)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">anxiety about potential harm from others</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 35)">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">fear of misunderstanding community laws</span>
+                    </div>
+                    <div class="option" data-correct="true" onclick="handleOptionClick(this, 35)">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">evidence that most neighborhoods are dangerous</span>
+                    </div>
+                </div>
+                <div class="explanation-tabs" id="tabs35">
+                    <button class="explanation-tab" onclick="showReference(35)">📍 Vị trí trong bài</button>
+                    <button class="explanation-tab" onclick="showExplanation(35)">📝 Giải thích đáp án</button>
+                </div>
+                <div class="explanation-content" id="explanation35">
+                    <h4>✓ Đáp án đúng: D. evidence that most neighborhoods are dangerous</h4>
+                    <p><strong>A, B, C</strong> đều được đề cập trong đoạn 2.</p>
+                    <p><strong>D</strong> Sai vì bài viết nói: "only a small percentage believe their neighborhood is unsafe".</p>
+                </div>
+            </div>
+            
+            <!-- Question 36 -->
+            <div class="question" id="q36">
+                <div class="question-header">
+                    <div class="question-number">36</div>
+                    <div class="question-text">Which of the following best summarizes the main idea of paragraph 2?</div>
+                </div>
+                <div class="options" id="options36">
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 36)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">Parents see their neighborhoods as unsafe with hidden dangers, making this fear the main barrier to granting children independence.</span>
+                    </div>
+                    <div class="option" data-correct="true" onclick="handleOptionClick(this, 36)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">Parents hesitate mainly due to fear and social pressure, creating a blame culture that limits children's small but essential chances to build autonomy and decision-making skills.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 36)">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">Parents cite community judgment and confusion about local rules as the only real obstacles to giving their children greater freedom in everyday routines.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 36)">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">Concerns about emotional immaturity and limited capability lead many parents to maintain constant supervision in home and public settings.</span>
+                    </div>
+                </div>
+                <div class="explanation-tabs" id="tabs36">
+                    <button class="explanation-tab" onclick="showReference(36)">📍 Vị trí trong bài</button>
+                    <button class="explanation-tab" onclick="showExplanation(36)">📝 Giải thích đáp án</button>
+                </div>
+                <div class="explanation-content" id="explanation36">
+                    <h4>✓ Đáp án đúng: B</h4>
+                    <p><strong>A.</strong> Sai vì bài viết nói: "only a small percentage believe their neighborhood is unsafe".</p>
+                    <p><strong>B.</strong> Đúng - bao quát đầy đủ nguyên nhân, cơ chế và hậu quả.</p>
+                    <p><strong>C.</strong> Sai vì có từ "only" (duy nhất) - đoạn văn nêu nhiều nguyên nhân.</p>
+                    <p><strong>D.</strong> Sai vì thiếu yếu tố "blame culture" và áp lực xã hội.</p>
+                </div>
+            </div>
+            
+            <!-- Question 37 -->
+            <div class="question" id="q37">
+                <div class="question-header">
+                    <div class="question-number">37</div>
+                    <div class="question-text">Which of the following statements is TRUE according to the information provided in the passage?</div>
+                </div>
+                <div class="options" id="options37">
+                    <div class="option" data-correct="true" onclick="handleOptionClick(this, 37)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">Providing a child with the opportunity to feel autonomous is consistently linked to enhanced personal qualities like better self-regard, stronger internal drive, and healthier interpersonal connections.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 37)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">The most important initial step for parents who wish to foster autonomy is to clearly communicate their fears about safety and potential harm to their young child.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 37)">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">Parents should prioritize providing opportunities for independence during highly stressful, rushed situations to quickly develop their child's ability to cope with pressure.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 37)">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">Children should be immediately provided with complete autonomy in complex areas like simple financial choices and healthcare discussions.</span>
+                    </div>
+                </div>
+                <div class="explanation-tabs" id="tabs37">
+                    <button class="explanation-tab" onclick="showReference(37)">📍 Vị trí trong bài</button>
+                    <button class="explanation-tab" onclick="showExplanation(37)">📝 Giải thích đáp án</button>
+                </div>
+                <div class="explanation-content" id="explanation37">
+                    <h4>✓ Đáp án đúng: A</h4>
+                    <p><strong>A.</strong> Đúng - diễn giải lại thông tin từ đoạn 3.</p>
+                    <p><strong>B.</strong> Sai - bài viết không nói đây là bước "quan trọng nhất".</p>
+                    <p><strong>C.</strong> Sai - trái ngược với "choosing calm moments rather than rushed situations".</p>
+                    <p><strong>D.</strong> Sai - có từ "immediately" và "complete autonomy" trái với "gradual" và "low-risk".</p>
+                </div>
+            </div>
+            
+            <!-- Question 38 -->
+            <div class="question" id="q38">
+                <div class="question-header">
+                    <div class="question-number">38</div>
+                    <div class="question-text">Which of the following best expresses the idea in the sentence in paragraph 3: "Research consistently shows that independence strengthens confidence, resilience, and mental health, and parents play a critical role in guiding these early steps."</div>
+                </div>
+                <div class="options" id="options38">
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 38)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">Parental involvement is only considered necessary if the child demonstrates serious deficiencies in confidence, resilience, or established mental health.</span>
+                    </div>
+                    <div class="option" data-correct="true" onclick="handleOptionClick(this, 38)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">Empirical studies uniformly confirm that self-reliance enhances key psychological traits, thereby establishing the vital function of parental direction during the child's fundamental developmental stages.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 38)">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">Children who naturally possess strong mental health and high levels of confidence are typically the ones who are naturally predisposed to achieve the greatest degree of autonomy.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 38)">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">To ensure optimal mental health outcomes, parents should avoid intervening in any manner with their child's independent development, allowing research to solely guide these early autonomous behaviors.</span>
+                    </div>
+                </div>
+                <div class="explanation-tabs" id="tabs38">
+                    <button class="explanation-tab" onclick="showReference(38)">📍 Vị trí trong bài</button>
+                    <button class="explanation-tab" onclick="showExplanation(38)">📝 Giải thích đáp án</button>
+                </div>
+                <div class="explanation-content" id="explanation38">
+                    <h4>✓ Đáp án đúng: B</h4>
+                    <p><strong>A.</strong> Sai vì có từ "only" - điều kiện không được đề cập.</p>
+                    <p><strong>B.</strong> Đúng - diễn giải chính xác ý câu gốc.</p>
+                    <p><strong>C.</strong> Sai - đảo ngược quan hệ nhân quả.</p>
+                    <p><strong>D.</strong> Sai - có từ "avoid intervening" trái với "critical role".</p>
+                </div>
+            </div>
+            
+            <!-- Question 39 -->
+            <div class="question" id="q39">
+                <div class="question-header">
+                    <div class="question-number">39</div>
+                    <div class="question-text">Which of the following can most likely be inferred from the passage regarding the "blame culture" mentioned in paragraph 2?</div>
+                </div>
+                <div class="options" id="options39">
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 39)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">Parents intentionally create this culture to deflect responsibility for their reluctance to grant autonomy to their children.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 39)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">The culture of blame is primarily caused by parents' excessive self-criticism concerning their own immaturity.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 39)">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">This societal phenomenon is an inevitable outcome of increased unsupervised free time among older children.</span>
+                    </div>
+                    <div class="option" data-correct="true" onclick="handleOptionClick(this, 39)">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">The parental perception of intense pressure to supervise constantly stems from widespread societal expectations or community disapproval.</span>
+                    </div>
+                </div>
+                <div class="explanation-tabs" id="tabs39">
+                    <button class="explanation-tab" onclick="showReference(39)">📍 Vị trí trong bài</button>
+                    <button class="explanation-tab" onclick="showExplanation(39)">📝 Giải thích đáp án</button>
+                </div>
+                <div class="explanation-content" id="explanation39">
+                    <h4>✓ Đáp án đúng: D</h4>
+                    <p><strong>A.</strong> Sai vì có từ "intentionally" - bài không nói cha mẹ cố ý.</p>
+                    <p><strong>B.</strong> Sai vì có từ "primarily" và "excessive self-criticism" - không được đề cập.</p>
+                    <p><strong>C.</strong> Sai - thông tin không có trong bài.</p>
+                    <p><strong>D.</strong> Đúng - suy luận từ "feel pressure to supervise constantly" và "potential judgment from others".</p>
+                </div>
+            </div>
+            
+            <!-- Question 40 -->
+            <div class="question" id="q40">
+                <div class="question-header">
+                    <div class="question-number">40</div>
+                    <div class="question-text">Which of the following best summarises the passage?</div>
+                </div>
+                <div class="options" id="options40">
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 40)">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">Parents' unfounded fears about community safety and local law misunderstandings are the only significant factors restricting their children's independence.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 40)">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">The growing trend of "helicopter parenting" proves that constant, well-intentioned parental involvement is the best long-term strategy for ensuring children develop the highest levels of competence.</span>
+                    </div>
+                    <div class="option" data-correct="false" onclick="handleOptionClick(this, 40)">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">Children must be provided with complete autonomy in complex areas like financial choices and healthcare discussions immediately to bridge the knowledge gap.</span>
+                    </div>
+                    <div class="option" data-correct="true" onclick="handleOptionClick(this, 40)">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">Despite valuing independence, parents often restrict their children due to pervasive fears and external social pressure, making it essential for adults to consciously create purposeful, low-risk chances for practice to foster self-reliance.</span>
+                    </div>
+                </div>
+                <div class="explanation-tabs" id="tabs40">
+                    <button class="explanation-tab" onclick="showReference(40)">📍 Vị trí trong bài</button>
+                    <button class="explanation-tab" onclick="showExplanation(40)">📝 Giải thích đáp án</button>
+                </div>
+                <div class="explanation-content" id="explanation40">
+                    <h4>✓ Đáp án đúng: D</h4>
+                    <p><strong>A.</strong> Sai vì có từ "only" và "unfounded" - không phải yếu tố duy nhất, không nói là vô căn cứ.</p>
+                    <p><strong>B.</strong> Sai - bài viết phê phán "helicopter parenting".</p>
+                    <p><strong>C.</strong> Sai vì có từ "immediately" và "complete autonomy" - trái với "gradual".</p>
+                    <p><strong>D.</strong> Đúng - tóm tắt đầy đủ: vấn đề, nguyên nhân, giải pháp.</p>
+                </div>
+            </div>
+            
+            <!-- Exam Controls -->
+            <div class="exam-controls" id="exam-controls">
+                <button class="submit-btn" onclick="submitExam()">📋 NỘP BÀI KIỂM TRA</button>
+            </div>
+        </div>
+        
+        <!-- Results Section -->
+        <div class="results" id="results">
+            <h2 class="section-title">📊 KẾT QUẢ BÀI LÀM</h2>
+            <div class="score" id="scoreDisplay">0/10</div>
+            <div class="score-details">
+                <span class="correct-count" id="correctCount">0</span> câu đúng • 
+                <span class="incorrect-count" id="incorrectCount">0</span> câu sai
+            </div>
+            <button class="btn-reset" onclick="resetQuiz()">🔄 LÀM LẠI BÀI</button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© Reading Comprehension Exercise | Designed for educational purposes</p>
+    </div>
+
+    <!-- GIỮ NGUYÊN 100% JavaScript cũ -->
+    <script>
+        let currentMode = 'practice';
+        let score = 0;
+        let answeredCount = 0;
+        const totalQuestions = 10;
+        
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update active button
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.mode-btn.${mode}`).classList.add('active');
+            
+            // Update mode indicator
+            const modeIndicator = document.getElementById('modeIndicator');
+            if (mode === 'practice') {
+                modeIndicator.innerHTML = '⚡ LUYỆN TẬP';
+                modeIndicator.style.backgroundColor = '#4a6fa5';
+                modeIndicator.style.color = 'white';
+            } else {
+                modeIndicator.innerHTML = '📋 KIỂM TRA';
+                modeIndicator.style.backgroundColor = '#e74c3c';
+                modeIndicator.style.color = 'white';
+            }
+            
+            // Animate reset icon
+            const resetIcon = document.getElementById('resetIcon');
+            resetIcon.style.animation = 'none';
+            resetIcon.offsetHeight;
+            resetIcon.style.animation = 'spin 0.5s ease';
+            
+            // Show/hide exam controls
+            const examControls = document.getElementById('exam-controls');
+            const results = document.getElementById('results');
+            
+            if (mode === 'exam') {
+                examControls.style.display = 'flex';
+                results.style.display = 'none';
+            } else {
+                examControls.style.display = 'none';
+                results.style.display = 'none';
+            }
+            
+            // Reset everything
+            resetQuiz();
+        }
+        
+        function handleOptionClick(optionElement, questionNumber) {
+            const questionDiv = document.getElementById('q' + questionNumber);
+            const options = questionDiv.querySelectorAll('.option');
+            
+            // Remove previous selection for this question
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Mark this option as selected (visual feedback)
+            optionElement.classList.add('selected');
+            
+            // In practice mode, show answer immediately
+            if (currentMode === 'practice') {
+                // Mark as answered
+                questionDiv.classList.add('answered');
+                
+                // Disable all options
+                options.forEach(opt => {
+                    opt.classList.add('answered');
+                    opt.style.cursor = 'default';
+                });
+                
+                // Check if correct
+                const isCorrect = optionElement.getAttribute('data-correct') === 'true';
+                
+                // Update option appearance
+                optionElement.classList.add(isCorrect ? 'correct' : 'incorrect');
+                
+                // If wrong, highlight correct answer
+                if (!isCorrect) {
+                    options.forEach(opt => {
+                        if (opt.getAttribute('data-correct') === 'true') {
+                            opt.classList.add('correct');
+                        }
+                    });
+                }
+                
+                // Update score
+                if (isCorrect) {
+                    score++;
+                }
+                answeredCount++;
+                
+                // Show explanation tabs
+                document.getElementById('tabs' + questionNumber).classList.add('visible');
+                showExplanation(questionNumber);
+                
+                updateScoreDisplay();
+            }
+        }
+        
+        function showReference(questionNumber) {
+            // Remove all highlights
+            document.querySelectorAll('.sentence').forEach(el => {
+                el.classList.remove('highlight');
+            });
+            
+            // Find and highlight specific sentences for this question
+            const sentences = document.querySelectorAll('.sentence');
+            let foundCount = 0;
+            
+            sentences.forEach(sentence => {
+                const questions = sentence.getAttribute('data-questions');
+                if (questions && questions.split(',').map(q => q.trim()).includes(questionNumber.toString())) {
+                    sentence.classList.add('highlight');
+                    foundCount++;
+                    
+                    // Scroll to first found sentence
+                    if (foundCount === 1) {
+                        sentence.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center'
+                        });
+                    }
+                }
+            });
+            
+            // Hide explanation content
+            document.getElementById('explanation' + questionNumber).classList.remove('active');
+        }
+        
+        function showExplanation(questionNumber) {
+            // Remove all highlights
+            document.querySelectorAll('.sentence').forEach(el => {
+                el.classList.remove('highlight');
+            });
+            
+            // Hide all explanation contents
+            for (let i = 31; i <= 40; i++) {
+                document.getElementById('explanation' + i).classList.remove('active');
+            }
+            
+            // Show selected explanation
+            document.getElementById('explanation' + questionNumber).classList.add('active');
+        }
+        
+        function submitExam() {
+            // Reset score
+            score = 0;
+            answeredCount = 0;
+            
+            for (let i = 31; i <= 40; i++) {
+                const questionDiv = document.getElementById('q' + i);
+                const options = questionDiv.querySelectorAll('.option');
+                const selectedOption = Array.from(options).find(opt => 
+                    opt.classList.contains('selected')
+                );
+                
+                if (selectedOption) {
+                    answeredCount++;
+                    
+                    // Mark as answered
+                    questionDiv.classList.add('answered');
+                    
+                    // Disable all options
+                    options.forEach(opt => {
+                        opt.classList.add('answered');
+                        opt.style.cursor = 'default';
+                    });
+                    
+                    // Mark correct/incorrect
+                    const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
+                    selectedOption.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    
+                    // Show correct answer if wrong
+                    if (!isCorrect) {
+                        options.forEach(opt => {
+                            if (opt.getAttribute('data-correct') === 'true') {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+                    
+                    // Update score
+                    if (isCorrect) {
+                        score++;
+                    }
+                    
+                    // Show explanation tabs
+                    document.getElementById('tabs' + i).classList.add('visible');
+                }
+            }
+            
+            // Show results
+            updateScoreDisplay();
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('exam-controls').style.display = 'none';
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function updateScoreDisplay() {
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const correctCount = document.getElementById('correctCount');
+            const incorrectCount = document.getElementById('incorrectCount');
+            
+            scoreDisplay.textContent = score + '/' + totalQuestions;
+            correctCount.textContent = score;
+            incorrectCount.textContent = answeredCount - score;
+        }
+        
+        function resetQuiz() {
+            // Reset all questions
+            for (let i = 31; i <= 40; i++) {
+                const questionDiv = document.getElementById('q' + i);
+                const options = questionDiv.querySelectorAll('.option');
+                
+                // Remove all classes
+                questionDiv.classList.remove('answered');
+                options.forEach(opt => {
+                    opt.classList.remove('answered', 'correct', 'incorrect', 'selected');
+                    opt.style.cursor = 'pointer';
+                });
+                
+                // Hide explanation tabs and content
+                document.getElementById('tabs' + i).classList.remove('visible');
+                document.getElementById('explanation' + i).classList.remove('active');
+            }
+            
+            // Reset counters
+            score = 0;
+            answeredCount = 0;
+            
+            // Update display
+            updateScoreDisplay();
+            
+            // Hide results
+            document.getElementById('results').style.display = 'none';
+            
+            // Reset highlights
+            document.querySelectorAll('.sentence').forEach(el => {
+                el.classList.remove('highlight');
+            });
+            
+            // Show exam controls if in exam mode
+            if (currentMode === 'exam') {
+                document.getElementById('exam-controls').style.display = 'flex';
+            }
+            
+            // Animate reset icon
+            const resetIcon = document.getElementById('resetIcon');
+            resetIcon.style.animation = 'none';
+            resetIcon.offsetHeight;
+            resetIcon.style.animation = 'spin 0.5s ease';
+        }
+        
+        // Initialize in practice mode
+        setMode('practice');
+    </script>
+</body>
+</html>
