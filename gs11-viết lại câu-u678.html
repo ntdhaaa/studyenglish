@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(GS11) VIẾT LẠI CÂU U678 - ÔN TẬP GIỮA KÌ 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8854C0;
+            --secondary: #00C9A7;
+            --correct: #00D26A;
+            --wrong: #FF4757;
+            --background: #f0f3f5;
+            --card-bg: #ffffff;
+            --text-main: #2f3542;
+            --text-light: #57606f;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--background);
+            background-image: radial-gradient(#dcdde1 15%, transparent 16%), radial-gradient(#dcdde1 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            color: var(--text-light);
+            font-weight: 600;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+            border: 2px solid #eee;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #f1f2f6;
+            padding-bottom: 10px;
+        }
+
+        .q-tag {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e1e4e8;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 5px 0 #d1d8e0;
+            transition: all 0.1s;
+        }
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 5px 0 #00a187;
+        }
+        .answer-input.error {
+            border-color: var(--wrong);
+            box-shadow: 0 5px 0 #b22234;
+            background-color: #fff0f0;
+            animation: shake 0.3s;
+        }
+        .answer-input.correct {
+            border-color: var(--correct);
+            box-shadow: 0 5px 0 #008f47;
+            background-color: #f0fff0;
+        }
+        .answer-input.wrong {
+            border-color: var(--wrong);
+            box-shadow: 0 5px 0 #b22234;
+            background-color: #fff0f0;
+        }
+
+        .hint-container {
+            margin: 10px 0 15px;
+        }
+        .hint-btn {
+            background: #f0f4fa;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 0 #b1a0d0;
+        }
+        .hint-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .hint-content {
+            display: none;
+            background: #f8f0fc;
+            border-left: 5px solid var(--primary);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #2c3e50;
+            animation: slideDown 0.3s ease;
+            white-space: pre-wrap;
+        }
+
+        .check-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .check-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            box-shadow: 0 5px 0 #5f2a9e;
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: inline-block;
+        }
+        .check-btn:active {
+            box-shadow: 0 2px 0 #5f2a9e;
+            transform: translateY(3px);
+        }
+        .check-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: 0 5px 0 #5f2a9e;
+        }
+        .feedback-message {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 30px;
+            background: #f0f0f0;
+        }
+        .feedback-message.correct-feedback {
+            color: #008f47;
+            background: #e0ffe0;
+        }
+        .feedback-message.wrong-feedback {
+            color: #b22234;
+            background: #ffe0e0;
+        }
+
+        .explanation-box {
+            display: none;
+            margin-top: 20px;
+            background-color: #f8f0fc;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            animation: slideDown 0.5s ease;
+        }
+        .explanation-header {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .explanation-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #4b4b4b;
+            white-space: pre-wrap;
+        }
+
+        .footer-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #5f2a9e;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .submit-btn:active {
+            box-shadow: 0 3px 0 #5f2a9e;
+            transform: translateY(3px);
+        }
+        .score-display {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-5deg); }
+            75% { transform: translateX(5px) rotate(5deg); }
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            animation: popIn 0.5s;
+            border: 5px solid var(--secondary);
+        }
+        .final-score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+        .feedback-text {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        u {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-thickness: 2px;
+            text-decoration-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="header-container">
+    <h1>(GS11) VIẾT LẠI CÂU U678 - ÔN TẬP GIỮA KÌ 2</h1>
+    <h3> </h3>
+</div>
+
+<div class="quiz-container" id="quiz-area"></div>
+
+<div class="footer-controls">
+    <div class="score-display">Đã kiểm tra: <span id="progress-text">0</span>/<span id="total-text">0</span></div>
+    <button class="submit-btn" onclick="finishQuiz()">XEM TỔNG KẾT</button>
+</div>
+
+<div class="modal-overlay" id="result-modal">
+    <div class="modal-content">
+        <h2 style="color: var(--secondary); font-weight: 800;">TỔNG KẾT</h2>
+        <div class="final-score" id="final-score-display">0/0</div>
+        <p class="feedback-text" id="feedback-msg">Bạn đã làm rất tốt!</p>
+        <button class="submit-btn" onclick="location.reload()">LÀM LẠI</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        // UNIT 6: TO-INFINITIVE CLAUSES
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE - MỆNH ĐỀ TO V",
+            "question": "Trang An Scenic Landscape Complex was recognized as a mixed World Heritage Site. It is the only mixed heritage site in Southeast Asia.",
+            "hint": "Câu này cần một mệnh đề to-infinitive để kết hợp hai câu.",
+            "answer": "Trang An Scenic Landscape Complex is the only mixed heritage site in Southeast Asia to be recognized as a mixed World Heritage Site.",
+            "explanation": "Mệnh đề \"to be recognized\" diễn tả mục đích của việc Trang An được công nhận là di sản thế giới hỗn hợp.\nDịch nghĩa: \"Quần thể danh thắng Tràng An là di sản văn hóa hỗn hợp duy nhất ở Đông Nam Á được công nhận.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE - MỆNH ĐỀ TO V",
+            "question": "Minh left the show very early. He was the first person who did so.",
+            "hint": "Câu này cần một mệnh đề to-infinitive để kết hợp hai câu.",
+            "answer": "Minh was the first person to leave the show very early.",
+            "explanation": "Mệnh đề \"to leave\" diễn tả hành động của Minh là người đầu tiên rời khỏi chương trình.\nDịch nghĩa: \"Minh là người đầu tiên rời khỏi chương trình rất sớm.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE - MỆNH ĐỀ TO V",
+            "question": "We went to Hoi An last month. We wanted to visit the ancient buildings there.",
+            "hint": "Câu này cần một mệnh đề to-infinitive để kết hợp hai câu.",
+            "answer": "We went to Hoi An last month to visit the ancient buildings there.",
+            "explanation": "Mệnh đề \"to visit\" diễn tả mục đích của chuyến đi đến Hội An.\nDịch nghĩa: \"Chúng tôi đã đến Hội An tháng trước để thăm các công trình cổ ở đó.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE - MỆNH ĐỀ TO V",
+            "question": "Anna joined the school trip. She was the last person who did so.",
+            "hint": "Câu này cần một mệnh đề to-infinitive để kết hợp hai câu.",
+            "answer": "Anna was the last person to join the school trip.",
+            "explanation": "Mệnh đề \"to join\" diễn tả hành động của Anna là người cuối cùng tham gia chuyến đi.\nDịch nghĩa: \"Anna là người cuối cùng tham gia chuyến đi của trường.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE - MỆNH ĐỀ TO V",
+            "question": "We went to the Mekong River Delta. We wanted to watch live performances of don ca tai tu there.",
+            "hint": "Câu này cần một mệnh đề to-infinitive để kết hợp hai câu.",
+            "answer": "We went to the Mekong River Delta to watch live performances of don ca tai tu there.",
+            "explanation": "Mệnh đề \"to watch\" diễn tả mục đích của chuyến đi đến Đồng bằng sông Cửu Long.\nDịch nghĩa: \"Chúng tôi đã đến Đồng bằng sông Cửu Long để xem các buổi biểu diễn đờn ca tài tử trực tiếp ở đó.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE - MỆNH ĐỀ TO V",
+            "question": "My parents went to Ha Long Bay. They wanted to take a three-day cruise there.",
+            "hint": "Câu này cần một mệnh đề to-infinitive để kết hợp hai câu.",
+            "answer": "My parents went to Ha Long Bay to take a three-day cruise there.",
+            "explanation": "Mệnh đề \"to take\" diễn tả mục đích của chuyến đi đến Hạ Long.\nDịch nghĩa: \"Bố mẹ tôi đã đến Vịnh Hạ Long để tham gia một chuyến du thuyền ba ngày ở đó.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE - MỆNH ĐỀ TO V",
+            "question": "The local authority opened a visitor centre near the heritage site. They wanted to give tourists more information about the site.",
+            "hint": "Câu này cần một mệnh đề to-infinitive để kết hợp hai câu.",
+            "answer": "The local authority opened a visitor centre near the heritage site to give tourists more information about the site.",
+            "explanation": "Mệnh đề \"to give\" diễn tả mục đích của việc mở trung tâm du khách.\nDịch nghĩa: \"Chính quyền địa phương đã mở một trung tâm du khách gần di sản để cung cấp thêm thông tin cho du khách về địa điểm này.\""
+        },
+        
+        // UNIT 7: PERFECT PARTICIPLE CLAUSES / PERFECT GERUNDS
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS - HOÀN THÀNH PHÂN TỪ / DANH ĐỘNG TỪ HOÀN THÀNH",
+            "question": "My mother didn’t go to university. She regretted it.",
+            "hint": "regret (v) hối tiếc - chỗ trống cần dạng perfect gerund.",
+            "answer": "My mother regretted not having gone to university.",
+            "explanation": "\"Not having gone\" là dạng perfect gerund, thể hiện rằng mẹ của tôi hối tiếc vì không đi học đại học.\nDịch nghĩa: \"Mẹ tôi hối tiếc vì không đi học đại học.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS - HOÀN THÀNH PHÂN TỪ / DANH ĐỘNG TỪ HOÀN THÀNH",
+            "question": "My sister finished school. Then she went to a vocational school to train to be a tour guide.",
+            "hint": "finish (v) hoàn thành - chỗ trống cần dạng perfect participle.",
+            "answer": "Having finished school, my sister went to a vocational school to train to be a tour guide.",
+            "explanation": "\"Having finished\" là dạng perfect participle, thể hiện rằng việc hoàn thành trường học xảy ra trước khi đi học nghề.\nDịch nghĩa: \"Sau khi hoàn thành trường học, chị tôi đã đi học nghề để đào tạo trở thành một hướng dẫn viên du lịch.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS - HOÀN THÀNH PHÂN TỪ / DANH ĐỘNG TỪ HOÀN THÀNH",
+            "question": "My grandfather did not remember that he had lost his reading glasses.",
+            "hint": "remember (v) nhớ - chỗ trống cần dạng perfect gerund.",
+            "answer": "My grandfather did not remember having lost his reading glasses.",
+            "explanation": "\"Having lost\" là dạng perfect gerund, thể hiện rằng ông không nhớ việc đã mất kính đọc sách.\nDịch nghĩa: \"Ông tôi không nhớ đã mất kính đọc sách của mình.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS - HOÀN THÀNH PHÂN TỪ / DANH ĐỘNG TỪ HOÀN THÀNH",
+            "question": "My brother wrote his first travel book after he had returned from Japan.",
+            "hint": "write (v) viết - chỗ trống cần dạng perfect participle.",
+            "answer": "Having returned from Japan, my brother wrote his first travel book.",
+            "explanation": "\"Having returned\" là dạng perfect participle, thể hiện rằng việc trở về từ Nhật Bản xảy ra trước khi viết sách.\nDịch nghĩa: \"Sau khi trở về từ Nhật Bản, anh trai tôi đã viết cuốn sách du lịch đầu tiên của mình.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS - HOÀN THÀNH PHÂN TỪ / DANH ĐỘNG TỪ HOÀN THÀNH",
+            "question": "Trang won the first prize in the competition. She is very proud of this.",
+            "hint": "win (v) giành chiến thắng - chỗ trống cần dạng perfect gerund.",
+            "answer": "Trang is very proud of having won the first prize in the competition.",
+            "explanation": "\"Having won\" là dạng perfect gerund, thể hiện rằng Trang tự hào về việc giành giải thưởng.\nDịch nghĩa: \"Trang rất tự hào về việc giành giải nhất trong cuộc thi.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS - HOÀN THÀNH PHÂN TỪ / DANH ĐỘNG TỪ HOÀN THÀNH",
+            "question": "Nam worked as a mechanic’s apprentice and learnt useful job skills.",
+            "hint": "work (v) làm việc - chỗ trống cần dạng perfect participle.",
+            "answer": "Having worked as a mechanic’s apprentice, Nam learnt useful job skills.",
+            "explanation": "\"Having worked\" là dạng perfect participle, thể hiện rằng Nam đã làm việc trước khi học các kỹ năng nghề nghiệp.\nDịch nghĩa: \"Sau khi làm việc như một thực tập sinh cơ khí, Nam đã học được những kỹ năng nghề nghiệp hữu ích.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS - HOÀN THÀNH PHÂN TỪ / DANH ĐỘNG TỪ HOÀN THÀNH",
+            "question": "Phong achieved excellent grades at school, so he improved his chances of getting into a top university.",
+            "hint": "achieve (v) đạt được - chỗ trống cần dạng perfect participle.",
+            "answer": "Having achieved excellent grades at school, Phong improved his chances of getting into a top university.",
+            "explanation": "\"Having achieved\" là dạng perfect participle, thể hiện rằng việc đạt được điểm số xuất sắc xảy ra trước khi cải thiện cơ hội vào đại học.\nDịch nghĩa: \"Sau khi đạt được điểm số xuất sắc ở trường, Phong đã cải thiện cơ hội vào một trường đại học hàng đầu.\""
+        },
+        
+        // UNIT 8: CLEFT SENTENCES (with underlined parts)
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT - CÂU CHẺ",
+            "question": "<u>Many teenagers</u> spend a lot of time thinking and talking about being in a relationship.",
+            "hint": "many teenagers (n) nhiều thanh thiếu niên - chỗ trống cần mệnh đề chẻ.",
+            "answer": "It is many teenagers who spend a lot of time thinking and talking about being in a relationship.",
+            "explanation": "Cấu trúc \"It is ... who\" được sử dụng để nhấn mạnh chủ ngữ \"many teenagers\".\nDịch nghĩa: \"Chính nhiều thanh thiếu niên là những người dành nhiều thời gian suy nghĩ và nói về việc có mối quan hệ.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT - CÂU CHẺ",
+            "question": "<u>My mother</u> wants you to contact him from time to time while you’re out.",
+            "hint": "my mother (n) mẹ tôi - chỗ trống cần mệnh đề chẻ.",
+            "answer": "It is my mother who wants you to contact him from time to time while you’re out.",
+            "explanation": "Cấu trúc \"It is ... who\" được sử dụng để nhấn mạnh chủ ngữ \"my mother\".\nDịch nghĩa: \"Chính mẹ tôi là người muốn bạn liên lạc với ông ấy từ thời gian này sang thời gian khác khi bạn ra ngoài.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT - CÂU CHẺ",
+            "question": "The students make their study plans <u>at school</u>.",
+            "hint": "at school (n) ở trường - chỗ trống cần mệnh đề chẻ.",
+            "answer": "It is at school that the students make their study plans.",
+            "explanation": "Cấu trúc \"It is ... that\" được sử dụng để nhấn mạnh địa điểm \"at school\".\nDịch nghĩa: \"Chính tại trường mà các sinh viên lập kế hoạch học tập của họ.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT - CÂU CHẺ",
+            "question": "I would like to include <u>all my responsibilities</u> in my weekly schedule.",
+            "hint": "all my responsibilities (n) tất cả trách nhiệm của tôi - chỗ trống cần mệnh đề chẻ.",
+            "answer": "It is all my responsibilities that I would like to include in my weekly schedule.",
+            "explanation": "Cấu trúc \"It is ... that\" được sử dụng để nhấn mạnh \"all my responsibilities\".\nDịch nghĩa: \"Chính tất cả trách nhiệm của tôi mà tôi muốn đưa vào lịch trình hàng tuần của mình.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT - CÂU CHẺ",
+            "question": "We gave a presentation on how to develop life skills <u>the day before yesterday</u>.",
+            "hint": "the day before yesterday (n) ngày hôm kia - chỗ trống cần mệnh đề chẻ.",
+            "answer": "It was the day before yesterday that we gave a presentation on how to develop life skills.",
+            "explanation": "Cấu trúc \"It was ... that\" được sử dụng để nhấn mạnh thời gian \"the day before yesterday\".\nDịch nghĩa: \"Chính ngày hôm kia mà chúng tôi đã có một bài thuyết trình về cách phát triển kỹ năng sống.\""
+        }
+    ];
+
+    // ========== STATE ==========
+    let answers = new Array(quizData.length).fill('');
+    let checkedCount = 0;
+    const totalQuestions = quizData.length;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        if (type === 'correct') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.5);
+        } else {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+    }
+
+    function initQuiz() {
+        const quizArea = document.getElementById('quiz-area');
+        document.getElementById('total-text').innerText = totalQuestions;
+
+        quizData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${index}`;
+
+            card.innerHTML = `
+                <div class="question-header">
+                    <span class="q-tag">${item.unit}</span>
+                </div>
+                <div class="question-text">${index+1}. ${item.question}</div>
+                <input type="text" class="answer-input" id="input-${index}" placeholder="Nhập câu trả lời..." value="${answers[index]}" oninput="updateAnswer(${index}, this.value)">
+                <div class="hint-container">
+                    <div class="hint-btn" onclick="toggleHint(${index})">
+                        <span>💡</span> Gợi ý
+                    </div>
+                    <div class="hint-content" id="hint-${index}">${item.hint}</div>
+                </div>
+                <div class="check-wrapper">
+                    <button class="check-btn" id="check-${index}" onclick="checkAnswer(${index})">🔍 Kiểm tra</button>
+                    <span id="feedback-${index}" class="feedback-message"></span>
+                </div>
+                <div class="explanation-box" id="explain-${index}">
+                    <div class="explanation-header">
+                        <span style="font-size: 1.5rem;">📘</span> Giải thích chi tiết:
+                    </div>
+                    <div class="explanation-content">${item.explanation.replace(/\n/g, '<br>')}</div>
+                </div>
+            `;
+            quizArea.appendChild(card);
+        });
+    }
+
+    window.updateAnswer = function(index, value) {
+        answers[index] = value;
+    };
+
+    window.toggleHint = function(index) {
+        const hintDiv = document.getElementById(`hint-${index}`);
+        hintDiv.style.display = hintDiv.style.display === 'block' ? 'none' : 'block';
+    };
+
+    window.checkAnswer = function(index) {
+        const input = document.getElementById(`input-${index}`);
+        const checkBtn = document.getElementById(`check-${index}`);
+        const explanation = document.getElementById(`explain-${index}`);
+        const feedbackSpan = document.getElementById(`feedback-${index}`);
+        const userAnswer = answers[index]?.toLowerCase().trim() || '';
+        const correctAnswer = quizData[index].answer.toLowerCase().trim();
+
+        // Kiểm tra nếu chưa điền
+        if (!userAnswer) {
+            input.classList.add('error');
+            input.focus();
+            setTimeout(() => input.classList.remove('error'), 1000);
+            return;
+        }
+
+        // Xóa class error nếu có
+        input.classList.remove('error');
+
+        // So sánh kết quả
+        if (userAnswer === correctAnswer) {
+            input.classList.add('correct');
+            input.classList.remove('wrong');
+            feedbackSpan.innerHTML = '✅ Đúng!';
+            feedbackSpan.className = 'feedback-message correct-feedback';
+            playSound('correct');
+        } else {
+            input.classList.add('wrong');
+            input.classList.remove('correct');
+            feedbackSpan.innerHTML = `❌ Sai! Đáp án đúng là: ${quizData[index].answer}`;
+            feedbackSpan.className = 'feedback-message wrong-feedback';
+            playSound('wrong');
+        }
+
+        // Hiển thị giải thích
+        explanation.style.display = 'block';
+
+        // Vô hiệu hóa nút kiểm tra và input
+        input.disabled = true;
+        checkBtn.disabled = true;
+
+        // Cập nhật số câu đã kiểm tra
+        if (!input.dataset.checked) {
+            input.dataset.checked = 'true';
+            checkedCount++;
+            document.getElementById('progress-text').innerText = checkedCount;
+        }
+    };
+
+    window.finishQuiz = function() {
+        if (checkedCount < totalQuestions) {
+            if (!confirm(`Bạn mới kiểm tra ${checkedCount}/${totalQuestions} câu. Bạn có chắc chắn muốn xem tổng kết không?`)) return;
+        }
+
+        // Đếm số câu đúng
+        let correctCount = 0;
+        for (let i = 0; i < totalQuestions; i++) {
+            const input = document.getElementById(`input-${i}`);
+            if (input && input.classList.contains('correct')) {
+                correctCount++;
+            }
+        }
+
+        const modal = document.getElementById('result-modal');
+        document.getElementById('final-score-display').innerText = `${correctCount}/${totalQuestions}`;
+        const percentage = (correctCount / totalQuestions) * 100;
+        const feedback = document.getElementById('feedback-msg');
+        if (percentage === 100) {
+            feedback.innerText = "Xuất sắc! Bạn là thiên tài viết lại câu! 🌟";
+            triggerConfetti();
+        } else if (percentage >= 80) {
+            feedback.innerText = "Làm tốt lắm! Chỉ một chút nữa là hoàn hảo! 🔥";
+        } else if (percentage >= 50) {
+            feedback.innerText = "Khá tốt, nhưng hãy xem lại phần giải thích kỹ hơn nhé! 📚";
+        } else {
+            feedback.innerText = "Đừng buồn, hãy ôn tập lại và thử lại nhé! 💪";
+        }
+
+        modal.style.display = 'flex';
+    };
+
+    let currentAnimationId = null;
+    function triggerConfetti() {
+        if (currentAnimationId) cancelAnimationFrame(currentAnimationId);
+
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const colors = ['#8854C0', '#00C9A7', '#FF4757', '#FFD700', '#00D26A'];
+
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                vx: Math.random() * 4 - 2,
+                vy: Math.random() * 5 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                size: Math.random() * 8 + 4
+            });
+        }
+
+        let startTime = performance.now();
+
+        function animate(now) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let active = false;
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.y < canvas.height) active = true;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+            });
+
+            if (active && (now - startTime) < 2000) {
+                currentAnimationId = requestAnimationFrame(animate);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                currentAnimationId = null;
+            }
+        }
+        currentAnimationId = requestAnimationFrame(animate);
+    }
+
+    window.onload = initQuiz;
+</script>
+</body>
+</html>
