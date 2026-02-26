@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(GS11) WORD FORM U678 - ÔN TẬP GIỮA KÌ 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8854C0;
+            --secondary: #00C9A7;
+            --correct: #00D26A;
+            --wrong: #FF4757;
+            --background: #f0f3f5;
+            --card-bg: #ffffff;
+            --text-main: #2f3542;
+            --text-light: #57606f;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--background);
+            background-image: radial-gradient(#dcdde1 15%, transparent 16%), radial-gradient(#dcdde1 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            color: var(--text-light);
+            font-weight: 600;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+            border: 2px solid #eee;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #f1f2f6;
+            padding-bottom: 10px;
+        }
+
+        .q-tag {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e1e4e8;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 5px 0 #d1d8e0;
+            transition: all 0.1s;
+        }
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 5px 0 #00a187;
+        }
+        .answer-input.error {
+            border-color: var(--wrong);
+            box-shadow: 0 5px 0 #b22234;
+            background-color: #fff0f0;
+            animation: shake 0.3s;
+        }
+        .answer-input.correct {
+            border-color: var(--correct);
+            box-shadow: 0 5px 0 #008f47;
+            background-color: #f0fff0;
+        }
+        .answer-input.wrong {
+            border-color: var(--wrong);
+            box-shadow: 0 5px 0 #b22234;
+            background-color: #fff0f0;
+        }
+
+        .hint-container {
+            margin: 10px 0 15px;
+        }
+        .hint-btn {
+            background: #f0f4fa;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 0 #b1a0d0;
+        }
+        .hint-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .hint-content {
+            display: none;
+            background: #f8f0fc;
+            border-left: 5px solid var(--primary);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #2c3e50;
+            animation: slideDown 0.3s ease;
+        }
+
+        .check-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .check-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            box-shadow: 0 5px 0 #5f2a9e;
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: inline-block;
+        }
+        .check-btn:active {
+            box-shadow: 0 2px 0 #5f2a9e;
+            transform: translateY(3px);
+        }
+        .check-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: 0 5px 0 #5f2a9e;
+        }
+        .feedback-message {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 30px;
+            background: #f0f0f0;
+        }
+        .feedback-message.correct-feedback {
+            color: #008f47;
+            background: #e0ffe0;
+        }
+        .feedback-message.wrong-feedback {
+            color: #b22234;
+            background: #ffe0e0;
+        }
+
+        .explanation-box {
+            display: none;
+            margin-top: 20px;
+            background-color: #f8f0fc;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            animation: slideDown 0.5s ease;
+        }
+        .explanation-header {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .explanation-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #4b4b4b;
+            white-space: pre-wrap;
+        }
+
+        .footer-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #5f2a9e;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .submit-btn:active {
+            box-shadow: 0 3px 0 #5f2a9e;
+            transform: translateY(3px);
+        }
+        .score-display {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-5deg); }
+            75% { transform: translateX(5px) rotate(5deg); }
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            animation: popIn 0.5s;
+            border: 5px solid var(--secondary);
+        }
+        .final-score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+        .feedback-text {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="header-container">
+    <h1>(GS11) WORD FORM U678 - ÔN TẬP GIỮA KÌ 2</h1>
+    <h3> </h3>
+</div>
+
+<div class="quiz-container" id="quiz-area"></div>
+
+<div class="footer-controls">
+    <div class="score-display">Đã kiểm tra: <span id="progress-text">0</span>/<span id="total-text">0</span></div>
+    <button class="submit-btn" onclick="finishQuiz()">XEM TỔNG KẾT</button>
+</div>
+
+<div class="modal-overlay" id="result-modal">
+    <div class="modal-content">
+        <h2 style="color: var(--secondary); font-weight: 800;">TỔNG KẾT</h2>
+        <div class="final-score" id="final-score-display">0/0</div>
+        <p class="feedback-text" id="feedback-msg">Bạn đã làm rất tốt!</p>
+        <button class="submit-btn" onclick="location.reload()">LÀM LẠI</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        // UNIT 6
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "As part of our school ____________ programme, we need to plan a field trip to a heritage site in Viet Nam. (CULTURE)",
+            "hint": "programme (n) chương trình - adj + N - chỗ trống cần tính từ",
+            "answer": "cultural",
+            "explanation": "\"Cultural\" là tính từ của \"culture\" (văn hóa) và cần phải chuyển thành tính từ để bổ nghĩa cho danh từ \"programme\".\nDịch nghĩa: \"Như một phần của chương trình văn hóa của trường chúng tôi, chúng tôi cần lên kế hoạch cho một chuyến đi thực địa đến một di sản ở Việt Nam.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "Local ____________ perform don ca tai tu everywhere - at parties, in fruit gardens, even on the floating market boats. (ART)",
+            "hint": "local (adj) địa phương - adj + N, động từ \"perform\" chia số nhiều → chỗ trống cần danh từ số nhiều",
+            "answer": "artists",
+            "explanation": "\"Artists\" là danh từ số nhiều của \"artist\" (nghệ sĩ), chỉ những người thực hiện nghệ thuật.\nDịch nghĩa: \"Các nghệ sĩ địa phương biểu diễn đờn ca tài tử ở khắp mọi nơi - tại các bữa tiệc, trong các vườn trái cây, thậm chí trên các thuyền chợ nổi.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "You'll learn about urban lifestyles and traditions from the 15th to the 19th century and will see examples of ancient ____________. (ARCHITECT)",
+            "hint": "ancient (adj) cổ đại - adj + N - chỗ trống cần danh từ",
+            "answer": "architecture",
+            "explanation": "\"Architecture\" là danh từ chỉ kiến trúc, cần thiết để hoàn thành câu.\nDịch nghĩa: \"Bạn sẽ tìm hiểu về lối sống đô thị và các truyền thống từ thế kỷ 15 đến thế kỷ 19 và sẽ thấy các ví dụ về kiến trúc cổ xưa.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "Without our heritage, we would lose touch with our past, and our future ____________ would not have a sense of their roots. (GENERATE)",
+            "hint": "future (adj) tương lai - adj + N - chỗ trống cần danh từ số nhiều",
+            "answer": "generations",
+            "explanation": "\"Generations\" là danh từ số nhiều của \"generation\" (thế hệ), chỉ các nhóm người sinh ra trong cùng một khoảng thời gian.\nDịch nghĩa: \"Nếu không có di sản của chúng ta, chúng ta sẽ mất liên lạc với quá khứ, và các thế hệ tương lai sẽ không có cảm giác về nguồn gốc của họ.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "Protecting our heritage is a moral ____________. (OBLIGE)",
+            "hint": "moral (adj) đạo đức - adj + N - chỗ trống cần danh từ",
+            "answer": "obligation",
+            "explanation": "\"Obligation\" là danh từ của \"oblige\" (buộc phải), thể hiện nghĩa vụ đạo đức.\nDịch nghĩa: \"Bảo vệ di sản của chúng ta là một nghĩa vụ đạo đức.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "Preserving our heritage not only benefits our cultural ____________, but it can also bring economic benefits to local communities through tourism. (IDENTIFICATION)",
+            "hint": "cultural (adj) thuộc văn hóa - adj + N - chỗ trống cần danh từ",
+            "answer": "identity",
+            "explanation": "\"Identity\" là danh từ của \"identify\" (nhận diện), thể hiện bản sắc văn hóa.\nDịch nghĩa: \"Bảo tồn di sản của chúng ta không chỉ mang lại lợi ích cho bản sắc văn hóa của chúng ta, mà còn có thể mang lại lợi ích kinh tế cho các cộng đồng địa phương thông qua du lịch.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "Two 10th grade students suggested forming ____________ societies or local groups who have a keen interest in their history and heritage. (HISTORY)",
+            "hint": "forming (v) hình thành - V + N - chỗ trống cần tính từ",
+            "answer": "historical",
+            "explanation": "\"Historical\" là tính từ của \"history\" (lịch sử), cần chuyển thành tính từ để bổ nghĩa cho danh từ \"societies\".\nDịch nghĩa: \"Hai học sinh lớp 10 đã đề xuất thành lập các hội lịch sử hoặc nhóm địa phương có sự quan tâm sâu sắc đến lịch sử và di sản của họ.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "The artists will not only perform, but also ____________ their arts and talk about how students can help promote folk culture. (INTRODUCTORY)",
+            "hint": "not only... but also... - sau \"but also\" cần động từ ở dạng nguyên thể",
+            "answer": "introduce",
+            "explanation": "\"Introduce\" là động từ, có nghĩa là giới thiệu, phù hợp với ngữ cảnh câu.\nDịch nghĩa: \"Các nghệ sĩ sẽ không chỉ biểu diễn, mà còn giới thiệu nghệ thuật của họ và nói về cách mà học sinh có thể giúp quảng bá văn hóa dân gian.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "Trang An is a ____________ landscape complex that includes limestone karst mountains, caves, rivers, and rice paddies. (SCENERY)",
+            "hint": "a (mạo từ) + adj + N - \"landscape\" là danh từ nên chỗ trống cần tính từ",
+            "answer": "scenic",
+            "explanation": "\"Scenic\" là tính từ của \"scenery\" (cảnh quan), dùng để mô tả vẻ đẹp của cảnh vật.\nDịch nghĩa: \"Trang An là một quần thể cảnh quan đẹp bao gồm các núi đá vôi, hang động, sông và ruộng lúa.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "The complex has been recognized as an important site for ____________ conservation and ecotourism. (DIVERSE)",
+            "hint": "for + N - chỗ trống cần danh từ",
+            "answer": "diverse",
+            "explanation": "\"Diverse\" là tính từ của \"diversity\" (đa dạng), thể hiện sự phong phú trong bảo tồn.\nDịch nghĩa: \"Quần thể này đã được công nhận là một địa điểm quan trọng cho việc bảo tồn đa dạng và du lịch sinh thái.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "Cat Ba Archipelago bears the exceptionally natural values with its ____________ forests which cover the limestone system and the mangrove wetlands. (TROPIC)",
+            "hint": "its (tính từ sở hữu) + adj + N - \"forests\" là danh từ nên chỗ trống cần tính từ",
+            "answer": "tropical",
+            "explanation": "\"Tropical\" là tính từ của \"tropics\" (vùng nhiệt đới), dùng để mô tả rừng nhiệt đới.\nDịch nghĩa: \"Quần đảo Cát Bà mang lại giá trị tự nhiên đặc biệt với những khu rừng nhiệt đới bao phủ hệ thống đá vôi và các vùng đất ngập nước.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "Besides the ____________ value of geology, Phong Nha Ke Bang is also favoured with the mysterious and majestic landscapes by nature. (GEOLOGY)",
+            "hint": "the + adj + N - \"value\" là danh từ nên chỗ trống cần tính từ",
+            "answer": "geological",
+            "explanation": "\"Geological\" là tính từ của \"geology\" (địa chất), dùng để mô tả giá trị liên quan đến địa chất.\nDịch nghĩa: \"Ngoài giá trị địa chất, Phong Nha Kẻ Bàng còn được thiên nhiên ưu ái với những cảnh quan huyền bí và hùng vĩ.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "Management and ____________ in Hoi An are further strengthened through master planning and action plans. (PRESERVE)",
+            "hint": "management and ______ - và nối 2 danh từ song song → chỗ trống cần danh từ",
+            "answer": "preservation",
+            "explanation": "\"Preservation\" là danh từ của \"preserve\" (bảo tồn), thể hiện hành động bảo vệ di sản.\nDịch nghĩa: \"Quản lý và bảo tồn ở Hội An được củng cố thêm thông qua quy hoạch tổng thể và các kế hoạch hành động.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "In 1805, King Gia Long requested the building of a new, smaller citadel called Ha Noi Citadel with a new ____________ style. (ARCHITECTURE)",
+            "hint": "new + adj + N - \"style\" là danh từ nên chỗ trống cần tính từ",
+            "answer": "architectural",
+            "explanation": "\"Architectural\" là tính từ của \"architecture\" (kiến trúc), dùng để mô tả kiểu dáng kiến trúc.\nDịch nghĩa: \"Năm 1805, vua Gia Long đã yêu cầu xây dựng một thành trì mới, nhỏ hơn gọi là Thành Hà Nội với một kiểu kiến trúc mới.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "The Complex of Hue Monuments is a ____________ of many royal monuments from the Nguyen Dynasty. (COMBINE)",
+            "hint": "a + N + of - chỗ trống cần danh từ",
+            "answer": "combination",
+            "explanation": "\"Combination\" là danh từ của \"combine\" (kết hợp), thể hiện sự kết hợp của nhiều di tích.\nDịch nghĩa: \"Quần thể di tích Huế là một sự kết hợp của nhiều di tích hoàng gia từ triều đại Nguyễn.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "As for me, the Citadel of the Ho Dynasty is one of the most ____________ destinations in Viet Nam because of its value. (ATTRACT)",
+            "hint": "one of the most + adj + N - chỗ trống cần tính từ",
+            "answer": "attractive",
+            "explanation": "\"Attractive\" là tính từ của \"attract\" (thu hút), dùng để mô tả sức hấp dẫn của địa điểm.\nDịch nghĩa: \"Theo tôi, Thành cổ của triều đại Hồ là một trong những điểm đến hấp dẫn nhất ở Việt Nam vì giá trị của nó.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "Homestay has become ____________ when historic travel is on the rise. (TREND)",
+            "hint": "become + adj - chỗ trống cần tính từ",
+            "answer": "trendy",
+            "explanation": "\"Trendy\" là tính từ của \"trend\" (xu hướng), thể hiện sự phổ biến.\nDịch nghĩa: \"Homestay đã trở nên thịnh hành khi du lịch lịch sử đang gia tăng.\""
+        },
+        {
+            "unit": "UNIT 6: PRESERVING OUR HERITAGE",
+            "question": "____________ of Cultural Heritage is an international degree programme at University of Bologna in Italy. (RESTORE)",
+            "hint": "______ of Cultural Heritage - chỗ trống đầu câu (danh từ làm chủ ngữ) cần danh từ",
+            "answer": "Restoration",
+            "explanation": "\"Restoration\" là danh từ của \"restore\" (phục hồi), thể hiện chương trình học về phục hồi di sản văn hóa.\nDịch nghĩa: \"Phục hồi di sản văn hóa là một chương trình học quốc tế tại Đại học Bologna ở Ý.\""
+        },
+        // UNIT 7
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "This month, Teen Talk magazine has received many letters from secondary school students asking about the different ____________ for school-leavers. (OPT)",
+            "hint": "the different + adj + N - \"for school-leavers\" là cụm giới từ, chỗ trống cần danh từ số nhiều",
+            "answer": "options",
+            "explanation": "\"Options\" là danh từ số nhiều của \"option\" (lựa chọn), chỉ các con đường khác nhau cho học sinh tốt nghiệp.\nDịch nghĩa: \"Tháng này, tạp chí Teen Talk đã nhận được nhiều thư từ học sinh trung học hỏi về các lựa chọn khác nhau cho những người vừa tốt nghiệp.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "There are a lot of ____________ opportunities for school-leavers today. (EDUCATE)",
+            "hint": "a lot of + adj + N - \"opportunities\" là danh từ nên chỗ trống cần tính từ",
+            "answer": "educational",
+            "explanation": "\"Educational\" là tính từ của \"educate\" (giáo dục), dùng để mô tả các cơ hội học tập.\nDịch nghĩa: \"Có rất nhiều cơ hội giáo dục cho những người vừa tốt nghiệp ngày nay.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "Many school-leavers choose to go to university to study ____________ subjects. (ACADEMY)",
+            "hint": "study + adj + N - \"subjects\" là danh từ nên chỗ trống cần tính từ",
+            "answer": "academic",
+            "explanation": "\"Academic\" là tính từ của \"academy\" (học viện), dùng để mô tả các môn học liên quan đến học thuật.\nDịch nghĩa: \"Nhiều người vừa tốt nghiệp chọn đi học đại học để học các môn học thuật.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "Many young people find it hard to get a job ____________ after graduation. (IMMEDIATE)",
+            "hint": "get a job + adv - sau động từ và tân ngữ cần trạng từ",
+            "answer": "immediately",
+            "explanation": "\"Immediately\" là trạng từ của \"immediate\" (ngay lập tức), chỉ ra rằng họ gặp khó khăn trong việc tìm việc ngay sau khi tốt nghiệp.\nDịch nghĩa: \"Nhiều người trẻ cảm thấy khó khăn để tìm được một công việc ngay lập tức sau khi tốt nghiệp.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "Vocational education is often referred to as career education or ____________ education. (TECHNIQUE)",
+            "hint": "referred to as + adj + N - \"education\" là danh từ nên chỗ trống cần tính từ",
+            "answer": "technical",
+            "explanation": "\"Technical\" là tính từ của \"technique\" (kỹ thuật), dùng để mô tả giáo dục nghề nghiệp.\nDịch nghĩa: \"Giáo dục nghề nghiệp thường được gọi là giáo dục nghề nghiệp hoặc giáo dục kỹ thuật.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "It's possible that students may need certain ____________ or prerequisites to apply for this course, such as a high school diploma or previous experience in cooking. (QUALIFIED)",
+            "hint": "need certain + N - chỗ trống cần danh từ số nhiều",
+            "answer": "qualifications",
+            "explanation": "\"Qualifications\" là danh từ số nhiều của \"qualification\" (bằng cấp, yêu cầu), chỉ các điều kiện cần thiết để đăng ký khóa học.\nDịch nghĩa: \"Có thể rằng sinh viên có thể cần một số yêu cầu hoặc điều kiện tiên quyết để đăng ký khóa học này, chẳng hạn như bằng tốt nghiệp trung học hoặc kinh nghiệm trước đó trong nấu ăn.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "It ultimately depends on the specific ____________ of the course and the institution offering it. (REQUIRE)",
+            "hint": "the specific + N + of - chỗ trống cần danh từ số nhiều",
+            "answer": "requirements",
+            "explanation": "\"Requirements\" là danh từ số nhiều của \"requirement\" (yêu cầu), chỉ các điều kiện cần thiết cho khóa học.\nDịch nghĩa: \"Cuối cùng, điều này phụ thuộc vào các yêu cầu cụ thể của khóa học và cơ sở giáo dục cung cấp nó.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "____________, students may hope to gain hands-on experience in cooking and receive feedback on their dishes from their instructor. (ADDITION)",
+            "hint": "______, + mệnh đề - đầu câu, ngăn cách bằng dấu phẩy cần trạng từ",
+            "answer": "Additionally",
+            "explanation": "\"Additionally\" là trạng từ của \"addition\" (thêm vào), dùng để mở đầu cho thông tin bổ sung.\nDịch nghĩa: \"Thêm vào đó, sinh viên có thể hy vọng có được kinh nghiệm thực hành trong nấu ăn và nhận phản hồi về các món ăn của họ từ giảng viên.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "Students in this course likely expect to learn various cooking techniques and recipes, as well as gain a deeper ____________ of the culinary arts. (UNDERSTANDABLE)",
+            "hint": "gain a deeper + N + of - chỗ trống cần danh từ",
+            "answer": "understanding",
+            "explanation": "\"Understanding\" là danh từ của \"understand\" (hiểu), thể hiện sự hiểu biết sâu sắc về nghệ thuật ẩm thực.\nDịch nghĩa: \"Sinh viên trong khóa học này có thể mong đợi học các kỹ thuật nấu ăn và công thức khác nhau, cũng như có được một hiểu biết sâu sắc hơn về nghệ thuật ẩm thực.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "Having won several biology competitions, I want to study biology and become a ____________. (SCIENCE)",
+            "hint": "become a + N - chỗ trống cần danh từ chỉ người",
+            "answer": "scientist",
+            "explanation": "\"Scientist\" là danh từ chỉ người làm khoa học, phù hợp với ngữ cảnh câu.\nDịch nghĩa: \"Sau khi đã giành chiến thắng trong một số cuộc thi sinh học, tôi muốn học sinh học và trở thành một nhà khoa học.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "The teacher ____________ the students to finish their homework before the next class. (COMPEL)",
+            "hint": "The teacher + V + O - chỗ trống cần động từ chia thì quá khứ",
+            "answer": "compelled",
+            "explanation": "\"Compelled\" là dạng quá khứ của động từ \"compel\" (buộc phải), thể hiện sự bắt buộc.\nDịch nghĩa: \"Giáo viên buộc học sinh hoàn thành bài tập về nhà trước lớp học tiếp theo.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "Wearing a mask is ____________ in public places to prevent the spread of COVID-19. (COMPEL)",
+            "hint": "is + adj - chỗ trống cần tính từ",
+            "answer": "compulsory",
+            "explanation": "\"Compulsory\" là tính từ của \"compel\" (buộc phải), thể hiện rằng việc đeo khẩu trang là bắt buộc.\nDịch nghĩa: \"Đeo khẩu trang là bắt buộc ở nơi công cộng để ngăn chặn sự lây lan của COVID-19.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "The government ____________ acquired the land for the construction of the highway. (COMPEL)",
+            "hint": "______ acquired - giữa chủ ngữ và động từ cần trạng từ",
+            "answer": "compelled",
+            "explanation": "\"Compelled\" là dạng quá khứ của động từ \"compel\" (buộc phải), thể hiện rằng chính phủ đã buộc phải thu hồi đất.\nDịch nghĩa: \"Chính phủ buộc phải thu hồi đất để xây dựng đường cao tốc.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "She explored various career ____________ before deciding to become a nurse. (OPTION)",
+            "hint": "various career + N - \"career\" đóng vai trò tính từ, chỗ trống cần danh từ số nhiều",
+            "answer": "options",
+            "explanation": "\"Options\" là danh từ số nhiều của \"option\" (lựa chọn), chỉ các con đường nghề nghiệp khác nhau.\nDịch nghĩa: \"Cô đã khám phá nhiều lựa chọn nghề nghiệp khác nhau trước khi quyết định trở thành một y tá.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "Taking a foreign language course is ____________ for students in this ____________. (OPTION)",
+            "hint": "is + adj + for - chỗ trống thứ nhất cần tính từ / in this + N - chỗ trống thứ hai cần danh từ",
+            "answer": "optional",
+            "explanation": "\"Optional\" là tính từ của \"option\" (lựa chọn), thể hiện rằng việc học ngoại ngữ là không bắt buộc.\nDịch nghĩa: \"Học một khóa ngoại ngữ là tùy chọn cho học sinh trong lĩnh vực này.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "She has a master's degree in ____________ and works as a teacher. (EDUCATE)",
+            "hint": "a master's degree in + N - chỗ trống cần danh từ",
+            "answer": "education",
+            "explanation": "\"Education\" là danh từ của \"educate\" (giáo dục), thể hiện lĩnh vực học thuật.\nDịch nghĩa: \"Cô có bằng thạc sĩ về giáo dục và làm việc như một giáo viên.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "Reading books is an ____________ hobby that can improve your vocabulary and knowledge. (EDUCATE)",
+            "hint": "an + adj + hobby - chỗ trống cần tính từ",
+            "answer": "educational",
+            "explanation": "\"Educational\" là tính từ của \"educate\" (giáo dục), thể hiện rằng sở thích này mang lại lợi ích học tập.\nDịch nghĩa: \"Đọc sách là một sở thích giáo dục có thể cải thiện từ vựng và kiến thức của bạn.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "He has an impressive ____________ record and won many awards. (ACADEMY)",
+            "hint": "an impressive + adj + N - \"record\" là danh từ nên chỗ trống cần tính từ",
+            "answer": "academic",
+            "explanation": "\"Academic\" là tính từ của \"academy\" (học viện), thể hiện thành tích học tập.\nDịch nghĩa: \"Anh ấy có một thành tích học thuật ấn tượng và đã giành được nhiều giải thưởng.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "She performed ____________ well and graduated with honors. (ACADEMY)",
+            "hint": "performed + adv - sau động từ cần trạng từ",
+            "answer": "academically",
+            "explanation": "\"Academically\" là trạng từ của \"academic\" (học thuật), thể hiện rằng cô ấy đã học tập tốt.\nDịch nghĩa: \"Cô ấy đã thực hiện học tập tốt và tốt nghiệp với danh dự.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "He ____________ regretted his decision and apologized. (IMMEDIATE)",
+            "hint": "______ regretted - giữa chủ ngữ và động từ cần trạng từ",
+            "answer": "immediately",
+            "explanation": "\"Immediately\" là trạng từ của \"immediate\" (ngay lập tức), thể hiện rằng anh ấy đã hối hận ngay lập tức.\nDịch nghĩa: \"Anh ấy ngay lập tức hối hận về quyết định của mình và đã xin lỗi.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "He learned a new ____________ for painting landscapes. (TECHNICAL)",
+            "hint": "learned a new + N - chỗ trống cần danh từ",
+            "answer": "technique",
+            "explanation": "\"Technique\" là danh từ của \"technical\" (kỹ thuật), thể hiện phương pháp trong hội họa.\nDịch nghĩa: \"Anh ấy đã học một kỹ thuật mới để vẽ phong cảnh.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "She encountered some ____________ difficulties and errors while working on the project. (TECHNIQUE)",
+            "hint": "some + adj + difficulties - chỗ trống cần tính từ",
+            "answer": "technical",
+            "explanation": "\"Technical\" là tính từ của \"technique\" (kỹ thuật), thể hiện rằng những khó khăn này liên quan đến kỹ thuật.\nDịch nghĩa: \"Cô đã gặp phải một số khó khăn kỹ thuật và lỗi trong khi làm việc trên dự án.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "She lacks the ____________ and requirements for the position. (QUALIFY)",
+            "hint": "lacks the + N + and - chỗ trống cần danh từ số nhiều",
+            "answer": "qualifications",
+            "explanation": "\"Qualifications\" là danh từ số nhiều của \"qualification\" (bằng cấp, yêu cầu), chỉ các điều kiện cần thiết cho vị trí.\nDịch nghĩa: \"Cô ấy thiếu các yêu cầu và tiêu chuẩn cho vị trí này.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "She is ____________ and certified to teach English. (QUALIFY)",
+            "hint": "is + adj - chỗ trống cần tính từ",
+            "answer": "qualified",
+            "explanation": "\"Qualified\" là tính từ của \"qualify\" (đủ điều kiện), thể hiện rằng cô ấy đủ điều kiện để dạy tiếng Anh.\nDịch nghĩa: \"Cô ấy đủ điều kiện và có chứng chỉ để dạy tiếng Anh.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "She failed to meet the ____________ and expectations for the project. (REQUIRE)",
+            "hint": "meet the + N + and - chỗ trống cần danh từ số nhiều",
+            "answer": "requirements",
+            "explanation": "\"Requirements\" là danh từ số nhiều của \"requirement\" (yêu cầu), chỉ các điều kiện cần thiết cho dự án.\nDịch nghĩa: \"Cô ấy đã không đáp ứng được các yêu cầu và kỳ vọng cho dự án.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "He ____________ more feedback and evaluation from his supervisor. (REQUIRE)",
+            "hint": "______ + more feedback - chủ ngữ + V - chỗ trống cần động từ chia thì quá khứ",
+            "answer": "requires",
+            "explanation": "\"Requires\" là động từ hiện tại của \"require\" (yêu cầu), thể hiện rằng anh ấy cần thêm phản hồi.\nDịch nghĩa: \"Anh ấy cần thêm phản hồi và đánh giá từ người giám sát của mình.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "He loves ____________ and wants to become a scientist. (SCIENCE)",
+            "hint": "loves + N - chỗ trống cần danh từ",
+            "answer": "science",
+            "explanation": "\"Science\" là danh từ chỉ khoa học, thể hiện sở thích của anh ấy.\nDịch nghĩa: \"Anh ấy yêu khoa học và muốn trở thành một nhà khoa học.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "She is a ____________ and makes discoveries and inventions. (SCIENCE)",
+            "hint": "is a + N - chỗ trống cần danh từ chỉ người",
+            "answer": "scientist",
+            "explanation": "\"Scientist\" là danh từ chỉ người làm khoa học, phù hợp với ngữ cảnh câu.\nDịch nghĩa: \"Cô ấy là một nhà khoa học và tạo ra những phát hiện và phát minh.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "He ____________ proved his theory and claim. (SCIENCE)",
+            "hint": "______ proved - giữa chủ ngữ và động từ cần trạng từ",
+            "answer": "scientifically",
+            "explanation": "\"Scientifically\" là trạng từ của \"scientific\" (khoa học), thể hiện rằng anh ấy đã chứng minh lý thuyết của mình một cách khoa học.\nDịch nghĩa: \"Anh ấy khoa học đã chứng minh lý thuyết và tuyên bố của mình.\""
+        },
+        {
+            "unit": "UNIT 7: EDUCATION OPTIONS FOR SCHOOL-LEAVERS",
+            "question": "He celebrated his ____________ and received his diploma. (GRADUATE)",
+            "hint": "celebrated his + N - chỗ trống cần danh từ",
+            "answer": "graduation",
+            "explanation": "\"Graduation\" là danh từ của \"graduate\" (tốt nghiệp), thể hiện sự kiện tốt nghiệp.\nDịch nghĩa: \"Anh ấy đã ăn mừng sự tốt nghiệp của mình và nhận bằng tốt nghiệp.\""
+        },
+        // UNIT 8
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "My parents thought I didn't have the ____________ to deal with difficult situations. (CONFIDENT)",
+            "hint": "didn't have the + N + to - chỗ trống cần danh từ",
+            "answer": "confidence",
+            "explanation": "\"Confidence\" là danh từ của \"confident\" (tự tin), thể hiện sự tự tin cần thiết để đối phó với tình huống khó khăn.\nDịch nghĩa: \"Bố mẹ tôi nghĩ rằng tôi không có đủ tự tin để đối phó với những tình huống khó khăn.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "Money-management app taught me how to be ____________ with money. (RESPONSIBILITY)",
+            "hint": "how to be + adj + with - chỗ trống cần tính từ",
+            "answer": "responsible",
+            "explanation": "\"Responsible\" là tính từ của \"responsibility\" (trách nhiệm), thể hiện rằng người viết đã học cách quản lý tiền bạc một cách có trách nhiệm.\nDịch nghĩa: \"Ứng dụng quản lý tiền bạc đã dạy tôi cách trở nên có trách nhiệm với tiền bạc.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "Becoming independent is not easy, but it is not as ____________ as you may think. (CHALLENGE)",
+            "hint": "is not as + adj + as - chỗ trống cần tính từ",
+            "answer": "challenging",
+            "explanation": "\"Challenging\" là tính từ của \"challenge\" (thử thách), thể hiện rằng việc trở nên độc lập có thể khó khăn nhưng không quá mức.\nDịch nghĩa: \"Trở nên độc lập không dễ dàng, nhưng nó không khó khăn như bạn nghĩ.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "There are some necessary skills that you should learn to achieve ____________ for the future. (DEPEND)",
+            "hint": "achieve + N + for - chỗ trống cần danh từ",
+            "answer": "independence",
+            "explanation": "\"Independence\" là danh từ của \"independent\" (độc lập), thể hiện rằng cần có kỹ năng để đạt được sự độc lập.\nDịch nghĩa: \"Có một số kỹ năng cần thiết mà bạn nên học để đạt được sự độc lập trong tương lai.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "Teenagers need to learn how to be ____________ intelligent and how to develop positive relationships with others. (EMOTION)",
+            "hint": "how to be + adv + intelligent - trước tính từ \"intelligent\" cần trạng từ",
+            "answer": "emotionally",
+            "explanation": "\"Emotionally\" là trạng từ của \"emotional\" (cảm xúc), thể hiện rằng thanh thiếu niên cần phát triển trí tuệ cảm xúc.\nDịch nghĩa: \"Thanh thiếu niên cần học cách trở nên cảm xúc thông minh và phát triển các mối quan hệ tích cực với người khác.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "It's the ____________ for learning that makes people study hard. (MOTIVATE)",
+            "hint": "It's the + N + for - chỗ trống cần danh từ",
+            "answer": "motivation",
+            "explanation": "\"Motivation\" là danh từ của \"motivate\" (thúc đẩy), thể hiện động lực học tập.\nDịch nghĩa: \"Chính động lực cho việc học tập khiến mọi người học tập chăm chỉ.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "They take responsibility for their own learning and ____________ seek out resources and opportunities to improve their knowledge and skills. (ACTIVE)",
+            "hint": "______ seek - giữa chủ ngữ và động từ cần trạng từ",
+            "answer": "actively",
+            "explanation": "\"Actively\" là trạng từ của \"active\" (tích cực), thể hiện rằng họ chủ động tìm kiếm tài nguyên.\nDịch nghĩa: \"Họ chịu trách nhiệm cho việc học của chính mình và tích cực tìm kiếm tài nguyên và cơ hội để cải thiện kiến thức và kỹ năng của mình.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "They set clear and specific learning goals and ____________ assess their progress toward achieving them. (REGULAR)",
+            "hint": "______ assess - giữa chủ ngữ và động từ cần trạng từ",
+            "answer": "regularly",
+            "explanation": "\"Regularly\" là trạng từ của \"regular\" (thường xuyên), thể hiện rằng họ đánh giá tiến độ một cách thường xuyên.\nDịch nghĩa: \"Họ đặt ra các mục tiêu học tập rõ ràng và cụ thể và thường xuyên đánh giá tiến độ của mình để đạt được chúng.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "They think outside the box and find ____________ ways to solve problems and achieve their goals. (INNOVATE)",
+            "hint": "find + adj + ways - chỗ trống cần tính từ",
+            "answer": "innovative",
+            "explanation": "\"Innovative\" là tính từ của \"innovate\" (đổi mới), thể hiện rằng họ tìm ra những cách thức mới mẻ.\nDịch nghĩa: \"Họ tư duy sáng tạo và tìm ra các cách đổi mới để giải quyết vấn đề và đạt được mục tiêu của mình.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "They also volunteer at local hospitals, food banks, and old people's homes, or take part in clean-up activities to improve their ____________. (NEIGHBOR)",
+            "hint": "improve their + N - chỗ trống cần danh từ",
+            "answer": "neighborhood",
+            "explanation": "\"Neighborhood\" là danh từ chỉ khu vực xung quanh, thể hiện rằng họ cải thiện cộng đồng của mình.\nDịch nghĩa: \"Họ cũng tình nguyện tại các bệnh viện địa phương, ngân hàng thực phẩm và nhà dưỡng lão, hoặc tham gia vào các hoạt động dọn dẹp để cải thiện khu phố của mình.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "Becoming ____________ is important for teenagers because that is helpful for them in the future. (DEPEND)",
+            "hint": "Becoming + adj + is - chỗ trống cần tính từ",
+            "answer": "independent",
+            "explanation": "\"Independent\" là tính từ của \"independence\" (độc lập), thể hiện rằng việc trở nên độc lập là quan trọng.\nDịch nghĩa: \"Trở nên độc lập là điều quan trọng đối với thanh thiếu niên vì điều đó sẽ giúp họ trong tương lai.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "Before we make a ____________, we must think carefully. (DECIDE)",
+            "hint": "make a + N - chỗ trống cần danh từ",
+            "answer": "decision",
+            "explanation": "\"Decision\" là danh từ của \"decide\" (quyết định), thể hiện hành động đưa ra quyết định.\nDịch nghĩa: \"Trước khi chúng ta đưa ra một quyết định, chúng ta phải suy nghĩ cẩn thận.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "Students' ____________ makes them study hard. (MOTIVATE)",
+            "hint": "Students' + N - chỗ trống cần danh từ",
+            "answer": "motivation",
+            "explanation": "\"Motivation\" là danh từ của \"motivate\" (thúc đẩy), thể hiện động lực học tập.\nDịch nghĩa: \"Động lực học tập khiến họ học tập chăm chỉ.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "You can boost your ____________ by setting realistic goals and achieving them, as well as by learning from your mistakes and failures. (CONFIDENT)",
+            "hint": "boost your + N - chỗ trống cần danh từ",
+            "answer": "confidence",
+            "explanation": "\"Confidence\" là danh từ của \"confident\" (tự tin), thể hiện sự tự tin cần thiết để đạt được mục tiêu.\nDịch nghĩa: \"Bạn có thể tăng cường tự tin của mình bằng cách đặt ra các mục tiêu thực tế và đạt được chúng, cũng như học hỏi từ những sai lầm và thất bại của mình.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "____________ is the opposite of independence. It means not taking responsibility for your actions and consequences. (RESPONSIBLE)",
+            "hint": "______ is the opposite - đầu câu làm chủ ngữ cần danh từ",
+            "answer": "irresponsibility",
+            "explanation": "\"Irresponsibility\" là danh từ chỉ sự thiếu trách nhiệm, thể hiện rằng đây là điều ngược lại với sự độc lập.\nDịch nghĩa: \"Sự thiếu trách nhiệm là điều ngược lại với sự độc lập. Nó có nghĩa là không chịu trách nhiệm cho hành động và hậu quả của bạn.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "A ____________ is a choice that you make after considering different options and outcomes. (DECIDE)",
+            "hint": "A + N + is - chỗ trống cần danh từ",
+            "answer": "decision",
+            "explanation": "\"Decision\" là danh từ của \"decide\" (quyết định), thể hiện hành động đưa ra quyết định.\nDịch nghĩa: \"Một quyết định là một lựa chọn mà bạn đưa ra sau khi xem xét các lựa chọn và kết quả khác nhau.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "Something is ____________ if it is within your control and ability to handle. (MANAGE)",
+            "hint": "is + adj + if - chỗ trống cần tính từ",
+            "answer": "manageable",
+            "explanation": "\"Manageable\" là tính từ của \"manage\" (quản lý), thể hiện rằng điều gì đó có thể được kiểm soát.\nDịch nghĩa: \"Một điều gì đó là có thể quản lý nếu nó nằm trong khả năng và khả năng của bạn để xử lý.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "A ____________ is the answer or the result of solving a problem. (SOLVE)",
+            "hint": "A + N + is - chỗ trống cần danh từ",
+            "answer": "solution",
+            "explanation": "\"Solution\" là danh từ của \"solve\" (giải quyết), thể hiện kết quả của việc giải quyết vấn đề.\nDịch nghĩa: \"Một giải pháp là câu trả lời hoặc kết quả của việc giải quyết một vấn đề.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "Not many people have the ____________ to deal with difficult situations. (CONFIDENT)",
+            "hint": "have the + N + to - chỗ trống cần danh từ",
+            "answer": "confidence",
+            "explanation": "\"Confidence\" là danh từ của \"confident\" (tự tin), thể hiện sự tự tin cần thiết để đối phó với tình huống khó khăn.\nDịch nghĩa: \"Không nhiều người có đủ tự tin để đối phó với những tình huống khó khăn.\""
+        },
+        {
+            "unit": "UNIT 8: BECOMING INDEPENDENT",
+            "question": "His ____________ causes a lot of trouble and financial damages to the company. (RESPONSIBLE)",
+            "hint": "His + N + causes - chỗ trống cần danh từ",
+            "answer": "irresponsibility",
+            "explanation": "\"Irresponsibility\" là danh từ chỉ sự thiếu trách nhiệm, thể hiện rằng hành động của anh ấy gây ra vấn đề cho công ty.\nDịch nghĩa: \"Sự thiếu trách nhiệm của anh ấy gây ra nhiều rắc rối và thiệt hại tài chính cho công ty.\""
+        }
+    ];
+
+    // ========== STATE ==========
+    let answers = new Array(quizData.length).fill('');
+    let checkedCount = 0;
+    const totalQuestions = quizData.length;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        if (type === 'correct') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.5);
+        } else {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+    }
+
+    function initQuiz() {
+        const quizArea = document.getElementById('quiz-area');
+        document.getElementById('total-text').innerText = totalQuestions;
+
+        quizData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${index}`;
+
+            card.innerHTML = `
+                <div class="question-header">
+                    <span class="q-tag">${item.unit}</span>
+                </div>
+                <div class="question-text">${index+1}. ${item.question}</div>
+                <input type="text" class="answer-input" id="input-${index}" placeholder="Nhập câu trả lời..." value="${answers[index]}" oninput="updateAnswer(${index}, this.value)">
+                <div class="hint-container">
+                    <div class="hint-btn" onclick="toggleHint(${index})">
+                        <span>💡</span> Gợi ý
+                    </div>
+                    <div class="hint-content" id="hint-${index}">${item.hint}</div>
+                </div>
+                <div class="check-wrapper">
+                    <button class="check-btn" id="check-${index}" onclick="checkAnswer(${index})">🔍 Kiểm tra</button>
+                    <span id="feedback-${index}" class="feedback-message"></span>
+                </div>
+                <div class="explanation-box" id="explain-${index}">
+                    <div class="explanation-header">
+                        <span style="font-size: 1.5rem;">📘</span> Giải thích chi tiết:
+                    </div>
+                    <div class="explanation-content">${item.explanation.replace(/\n/g, '<br>')}</div>
+                </div>
+            `;
+            quizArea.appendChild(card);
+        });
+    }
+
+    window.updateAnswer = function(index, value) {
+        answers[index] = value;
+    };
+
+    window.toggleHint = function(index) {
+        const hintDiv = document.getElementById(`hint-${index}`);
+        hintDiv.style.display = hintDiv.style.display === 'block' ? 'none' : 'block';
+    };
+
+    window.checkAnswer = function(index) {
+        const input = document.getElementById(`input-${index}`);
+        const checkBtn = document.getElementById(`check-${index}`);
+        const explanation = document.getElementById(`explain-${index}`);
+        const feedbackSpan = document.getElementById(`feedback-${index}`);
+        const userAnswer = answers[index]?.toLowerCase().trim() || '';
+        const correctAnswer = quizData[index].answer.toLowerCase().trim();
+
+        // Kiểm tra nếu chưa điền
+        if (!userAnswer) {
+            input.classList.add('error');
+            input.focus();
+            setTimeout(() => input.classList.remove('error'), 1000);
+            return;
+        }
+
+        // Xóa class error nếu có
+        input.classList.remove('error');
+
+        // So sánh kết quả
+        if (userAnswer === correctAnswer) {
+            input.classList.add('correct');
+            input.classList.remove('wrong');
+            feedbackSpan.innerHTML = '✅ Đúng!';
+            feedbackSpan.className = 'feedback-message correct-feedback';
+            playSound('correct');
+        } else {
+            input.classList.add('wrong');
+            input.classList.remove('correct');
+            feedbackSpan.innerHTML = `❌ Sai! Đáp án đúng là: ${quizData[index].answer}`;
+            feedbackSpan.className = 'feedback-message wrong-feedback';
+            playSound('wrong');
+        }
+
+        // Hiển thị giải thích
+        explanation.style.display = 'block';
+
+        // Vô hiệu hóa nút kiểm tra và input
+        input.disabled = true;
+        checkBtn.disabled = true;
+
+        // Cập nhật số câu đã kiểm tra
+        if (!input.dataset.checked) {
+            input.dataset.checked = 'true';
+            checkedCount++;
+            document.getElementById('progress-text').innerText = checkedCount;
+        }
+    };
+
+    window.finishQuiz = function() {
+        if (checkedCount < totalQuestions) {
+            if (!confirm(`Bạn mới kiểm tra ${checkedCount}/${totalQuestions} câu. Bạn có chắc chắn muốn xem tổng kết không?`)) return;
+        }
+
+        // Đếm số câu đúng
+        let correctCount = 0;
+        for (let i = 0; i < totalQuestions; i++) {
+            const input = document.getElementById(`input-${i}`);
+            if (input && input.classList.contains('correct')) {
+                correctCount++;
+            }
+        }
+
+        const modal = document.getElementById('result-modal');
+        document.getElementById('final-score-display').innerText = `${correctCount}/${totalQuestions}`;
+        const percentage = (correctCount / totalQuestions) * 100;
+        const feedback = document.getElementById('feedback-msg');
+        if (percentage === 100) {
+            feedback.innerText = "Xuất sắc! Bạn là thiên tài từ vựng! 🌟";
+            triggerConfetti();
+        } else if (percentage >= 80) {
+            feedback.innerText = "Làm tốt lắm! Chỉ một chút nữa là hoàn hảo! 🔥";
+        } else if (percentage >= 50) {
+            feedback.innerText = "Khá tốt, nhưng hãy xem lại phần giải thích kỹ hơn nhé! 📚";
+        } else {
+            feedback.innerText = "Đừng buồn, hãy ôn tập lại và thử lại nhé! 💪";
+        }
+
+        modal.style.display = 'flex';
+    };
+
+    let currentAnimationId = null;
+    function triggerConfetti() {
+        if (currentAnimationId) cancelAnimationFrame(currentAnimationId);
+
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const colors = ['#8854C0', '#00C9A7', '#FF4757', '#FFD700', '#00D26A'];
+
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                vx: Math.random() * 4 - 2,
+                vy: Math.random() * 5 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                size: Math.random() * 8 + 4
+            });
+        }
+
+        let startTime = performance.now();
+
+        function animate(now) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let active = false;
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.y < canvas.height) active = true;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+            });
+
+            if (active && (now - startTime) < 2000) {
+                currentAnimationId = requestAnimationFrame(animate);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                currentAnimationId = null;
+            }
+        }
+        currentAnimationId = requestAnimationFrame(animate);
+    }
+
+    window.onload = initQuiz;
+</script>
+</body>
+</html>
