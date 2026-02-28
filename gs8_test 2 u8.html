@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(GS8) TEST 2 UNIT 8. SHOPPING</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8854C0;
+            --secondary: #00C9A7;
+            --correct: #00D26A;
+            --wrong: #FF4757;
+            --background: #f0f3f5;
+            --card-bg: #ffffff;
+            --text-main: #2f3542;
+            --text-light: #57606f;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--background);
+            background-image: radial-gradient(#dcdde1 15%, transparent 16%), radial-gradient(#dcdde1 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            color: var(--text-light);
+            font-weight: 600;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+
+        .timer-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .timer-box {
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 2.2rem;
+            letter-spacing: 5px;
+            box-shadow: 0 8px 0 #5f2a9e;
+            display: inline-block;
+        }
+        .timer-box.warning {
+            background: #ff6b6b;
+            box-shadow: 0 8px 0 #b22234;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        /* Audio Player */
+        .audio-player-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: 0 8px 0 #4a3f8c;
+        }
+        .audio-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .audio-player {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .audio-description {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 20px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+            border: 2px solid #eee;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #f1f2f6;
+            padding-bottom: 10px;
+        }
+
+        .q-tag {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+        }
+        .q-tag.listening {
+            background: #FF6B6B;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #e1e4e8;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.1s;
+            box-shadow: 0 5px 0 #d1d8e0;
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .option-btn.selected {
+            background: var(--secondary);
+            color: white;
+            border-color: #008f7a;
+            box-shadow: 0 5px 0 #006b5c;
+        }
+        .option-btn:active {
+            box-shadow: 0 2px 0 #d1d8e0;
+            transform: translateY(3px);
+        }
+        .option-btn.correct-highlight {
+            background-color: var(--correct);
+            color: white;
+            border-color: #00b85c;
+            box-shadow: 0 5px 0 #008f47;
+        }
+        .option-btn.wrong-highlight {
+            background-color: var(--wrong);
+            color: white;
+            border-color: #ff2e40;
+            box-shadow: 0 5px 0 #d61e30;
+        }
+
+        .hint-container {
+            margin: 15px 0 5px;
+            display: none;
+        }
+        .hint-btn {
+            background: #f0f4fa;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 0 #b1a0d0;
+        }
+        .hint-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .hint-content {
+            display: none;
+            background: #f8f0fc;
+            border-left: 5px solid var(--primary);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #2c3e50;
+            animation: slideDown 0.3s ease;
+        }
+
+        .explanation-box {
+            display: none;
+            margin-top: 20px;
+            background-color: #f8f0fc;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            animation: slideDown 0.5s ease;
+        }
+        .explanation-header {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .explanation-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #4b4b4b;
+            white-space: pre-wrap;
+        }
+
+        .sign-image {
+            max-width: 100%;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 3px solid var(--primary);
+        }
+
+        .footer-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #5f2a9e;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .submit-btn:active {
+            box-shadow: 0 3px 0 #5f2a9e;
+            transform: translateY(3px);
+        }
+        .retry-footer-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #008f7a;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .retry-footer-btn:active {
+            box-shadow: 0 3px 0 #008f7a;
+            transform: translateY(3px);
+        }
+        .score-display {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            animation: popIn 0.5s;
+            border: 5px solid var(--secondary);
+        }
+        .final-score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+        .wrong-list {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f0fc;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .feedback-text {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+        .retry-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #008f7a;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        u {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-thickness: 2px;
+            text-decoration-color: var(--primary);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-container">
+    <h1>(GS8) TEST 2 UNIT 8. SHOPPING</h1>
+    <h3>Bài kiểm tra 60 phút</h3>
+    <div class="timer-bar">
+        <div class="timer-box" id="timer">60:00</div>
+    </div>
+</div>
+
+<div class="quiz-container" id="quiz-area"></div>
+
+<div class="footer-controls">
+    <div class="score-display">Đã chọn: <span id="progress-text">0</span>/<span id="total-text">50</span></div>
+    <button class="submit-btn" onclick="submitQuiz()">NỘP BÀI</button>
+    <button class="retry-footer-btn" onclick="resetQuiz()">LÀM LẠI</button>
+</div>
+
+<div class="modal-overlay" id="result-modal">
+    <div class="modal-content">
+        <h2 style="color: var(--secondary); font-weight: 800;">KẾT QUẢ</h2>
+        <div class="final-score" id="final-score-display">0/50</div>
+        <div id="wrong-questions-list" class="wrong-list"></div>
+        <p class="feedback-text" id="feedback-msg"></p>
+        <div>
+            <button class="submit-btn" onclick="closeModal()">ĐÓNG</button>
+            <button class="retry-btn" onclick="resetQuiz()">LÀM LẠI</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        // ==================== LISTENING EXERCISE 1 ====================
+        {
+            "question": "Exercise 1: Listen to Lisa talking about shopping with her family. Choose the correct answer A, B, C, or D for each question.",
+            "isListening": true,
+            "audioUrl": "https://image2url.com/r2/default/audio/1772308370336-4d27bb58-6271-4f9d-a640-a222d45929fc.mp3",
+            "audioTitle": "🎧 Lisa's Family Shopping",
+            "transcript": "Hello! My name is Lisa, and I'm thirteen years old. Today, I want to tell you about shopping with my family.\n\nEvery Saturday, my family goes shopping together. We usually go to the Big C supermarket near our house. It's very big and has everything we need.\n\nIn the morning, my mom makes a shopping list. She writes down all the things we need to buy. We need rice, vegetables, meat, and fruit for the week. Sometimes, we also buy snacks and drinks.\n\nWe leave home at nine o'clock. My dad drives the car, and it takes about ten minutes to get there. The supermarket is always busy on Saturday morning. Many families go shopping at the same time.\n\nFirst, we get a shopping cart. My little brother likes to push it. We start in the vegetable section. My mom chooses fresh tomatoes, carrots, and cabbage. She always checks the price carefully. Next, we go to the meat section. My dad buys chicken and fish for dinner.\n\nThen, we go to the bakery. It smells so good! We buy bread for breakfast. My brother and I love the chocolate cookies there. Mom sometimes lets us buy one box.\n\nAfter that, we buy milk, eggs, and cheese. Finally, we go to the checkout counter. We wait in line and pay for everything. The total is usually about one million dong.\n\nShopping together is fun. We talk and laugh while we shop. After shopping, we sometimes eat lunch at the food court. I really enjoy our family shopping time!"
+        },
+        // Question 1
+        {
+            "question": "Question 1: When does Lisa's family go shopping?",
+            "options": ["A. Every Sunday", "B. Every Saturday", "C. Every Friday", "D. Every Monday"],
+            "correct": 1,
+            "hint": "Nghe kỹ đoạn đầu tiên.",
+            "explanation": "Trong đoạn văn, Lisa nói: \"Every Saturday, my family goes shopping together.\" (Mỗi thứ Bảy, gia đình tôi đi mua sắm cùng nhau.)\nĐáp án: B.\nDịch nghĩa: \"Gia đình Lisa đi mua sắm vào mỗi thứ Bảy.\"\n\n📝 Transcript:\nHello! My name is Lisa, and I'm thirteen years old. Today, I want to tell you about shopping with my family.\n\nEvery Saturday, my family goes shopping together. We usually go to the Big C supermarket near our house. It's very big and has everything we need.\n\nIn the morning, my mom makes a shopping list. She writes down all the things we need to buy. We need rice, vegetables, meat, and fruit for the week. Sometimes, we also buy snacks and drinks.\n\nWe leave home at nine o'clock. My dad drives the car, and it takes about ten minutes to get there. The supermarket is always busy on Saturday morning. Many families go shopping at the same time.\n\nFirst, we get a shopping cart. My little brother likes to push it. We start in the vegetable section. My mom chooses fresh tomatoes, carrots, and cabbage. She always checks the price carefully. Next, we go to the meat section. My dad buys chicken and fish for dinner.\n\nThen, we go to the bakery. It smells so good! We buy bread for breakfast. My brother and I love the chocolate cookies there. Mom sometimes lets us buy one box.\n\nAfter that, we buy milk, eggs, and cheese. Finally, we go to the checkout counter. We wait in line and pay for everything. The total is usually about one million dong.\n\nShopping together is fun. We talk and laugh while we shop. After shopping, we sometimes eat lunch at the food court. I really enjoy our family shopping time!"
+        },
+        // Question 2
+        {
+            "question": "Question 2: What does Lisa's mom do before going shopping?",
+            "options": ["A. She cleans the house", "B. She calls her friends", "C. She makes a shopping list", "D. She watches TV"],
+            "correct": 2,
+            "hint": "Nghe kỹ phần nói về mẹ của Lisa.",
+            "explanation": "Lisa nói: \"In the morning, my mom makes a shopping list.\" (Vào buổi sáng, mẹ tôi làm một danh sách mua sắm.)\nĐáp án: C.\nDịch nghĩa: \"Mẹ của Lisa làm danh sách mua sắm trước khi đi mua sắm.\""
+        },
+        // Question 3
+        {
+            "question": "Question 3: How does Lisa's family go to the supermarket?",
+            "options": ["A. By bus", "B. By bike", "C. On foot", "D. By car"],
+            "correct": 3,
+            "hint": "Chú ý phương tiện di chuyển.",
+            "explanation": "Lisa nói: \"My dad drives the car, and it takes about ten minutes to get there.\" (Bố tôi lái xe, và mất khoảng mười phút để đến đó.)\nĐáp án: D.\nDịch nghĩa: \"Gia đình Lisa đi đến siêu thị bằng xe hơi.\""
+        },
+        // Question 4
+        {
+            "question": "Question 4: What section does the family visit FIRST in the supermarket?",
+            "options": ["A. The meat section", "B. The vegetable section", "C. The bakery", "D. The dairy section"],
+            "correct": 1,
+            "hint": "Nghe thứ tự các khu vực họ ghé thăm.",
+            "explanation": "Lisa nói: \"First, we start in the vegetable section.\" (Đầu tiên, chúng tôi bắt đầu ở khu rau củ.)\nĐáp án: B.\nDịch nghĩa: \"Gia đình Lisa đến khu rau củ đầu tiên trong siêu thị.\""
+        },
+        // Question 5
+        {
+            "question": "Question 5: How much money does the family usually spend on shopping?",
+            "options": ["A. About 500,000 dong", "B. About 1,000,000 dong", "C. About 1,500,000 dong", "D. About 2,000,000 dong"],
+            "correct": 1,
+            "hint": "Chú ý con số cuối cùng.",
+            "explanation": "Lisa nói: \"The total is usually about one million dong.\" (Tổng cộng thường là khoảng một triệu đồng.)\nĐáp án: B.\nDịch nghĩa: \"Gia đình Lisa thường chi khoảng một triệu đồng cho việc mua sắm.\""
+        },
+        // ==================== LISTENING EXERCISE 2 ====================
+        {
+            "question": "Exercise 2: Listen to David talking about shopping for school supplies. Read the sentences and write TRUE or FALSE.",
+            "isListening": true,
+            "audioUrl": "https://image2url.com/r2/default/audio/1772308430146-0a6bec1b-d021-4815-ab85-f70b8c5e772b.mp3",
+            "audioTitle": "🎧 David's School Supplies Shopping",
+            "transcript": "Hi everyone! My name is David. I'm fourteen years old, and I'm in grade eight. Yesterday was special because I went shopping for new school supplies with my mom.\n\nIt's almost the new school year, so I need many things. My old backpack is broken, and my pencil case is too small. I also need new notebooks and pens for different subjects.\n\nWe went to the bookstore in the shopping mall. It's called \"Student World,\" and it's my favorite store. They have everything for students. The store is on the second floor, next to the toy store.\n\nWhen we arrived, there were many students shopping too. Everyone was buying things for school. The store was very colorful with many beautiful notebooks and bags.\n\nFirst, I looked at the backpacks. There were so many! Blue ones, red ones, black ones. Some had cartoon characters, but I wanted a simple one. I chose a dark blue backpack. It cost three hundred thousand dong. It's strong and has many pockets.\n\nNext, I bought notebooks. I needed ten notebooks for all my subjects. Each notebook cost fifteen thousand dong. I chose different colors - blue for Math, green for Science, and red for English. It's easier to remember this way.\n\nThen, I bought pens and pencils. I got a set of five blue pens and two pencils. My mom also bought me a new pencil case. It's grey with a cool design.\n\nFinally, we paid at the cashier. The total was six hundred thousand dong. The cashier gave us a small gift - a free ruler!\n\nI'm very happy with my new school supplies. Now I'm ready for the new school year!"
+        },
+        // Question 6 (True/False 1)
+        {
+            "question": "Question 6: David went shopping with his father yesterday.",
+            "options": ["A. TRUE", "B. FALSE"],
+            "correct": 1,
+            "hint": "Nghe xem David đi cùng ai.",
+            "explanation": "David nói: \"Yesterday was special because I went shopping for new school supplies with my mom.\" (Hôm qua thật đặc biệt vì tôi đã đi mua sắm đồ dùng học tập mới với mẹ tôi.)\nĐáp án: B. FALSE.\nDịch nghĩa: \"David đã đi mua sắm với mẹ, không phải với bố.\"\n\n📝 Transcript:\nHi everyone! My name is David. I'm fourteen years old, and I'm in grade eight. Yesterday was special because I went shopping for new school supplies with my mom.\n\nIt's almost the new school year, so I need many things. My old backpack is broken, and my pencil case is too small. I also need new notebooks and pens for different subjects.\n\nWe went to the bookstore in the shopping mall. It's called \"Student World,\" and it's my favorite store. They have everything for students. The store is on the second floor, next to the toy store.\n\nWhen we arrived, there were many students shopping too. Everyone was buying things for school. The store was very colorful with many beautiful notebooks and bags.\n\nFirst, I looked at the backpacks. There were so many! Blue ones, red ones, black ones. Some had cartoon characters, but I wanted a simple one. I chose a dark blue backpack. It cost three hundred thousand dong. It's strong and has many pockets.\n\nNext, I bought notebooks. I needed ten notebooks for all my subjects. Each notebook cost fifteen thousand dong. I chose different colors - blue for Math, green for Science, and red for English. It's easier to remember this way.\n\nThen, I bought pens and pencils. I got a set of five blue pens and two pencils. My mom also bought me a new pencil case. It's grey with a cool design.\n\nFinally, we paid at the cashier. The total was six hundred thousand dong. The cashier gave us a small gift - a free ruler!\n\nI'm very happy with my new school supplies. Now I'm ready for the new school year!"
+        },
+        // Question 7 (True/False 2)
+        {
+            "question": "Question 7: The bookstore \"Student World\" is on the second floor of the shopping mall.",
+            "options": ["A. TRUE", "B. FALSE"],
+            "correct": 0,
+            "hint": "Chú ý vị trí của cửa hàng.",
+            "explanation": "David nói: \"It's called 'Student World,' and it's my favorite store. The store is on the second floor, next to the toy store.\" (Nó có tên là 'Thế giới học sinh', và đó là cửa hàng yêu thích của tôi. Cửa hàng nằm ở tầng hai, bên cạnh cửa hàng đồ chơi.)\nĐáp án: A. TRUE.\nDịch nghĩa: \"Cửa hàng 'Thế giới học sinh' nằm ở tầng hai của trung tâm mua sắm.\""
+        },
+        // Question 8 (True/False 3)
+        {
+            "question": "Question 8: David bought a red backpack for three hundred thousand dong.",
+            "options": ["A. TRUE", "B. FALSE"],
+            "correct": 1,
+            "hint": "Chú ý màu sắc và giá tiền.",
+            "explanation": "David nói: \"I chose a dark blue backpack. It cost three hundred thousand dong.\" (Tôi đã chọn một chiếc ba lô màu xanh đậm. Nó có giá ba trăm nghìn đồng.)\nĐáp án: B. FALSE.\nDịch nghĩa: \"David đã mua một chiếc ba lô màu xanh đậm, không phải màu đỏ.\""
+        },
+        // Question 9 (True/False 4)
+        {
+            "question": "Question 9: David needed ten notebooks for all his subjects.",
+            "options": ["A. TRUE", "B. FALSE"],
+            "correct": 0,
+            "hint": "Chú ý số lượng vở.",
+            "explanation": "David nói: \"I needed ten notebooks for all my subjects.\" (Tôi cần mười quyển vở cho tất cả các môn học của mình.)\nĐáp án: A. TRUE.\nDịch nghĩa: \"David cần mười quyển vở cho tất cả các môn học.\""
+        },
+        // Question 10 (True/False 5)
+        {
+            "question": "Question 10: The cashier gave David a free pencil as a gift.",
+            "options": ["A. TRUE", "B. FALSE"],
+            "correct": 1,
+            "hint": "Chú ý món quà tặng kèm.",
+            "explanation": "David nói: \"The cashier gave us a small gift - a free ruler!\" (Người thu ngân đã tặng chúng tôi một món quà nhỏ - một cái thước kẻ miễn phí!)\nĐáp án: B. FALSE.\nDịch nghĩa: \"Người thu ngân đã tặng David một cái thước kẻ miễn phí, không phải bút chì.\""
+        },
+        // ==================== CÁC CÂU CÒN LẠI TỪ QUESTION 11 ====================
+        // Question 11 (original 3) - ĐÃ SỬA ĐÁP ÁN
+        {
+            "question": "Question 11: Mark the letter A, B, C or D on your answer sheet to indicate the word that differs from the other three in the position of primary stress.",
+            "options": ["A. episode", "B. addicted", "C. excitement", "D. assistant"],
+            "correct": 0,
+            "hint": "Chọn từ có trọng âm khác với các từ còn lại.",
+            "explanation": "Trọng âm.\nA. episode → /ˈepɪsəʊd/ (trọng âm 1)\nB. addicted → /əˈdɪktɪd/ (trọng âm 2)\nC. excitement → /ɪkˈsaɪtmənt/ (trọng âm 2)\nD. assistant → /əˈsɪstənt/ (trọng âm 2)\n→ Chỉ episode có trọng âm rơi vào âm tiết 1.\nĐáp án: A.\nDịch nghĩa: \"Chọn từ có trọng âm khác với các từ còn lại.\""
+        },
+        // Question 12 (original 4)
+        {
+            "question": "Question 12: Mark the letter A, B, C or D on your answer sheet to indicate the word that differs from the other three in the position of primary stress.",
+            "options": ["A. receive", "B. repeat", "C. private", "D. provide"],
+            "correct": 2,
+            "hint": "Chọn từ có trọng âm khác với các từ còn lại.",
+            "explanation": "Trọng âm.\nA. receive → /rɪˈsiːv/ (trọng âm 2)\nB. repeat → /rɪˈpiːt/ (trọng âm 2)\nC. private → /ˈpraɪvət/ (trọng âm 1)\nD. provide → /prəˈvaɪd/ (trọng âm 2)\n→ Chỉ private có trọng âm 1.\nĐáp án: C.\nDịch nghĩa: \"Chọn từ có trọng âm khác với các từ còn lại.\""
+        },
+        // Question 13 (original 5)
+        {
+            "question": "Question 13: The responsibility of a _____ is to provide customers with help and sell goods.",
+            "options": ["A. Shop assistant", "B. dealer", "C. customer service", "D. cashier"],
+            "correct": 0,
+            "hint": "Chọn từ phù hợp với ngữ cảnh.",
+            "explanation": "\"Provide customers with help and sell goods\" mô tả đúng công việc của shop assistant (nhân viên bán hàng). Các đáp án khác hoặc là nghề khác (dealer, cashier) hoặc là bộ phận (customer service).\nĐáp án: A.\nDịch nghĩa: Trách nhiệm của một nhân viên bán hàng là hỗ trợ khách hàng và bán hàng."
+        },
+        // Question 14 (original 6)
+        {
+            "question": "Question 14: I don’t know how to ______ for lower prices so I shop in supermarkets as they have fixed prices.",
+            "options": ["A. bargain", "B. negotiate", "C. discuss", "D. beg"],
+            "correct": 0,
+            "hint": "Chọn động từ phù hợp với ngữ cảnh.",
+            "explanation": "\"Bargain\" nghĩa là mặc cả giá, đúng với tình huống muốn giảm giá khi mua hàng. Các từ khác mang nghĩa đàm phán lớn (negotiate), thảo luận (discuss) hoặc xin xỏ (beg) không hợp.\nĐáp án: A.\nDịch nghĩa: Tôi không biết mặc cả để có giá rẻ hơn, nên tôi mua ở siêu thị vì ở đó giá cố định."
+        },
+        // Question 15 (original 7) - ĐÃ SỬA ĐÁP ÁN
+        {
+            "question": "Question 15: The factory outlets __a special offer for all items next week as planned.",
+            "options": ["A. will give", "B. give", "C. are giving", "D. are going to give"],
+            "correct": 3,
+            "hint": "Chọn động từ phù hợp với ngữ cảnh.",
+            "explanation": "Có \"next week\" + kế hoạch đã định trước → dùng be going to + V → \"are going to give\".\nĐáp án: D.\nDịch nghĩa: Các cửa hàng giảm giá sẽ có ưu đãi đặc biệt cho tất cả mặt hàng vào tuần tới như kế hoạch."
+        },
+        // Question 16 (original 8) - ĐÃ SỬA ĐÁP ÁN
+        {
+            "question": "Question 16: The Community Fair _______ this Spring, and we have all decided to attend it.",
+            "options": ["A. is held", "B. will be held", "C. will take place", "D. is taking place"],
+            "correct": 3,
+            "hint": "Chọn động từ phù hợp với ngữ cảnh.",
+            "explanation": "Sự kiện \"this Spring\" đã được lên lịch → dùng hiện tại tiếp diễn cho kế hoạch sắp tới: \"is taking place\".\nĐáp án: D.\nDịch nghĩa: Hội chợ cộng đồng sẽ diễn ra vào mùa xuân này, và tất cả chúng tôi đã quyết định tham dự."
+        },
+        // Question 17 (original 9)
+        {
+            "question": "Question 17: ________ they took their laptops to the shop, they asked for their receipts.",
+            "options": ["A. If", "B. When", "C. Since", "D. Because"],
+            "correct": 1,
+            "hint": "Chọn liên từ phù hợp với ngữ cảnh.",
+            "explanation": "Ngữ cảnh: \"Khi họ mang laptop tới cửa hàng, họ đã yêu cầu biên lai\" → dùng \"When\" để chỉ thời điểm.\nĐáp án: B.\nDịch nghĩa: Khi họ mang laptop đến cửa hàng, họ đã yêu cầu lấy hóa đơn."
+        },
+        // Question 18 (original 10)
+        {
+            "question": "Question 18: Tom: “Do you ever drink coffee?” – Lan: “Yes, but only _____, not often. Just a few times a week.”",
+            "options": ["A. usually", "B. sometimes", "C. rarely", "D. never"],
+            "correct": 1,
+            "hint": "Chọn trạng từ phù hợp với ngữ cảnh.",
+            "explanation": "\"Not often\" = không thường xuyên → phù hợp với \"sometimes\" (thỉnh thoảng).\nĐáp án: B.\nDịch nghĩa: Tom: “Bạn có uống cà phê bao giờ không?” – Lan: “Có, nhưng chỉ thỉnh thoảng thôi, không thường xuyên. Chỉ vài lần một tuần.”"
+        },
+        // Question 19 (original 11)
+        {
+            "question": "Question 19: I went through about 4 years of being addicted ________ video games.",
+            "options": ["A. play", "B. to play", "C. to playing", "D. playing"],
+            "correct": 2,
+            "hint": "Chọn giới từ phù hợp với ngữ cảnh.",
+            "explanation": "Cấu trúc \"addicted to + V-ing\" → \"addicted to playing\".\nĐáp án: C.\nDịch nghĩa: Tôi đã trải qua khoảng 4 năm nghiện chơi trò chơi điện tử."
+        },
+        // Question 20 (original 12)
+        {
+            "question": "Question 20: You are still responsible _____ paying the shipping costs if you return an item.",
+            "options": ["A. on", "B. off", "C. for", "D. in"],
+            "correct": 2,
+            "hint": "Chọn giới từ phù hợp với ngữ cảnh.",
+            "explanation": "Cấu trúc \"responsible for + V-ing\" → \"responsible for paying\".\nĐáp án: C.\nDịch nghĩa: Bạn vẫn phải chịu trách nhiệm trả chi phí vận chuyển nếu trả lại hàng."
+        },
+        // Question 21 (original 13)
+        {
+            "question": "Question 21: You are invited to (21) ____ us January 09, 2024. 17:00 P.M School Hall.",
+            "options": ["A. enjoy", "B. join", "C. participate", "D. take part"],
+            "correct": 1,
+            "hint": "Chọn động từ phù hợp với ngữ cảnh.",
+            "explanation": "Câu “You are invited to ____ us” → dùng join để chỉ “tham gia cùng chúng tôi” (tự nhiên nhất trong lời mời).\nĐáp án: B.\nDịch nghĩa: Bạn được mời tham gia cùng chúng tôi."
+        },
+        // Question 22 (original 14)
+        {
+            "question": "Question 22: It’s that time of year (22) ____.",
+            "options": ["A. about", "B. above", "C. alike", "D. again"],
+            "correct": 3,
+            "hint": "Chọn giới từ phù hợp với ngữ cảnh.",
+            "explanation": "“It’s that time of year ____” → đây là cụm cố định “that time of year again” = lại đến thời điểm này trong năm.\nĐáp án: D.\nDịch nghĩa: Ho! Ho! Ho! Lại đến thời điểm này trong năm rồi."
+        },
+        // Question 23 (original 15)
+        {
+            "question": "Question 23: We’re so excited (23) ____ no one will be absent.",
+            "options": ["A. why", "B. if", "C. that", "D. whether"],
+            "correct": 2,
+            "hint": "Chọn liên từ phù hợp với ngữ cảnh.",
+            "explanation": "“We’re so excited ____ no one will be absent” → cấu trúc “so + adj + that + clause” → dùng that.\nĐáp án: C.\nDịch nghĩa: Chúng tôi rất háo hức đến nỗi sẽ không ai vắng mặt."
+        },
+        // Question 24 (original 16)
+        {
+            "question": "Question 24: Please contact if you (24) _____ your friends to the party.",
+            "options": ["A. brings", "B. bringing", "C. bring", "D. to bring"],
+            "correct": 2,
+            "hint": "Chọn động từ phù hợp với ngữ cảnh.",
+            "explanation": "“Please contact if you ____ your friends to the party” → mệnh đề điều kiện hiện tại đơn, chủ ngữ “you” → động từ nguyên mẫu bring.\nĐáp án: C.\nDịch nghĩa: Vui lòng liên hệ nếu bạn đưa bạn bè đến bữa tiệc."
+        },
+        // Question 25 (original 17)
+        {
+            "question": "Question 25: An upcoming trip will take you to see some of the world’s most incredible natural wonders _____. a. Next, the trip starts on July 1st and lasts for two weeks. Moreover, you will enjoy both guided tours and free time to explore. b. Then, destinations include the Grand Canyon, the Great Barrier Reef, Mount Everest, and Victoria Falls. Also, these locations are famous for their breathtaking beauty. c. Finally, to join the trip, please register by June 15th. Therefore, make sure to sign up on time.",
+            "options": ["A. a-b-c", "B. b-a-c", "C. a-c-b", "D. b-c-a"],
+            "correct": 0,
+            "hint": "Chọn thứ tự sắp xếp phù hợp.",
+            "explanation": "Logic nội dung:\nGiới thiệu chuyến đi → thông tin thời gian & trải nghiệm (a) → điểm đến cụ thể (b) → hướng dẫn đăng ký (c).\nCác phương án khác đều đảo lộn phần kết.\nĐáp án: A.\nDịch nghĩa: Một chuyến đi sắp tới sẽ đưa bạn đến xem một số kỳ quan thiên nhiên tuyệt vời nhất của thế giới."
+        },
+        // Question 26 (original 18)
+        {
+            "question": "Question 26: Choose the sentence that most appropriately ends the text (in question 25).",
+            "options": [
+                "A. Don’t miss this opportunity to explore the beauty of nature around the world.",
+                "B. Some people prefer to travel alone instead of joining group tours.",
+                "C. Natural wonders are formed through millions of years of geological changes.",
+                "D. Many students are interested in learning foreign languages."
+            ],
+            "correct": 0,
+            "hint": "Chọn câu phù hợp để kết thúc đoạn văn.",
+            "explanation": "Phân tích lựa chọn:\nA: Lời kêu gọi tham gia → phù hợp văn phong quảng bá.\nB, C, D: Không liên quan nội dung tour.\nĐáp án: A.\nDịch nghĩa: Đừng bỏ lỡ cơ hội này để khám phá vẻ đẹp của thiên nhiên trên khắp thế giới."
+        },
+        // Question 27 (original 19)
+        {
+            "question": "Question 27: The most important (27) _____ that influences a person to go shopping is the needs or wants of the individual.",
+            "options": ["A. effect", "B. factor", "C. reaction", "D. person"],
+            "correct": 1,
+            "hint": "Chọn danh từ phù hợp với ngữ cảnh.",
+            "explanation": "\"The most important ____ that influences…\" → nghĩa là “yếu tố quan trọng nhất ảnh hưởng…” → từ đúng là factor.\nĐáp án: B.\nDịch nghĩa: Yếu tố quan trọng nhất ảnh hưởng đến việc một người đi mua sắm là nhu cầu hoặc mong muốn của cá nhân…"
+        },
+        // Question 28 (original 20) - ĐÃ SỬA ĐÁP ÁN
+        {
+            "question": "Question 28: ...people related (28) ____ him/ her.",
+            "options": ["A. to", "B. with", "C. about", "D. within"],
+            "correct": 0,
+            "hint": "Chọn giới từ phù hợp với ngữ cảnh.",
+            "explanation": "\"people related ____ him/her\" → dùng to trong cụm “related to” (liên quan tới).\nĐáp án: A.\nDịch nghĩa: … hoặc những người liên quan tới anh/cô ấy."
+        },
+        // Question 29 (original 21) - ĐÃ SỬA ĐÁP ÁN
+        {
+            "question": "Question 29: They will shop less if they have (29) ____ mouth to feed.",
+            "options": ["A. less", "B. more", "C. much", "D. many"],
+            "correct": 0,
+            "hint": "Chọn từ phù hợp với ngữ cảnh.",
+            "explanation": "\"They will shop less if they have ____ mouth to feed\" → fewer miệng ăn = ít người phụ thuộc → dùng less (ít).\nĐáp án: A.\nDịch nghĩa: Họ sẽ mua sắm ít hơn nếu có ít miệng ăn cần lo."
+        },
+        // Question 30 (original 22)
+        {
+            "question": "Question 30: ...shop more if the number of dependents is (30) _____.",
+            "options": ["A. least", "B. less", "C. many", "D. more"],
+            "correct": 3,
+            "hint": "Chọn từ phù hợp với ngữ cảnh.",
+            "explanation": "\"shop more if the number of dependents is ____\" → số người phụ thuộc nhiều hơn → dùng more.\nĐáp án: D.\nDịch nghĩa: … và mua sắm nhiều hơn nếu số người phụ thuộc nhiều hơn."
+        },
+        // Question 31 (original 23)
+        {
+            "question": "Question 31: ...a person cannot purchase anything (31) _____ he/ she has the monetary means to do so.",
+            "options": ["A. when", "B. if", "C. unless", "D. whether"],
+            "correct": 2,
+            "hint": "Chọn liên từ phù hợp với ngữ cảnh.",
+            "explanation": "\"cannot purchase anything ____ he/she has the monetary means\" → nghĩa phủ định → dùng unless = trừ khi.\nĐáp án: C.\nDịch nghĩa: Một người không thể mua bất cứ thứ gì trừ khi họ có điều kiện tài chính."
+        },
+        // Question 32 (original 24)
+        {
+            "question": "Question 32: ...a person with less (32) _____ stability will focus more on vital merchandise.",
+            "options": ["A. finance", "B. financial", "C. financials", "D. financially"],
+            "correct": 1,
+            "hint": "Chọn từ phù hợp với ngữ cảnh.",
+            "explanation": "\"…a person with less ____ stability\" → cần tính từ bổ nghĩa “stability” → dùng financial (ổn định tài chính).\nĐáp án: B.\nDịch nghĩa: Mặt khác, một người có sự ổn định tài chính thấp hơn sẽ tập trung vào các mặt hàng thiết yếu."
+        },
+        // Question 33 (original 25)
+        {
+            "question": "Question 33: I like spending time with my sister over the weekend to browse instead of buying.",
+            "options": [
+                "A. I enjoy getting out with my sister on the weekends to browse and buy.",
+                "B. I prefer getting out with my sister on the weekends to buy something.",
+                "C. I'm interested in spending time with my sister to browse.",
+                "D. On the weekends, I like to spend time with my sister to browse instead of making purchases."
+            ],
+            "correct": 3,
+            "hint": "Chọn câu có nghĩa gần nhất với câu gốc.",
+            "explanation": "Câu gốc “I like spending time with my sister over the weekend to browse instead of buying” → nghĩa là thích dành thời gian với chị/em gái vào cuối tuần để ngắm hàng, dạo xem chứ không mua. Chỉ D diễn đạt đủ ý “instead of making purchases” (thay vì mua hàng).\nĐáp án: D.\nDịch nghĩa: Vào cuối tuần, tôi thích dành thời gian với chị/em gái để dạo xem hàng thay vì mua sắm."
+        },
+        // Question 34 (original 26) - ĐÃ SỬA ĐÁP ÁN
+        {
+            "question": "Question 34: Due to the supermarket’s set prices, I am unable to bargain there.",
+            "options": [
+                "A. Because the fixed prices at supermarkets, I can never haggle there.",
+                "B. Since grocery pricing are set, I can never haggle there.",
+                "C. I can never bargain at a supermarket because the prices is fixed.",
+                "D. Since grocery pricing are fixed, I never can haggle there."
+            ],
+            "correct": 1,
+            "hint": "Chọn câu có nghĩa gần nhất với câu gốc.",
+            "explanation": "\"Due to the supermarket’s set prices\" có thể thay bằng “Since grocery pricing are set…” → đúng ngữ pháp và nghĩa.\nĐáp án: B.\nDịch nghĩa: Vì giá hàng tạp hóa được ấn định, tôi không bao giờ mặc cả ở đó."
+        },
+        // Question 35 (original 27)
+        {
+            "question": "Question 35: They/ often/ spend/ hours/ bargain/ shop/ for discounts.",
+            "options": [
+                "A. They often spend hours bargaining and shopping for discounts.",
+                "B. They often spend hours to bargain and shopping for discounts.",
+                "C. They often spend hours to bargain and shop for discounts.",
+                "D. They often spend hours bargain and shop for discounts."
+            ],
+            "correct": 0,
+            "hint": "Chọn câu phù hợp với các từ cho sẵn.",
+            "explanation": "Cấu trúc “spend + time + V-ing” → “spend hours bargaining and shopping…”. Chỉ A đúng ngữ pháp và nghĩa.\nĐáp án: A.\nDịch nghĩa: Họ thường dành hàng giờ để mặc cả và mua sắm tìm các chương trình giảm giá."
+        },
+        // Question 36 (original 28)
+        {
+            "question": "Question 36: Online shopping/ convenient/ it/ sometimes/ disappoint/ quality.",
+            "options": [
+                "A. Online shopping is convenient, but it sometimes disappoints in quality.",
+                "B. Online shopping is convenient, but it sometimes disappoint in quality.",
+                "C. Online shopping is convenient, it sometimes disappoints in quality.",
+                "D. Online shopping is convenient, and it sometimes disappoint in quality."
+            ],
+            "correct": 0,
+            "hint": "Chọn câu phù hợp với các từ cho sẵn.",
+            "explanation": "Câu cần hai mệnh đề đối lập → dùng “but” và động từ “disappoints” chia số ít (online shopping là danh từ số ít). Chỉ A đúng ngữ pháp và nghĩa.\nĐáp án: A.\nDịch nghĩa: Mua sắm trực tuyến tiện lợi, nhưng đôi khi làm người ta thất vọng về chất lượng."
+        },
+        // Question 37 with image
+        {
+            "question": "Question 37: What does the sign mean?",
+            "image": "https://cdn11.bigcommerce.com/s-3u7crl/images/stencil/1280x1280/products/529/6028/n-27038-caution-please-use-other-door-left-arrow__64586.1655842062.png?c=2",
+            "options": [
+                "A. You should use this door if you want to enter.",
+                "B. Please use a different door to go inside the building.",
+                "C. This door can only be used for emergencies and is not for general use.",
+                "D. This door cannot be opened because it is blocked."
+            ],
+            "correct": 1,
+            "hint": "Chọn câu phù hợp với ý nghĩa của biển báo.",
+            "explanation": "Nội dung biển báo: Chú ý. Sử dụng cửa khác.\nĐáp án: B.\nDịch nghĩa: Xin vui lòng sử dụng một cửa khác để vào trong tòa nhà."
+        },
+        // Question 38 with image
+        {
+            "question": "Question 38: What does the notice say?",
+            "image": "https://image2url.com/r2/default/images/1772136993142-b4fe2ca6-2d22-4e50-a145-c3d7ba2b6fff.png",
+            "options": [
+                "A. The parking lot will be full on Saturday due to a big event. Please park on the street.",
+                "B. Please don’t park on Saturday, we have an event.",
+                "C. You can park in the parking lot on Saturday without any problems.",
+                "D. There will be more parking on Saturday."
+            ],
+            "correct": 0,
+            "hint": "Chọn câu phù hợp với nội dung thông báo.",
+            "explanation": "Nội dung biển báo: Bãi đỗ xe sẽ hết chỗ vào thứ Bảy do một sự kiện lớn. Vui lòng đỗ trên phố.\nĐáp án: A.\nDịch nghĩa: Sẽ có nhiều xe hơn trong bãi đỗ xe vào thứ Bảy, hãy đỗ xe trên đường."
+        },
+        // Question 39 (original 31)
+        {
+            "question": "Question 39: What is the main idea of the passage?",
+            "options": [
+                "A. Shopping is a waste of time.",
+                "B. People have different shopping habits, and each has its own advantages and disadvantages.",
+                "C. Online shopping is better than in-store shopping.",
+                "D. Everyone should shop at supermarkets."
+            ],
+            "correct": 1,
+            "hint": "Chọn ý chính của đoạn văn.",
+            "explanation": "Đoạn văn nói về thói quen mua sắm của mọi người và các lợi ích cũng như bất lợi của từng thói quen.\nĐáp án: B.\nDịch nghĩa: \"Ý chính của đoạn văn là mọi người có những thói quen mua sắm khác nhau, và mỗi thói quen đều có những lợi ích và bất lợi riêng.\""
+        },
+        // Question 40 (original 32)
+        {
+            "question": "Question 40: Which word is CLOSEST in meaning to “bargains” as used in the passage?",
+            "options": ["A. Discounts", "B. Prices", "C. Products", "D. Shops"],
+            "correct": 0,
+            "hint": "Chọn từ gần nghĩa nhất.",
+            "explanation": "Trong đoạn văn, \"bargains\" được đề cập đến khi nói về việc tìm kiếm giá tốt: \"Some people spend a lot of time looking for bargains…\" \"Discounts\" có nghĩa là giảm giá, gần nghĩa với \"bargains\".\nĐáp án: A.\nDịch nghĩa: \"Từ nào gần nghĩa nhất với 'mặc cả' như đã sử dụng trong đoạn văn?\""
+        },
+        // Question 41 (original 33)
+        {
+            "question": "Question 41: Which word is OPPOSITE in meaning to “affordable” as used in the passage?",
+            "options": ["A. Expensive", "B. Cheap", "C. Reasonable", "D. Economical"],
+            "correct": 0,
+            "hint": "Chọn từ trái nghĩa.",
+            "explanation": "\"Affordable\" được sử dụng trong câu: \"It is sensible to buy items which are affordable…\" Từ \"expensive\" có nghĩa là đắt đỏ, trái ngược với \"affordable\" (có thể chi trả).\nĐáp án: A.\nDịch nghĩa: \"Từ nào có nghĩa trái ngược với 'có thể chi trả' như đã sử dụng trong đoạn văn?\""
+        },
+        // Question 42 (original 34)
+        {
+            "question": "Question 42: Which of the following is NOT TRUE according to the passage?",
+            "options": [
+                "A. Some people enjoy window shopping.",
+                "B. Shopping online is always cheaper than shopping in physical stores.",
+                "C. Self-service payment machines can save time.",
+                "D. Some people use credit cards to shop immediately."
+            ],
+            "correct": 1,
+            "hint": "Chọn câu KHÔNG ĐÚNG theo đoạn văn.",
+            "explanation": "Đoạn văn nêu rõ: \"Delivery is usually free and items are often cheaper than in shops on the high street.\" Tuy nhiên, không có khẳng định nào rằng mua sắm trực tuyến luôn rẻ hơn, vì vậy câu B là không đúng.\nĐáp án: B.\nDịch nghĩa: \"Câu nào sau đây KHÔNG ĐÚNG theo đoạn văn?\""
+        },
+        // Question 43 (original 35)
+        {
+            "question": "Question 43: Which is one reason people prefer online shopping?",
+            "options": [
+                "A. Items are always high quality.",
+                "B. Delivery is usually free, and items are often cheaper.",
+                "C. There are no problems with returns.",
+                "D. Sales assistants are always available."
+            ],
+            "correct": 1,
+            "hint": "Chọn lý do mọi người thích mua sắm trực tuyến.",
+            "explanation": "Đoạn văn chỉ ra rằng \"Delivery is usually free and items are often cheaper than in shops on the high street.\"\nĐáp án: B.\nDịch nghĩa: \"Một lý do mà mọi người thích mua sắm trực tuyến là gì?\""
+        },
+        // Question 44 (original 36)
+        {
+            "question": "Question 44: Why do some people use credit cards or borrow money to shop?",
+            "options": [
+                "A. They want to build credit history.",
+                "B. They prefer to buy items immediately instead of waiting.",
+                "C. They have no cash with them.",
+                "D. They enjoy paying interest."
+            ],
+            "correct": 1,
+            "hint": "Chọn lý do sử dụng thẻ tín dụng hoặc vay tiền.",
+            "explanation": "Đoạn văn nói rằng \"some people use a credit card or borrow money from the bank so that they can buy the items they really want rather than wait for it.\"\nĐáp án: B.\nDịch nghĩa: \"Tại sao một số người sử dụng thẻ tín dụng hoặc vay tiền để mua sắm?\""
+        },
+        // Question 45 (original 37)
+        {
+            "question": "Question 45: Shopping can sometimes be a challenging experience, (45) ______.",
+            "options": [
+                "A. especially when selecting gifts for others on special occasions.",
+                "B. Online shopping is a popular choice for those with busy schedules.",
+                "C. but they can cause frustration when technical issues arise and assistance is unavailable.",
+                "D. leading to disappointment and the need to return items at the customer’s expense."
+            ],
+            "correct": 0,
+            "hint": "Chọn câu phù hợp để mở đầu đoạn văn.",
+            "explanation": "Điền cụm từ hoặc câu vào văn bản.\nDẫn chứng ở đoạn \"Shopping can sometimes be a challenging experience, (45) _____. Many people choose to give gift vouchers…\", nghĩa là đang nói tới khó khăn khi mua sắm → khó nhất là chọn quà cho người khác vào dịp đặc biệt → A.\nĐáp án: A.\nDịch nghĩa: Mua sắm đôi khi có thể là một trải nghiệm đầy thử thách, đặc biệt là khi chọn quà cho người khác trong các dịp đặc biệt."
+        },
+        // Question 46 (original 38)
+        {
+            "question": "Question 46: (46) _____, as it lets them purchase essential or luxury items from home or while on the go.",
+            "options": [
+                "A. especially when selecting gifts for others on special occasions.",
+                "B. Online shopping is a popular choice for those with busy schedules.",
+                "C. but they can cause frustration when technical issues arise and assistance is unavailable.",
+                "D. leading to disappointment and the need to return items at the customer’s expense."
+            ],
+            "correct": 1,
+            "hint": "Chọn câu phù hợp để nối tiếp ý.",
+            "explanation": "Điền cụm từ hoặc câu vào văn bản.\nDẫn chứng ở câu \"…, as it lets them purchase essential or luxury items from home or while on the go.\", câu này miêu tả lợi ích của mua sắm online, đặc biệt phù hợp với người bận rộn → B.\nĐáp án: B.\nDịch nghĩa: Mua sắm trực tuyến là một lựa chọn phổ biến cho những người có lịch trình bận rộn."
+        },
+        // Question 47 (original 39)
+        {
+            "question": "Question 47: However, the description or quality of online products may differ from expectations, (47) _____.",
+            "options": [
+                "A. especially when selecting gifts for others on special occasions.",
+                "B. Online shopping is a popular choice for those with busy schedules.",
+                "C. but they can cause frustration when technical issues arise and assistance is unavailable.",
+                "D. leading to disappointment and the need to return items at the customer’s expense."
+            ],
+            "correct": 3,
+            "hint": "Chọn câu phù hợp để nối tiếp ý.",
+            "explanation": "Điền cụm từ hoặc câu vào văn bản.\nDẫn chứng ở câu \"However, the description or quality of online products may differ from expectations, (47) _____.\", tức là khác kỳ vọng thì dẫn tới thất vọng và phải trả hàng → D.\nĐáp án: D.\nDịch nghĩa: Dẫn đến sự thất vọng và cần phải trả lại hàng hóa với chi phí của khách hàng."
+        },
+        // Question 48 (original 40)
+        {
+            "question": "Question 48: For in-store shopping, self-service payment machines are commonly used to save time by avoiding long queues, (48) _____.",
+            "options": [
+                "A. especially when selecting gifts for others on special occasions.",
+                "B. Online shopping is a popular choice for those with busy schedules.",
+                "C. but they can cause frustration when technical issues arise and assistance is unavailable.",
+                "D. leading to disappointment and the need to return items at the customer’s expense."
+            ],
+            "correct": 2,
+            "hint": "Chọn câu phù hợp để nối tiếp ý.",
+            "explanation": "Điền cụm từ hoặc câu vào văn bản.\nDẫn chứng ở câu \"For in-store shopping, self-service payment machines… to save time by avoiding long queues, (48) _____.\", nghĩa là máy thanh toán tự động tiện lợi nhưng có thể gây bực mình nếu bị lỗi và không ai giúp → C.\nĐáp án: C.\nDịch nghĩa: Nhưng chúng có thể gây ra sự khó chịu khi gặp sự cố kỹ thuật và không có sự trợ giúp."
+        }
+    ];
+
+    // State
+    let selectedAnswers = new Array(quizData.length).fill(null);
+    let answeredCount = 0;
+    let timerInterval;
+    let timeLeft = 60 * 60;
+    const totalQuestions = quizData.length;
+    let quizSubmitted = false;
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            if (quizSubmitted) return;
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const timerDisplay = document.getElementById('timer');
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (timeLeft <= 60) timerDisplay.classList.add('warning');
+            if (timeLeft <= 0) { clearInterval(timerInterval); autoSubmit(); }
+        }, 1000);
+    }
+
+    function autoSubmit() {
+        if (!quizSubmitted) { alert('Hết giờ làm bài! Bài thi sẽ tự động nộp.'); submitQuiz(); }
+    }
+
+    window.toggleHint = function(index) {
+        const hintDiv = document.getElementById(`hint-${index}`);
+        if (hintDiv) hintDiv.style.display = hintDiv.style.display === 'block' ? 'none' : 'block';
+    };
+
+    function initQuiz() {
+        const quizArea = document.getElementById('quiz-area');
+        document.getElementById('total-text').innerText = totalQuestions;
+        quizArea.innerHTML = '';
+
+        // Track if we've already added audio players
+        let lastAudioAdded = -1;
+
+        quizData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${index}`;
+
+            // Add audio player if this is a listening section header
+            if (item.isListening && index > lastAudioAdded) {
+                lastAudioAdded = index;
+                const audioCard = document.createElement('div');
+                audioCard.className = 'question-card';
+                audioCard.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                audioCard.style.color = 'white';
+                audioCard.innerHTML = `
+                    <div class="question-header">
+                        <span class="q-tag listening">🎧 LISTENING</span>
+                    </div>
+                    <div class="audio-title">
+                        <span>🔊 ${item.audioTitle}</span>
+                    </div>
+                    <audio controls class="audio-player">
+                        <source src="${item.audioUrl}" type="audio/mpeg">
+                        Trình duyệt của bạn không hỗ trợ audio.
+                    </audio>
+                    <div class="audio-description">
+                        👆 Bạn có thể điều chỉnh âm lượng, tua hoặc tạm dừng.
+                    </div>
+                `;
+                quizArea.appendChild(audioCard);
+            }
+
+            // Skip the listening header items for regular question rendering
+            if (item.isListening) return;
+
+            let imageHtml = item.image ? `<img src="${item.image}" alt="Sign for question ${index+1}" class="sign-image">` : '';
+
+            let optionsHtml = '';
+            item.options.forEach((opt, optIndex) => {
+                optionsHtml += `<button class="option-btn" onclick="selectAnswer(${index}, ${optIndex})">${opt}</button>`;
+            });
+
+            const hintHtml = `
+                <div class="hint-container" id="hint-container-${index}">
+                    <div class="hint-btn" onclick="toggleHint(${index})">
+                        <span>💡</span> Gợi ý
+                    </div>
+                    <div class="hint-content" id="hint-${index}">${item.hint}</div>
+                </div>
+            `;
+
+            const explanationHtml = `
+                <div class="explanation-box" id="explain-${index}">
+                    <div class="explanation-header">
+                        <span style="font-size: 1.5rem;">📘</span> Giải thích chi tiết:
+                    </div>
+                    <div class="explanation-content">${item.explanation.replace(/\n/g, '<br>')}</div>
+                </div>
+            `;
+
+            card.innerHTML = `
+                <div class="question-header">
+                    <span class="q-tag">Câu ${index+1}</span>
+                </div>
+                <div class="question-text">${item.question}</div>
+                ${imageHtml}
+                <div class="options-grid" id="options-${index}">
+                    ${optionsHtml}
+                </div>
+                ${hintHtml}
+                ${explanationHtml}
+            `;
+            quizArea.appendChild(card);
+        });
+
+        document.querySelectorAll('.hint-container').forEach(el => el.style.display = 'none');
+    }
+
+    window.selectAnswer = function(qIndex, optIndex) {
+        if (quizSubmitted) return;
+        const buttons = document.querySelectorAll(`#options-${qIndex} .option-btn`);
+        buttons.forEach(btn => btn.classList.remove('selected'));
+        buttons[optIndex].classList.add('selected');
+        if (selectedAnswers[qIndex] === null) {
+            answeredCount++;
+            document.getElementById('progress-text').innerText = answeredCount;
+        }
+        selectedAnswers[qIndex] = optIndex;
+    };
+
+    window.submitQuiz = function() {
+        if (quizSubmitted) return;
+
+        const unanswered = [];
+        for (let i = 0; i < totalQuestions; i++) {
+            if (!quizData[i].isListening && selectedAnswers[i] === null) {
+                unanswered.push(i + 1);
+            }
+        }
+
+        if (unanswered.length > 0) {
+            const confirmSubmit = confirm(`Bạn chưa trả lời câu ${unanswered.join(', ')}. Bạn có muốn nộp bài không?`);
+            if (!confirmSubmit) {
+                const firstUnanswered = document.getElementById(`card-${unanswered[0] - 1}`);
+                if (firstUnanswered) firstUnanswered.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+        }
+
+        quizSubmitted = true;
+        clearInterval(timerInterval);
+
+        document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+        let correctCount = 0;
+        for (let i = 0; i < totalQuestions; i++) {
+            if (quizData[i].isListening) continue;
+
+            const buttons = document.querySelectorAll(`#options-${i} .option-btn`);
+            const correctIdx = quizData[i].correct;
+            const explanation = document.getElementById(`explain-${i}`);
+
+            if (selectedAnswers[i] !== null) {
+                if (selectedAnswers[i] === correctIdx) {
+                    correctCount++;
+                    buttons[selectedAnswers[i]].classList.add('correct-highlight');
+                } else {
+                    buttons[selectedAnswers[i]].classList.add('wrong-highlight');
+                    buttons[correctIdx].classList.add('correct-highlight');
+                }
+            } else {
+                buttons[correctIdx].classList.add('correct-highlight');
+            }
+
+            if (explanation) explanation.style.display = 'block';
+        }
+
+        showResults(correctCount);
+    };
+
+    function showResults(correctCount) {
+        const modal = document.getElementById('result-modal');
+        const scoreDisplay = document.getElementById('final-score-display');
+        const wrongList = document.getElementById('wrong-questions-list');
+        const feedback = document.getElementById('feedback-msg');
+
+        scoreDisplay.innerText = `${correctCount}/${totalQuestions - 2}`; // subtract 2 listening headers
+
+        const wrongQuestions = [];
+        for (let i = 0; i < totalQuestions; i++) {
+            if (!quizData[i].isListening && selectedAnswers[i] !== quizData[i].correct) {
+                wrongQuestions.push(i + 1);
+            }
+        }
+
+        if (wrongQuestions.length === 0) {
+            wrongList.innerHTML = '<p style="color: var(--correct);">🎉 Chúc mừng! Bạn đã trả lời đúng tất cả các câu!</p>';
+        } else {
+            wrongList.innerHTML = `<p><strong>Câu sai hoặc chưa trả lời:</strong> ${wrongQuestions.join(', ')}</p>`;
+        }
+
+        const percentage = (correctCount / (totalQuestions - 2)) * 100;
+        if (percentage === 100) feedback.innerText = "Xuất sắc! Bạn đạt điểm tuyệt đối! 🌟";
+        else if (percentage >= 80) feedback.innerText = "Làm tốt lắm! Chỉ một chút nữa là hoàn hảo! 🔥";
+        else if (percentage >= 50) feedback.innerText = "Khá tốt, nhưng hãy xem lại các câu sai nhé! 📚";
+        else feedback.innerText = "Cố gắng hơn nữa, hãy ôn tập lại và thử lại nhé! 💪";
+
+        modal.style.display = 'flex';
+    }
+
+    window.closeModal = function() {
+        document.getElementById('result-modal').style.display = 'none';
+    };
+
+    window.resetQuiz = function() {
+        selectedAnswers = new Array(quizData.length).fill(null);
+        answeredCount = 0;
+        timeLeft = 60 * 60;
+        quizSubmitted = false;
+
+        document.getElementById('timer').textContent = '60:00';
+        document.getElementById('timer').classList.remove('warning');
+        document.getElementById('progress-text').innerText = '0';
+
+        if (timerInterval) clearInterval(timerInterval);
+
+        initQuiz();
+        document.querySelectorAll('.hint-container').forEach(el => el.style.display = 'block');
+        startTimer();
+        closeModal();
+    };
+
+    window.onload = function() {
+        initQuiz();
+        startTimer();
+    };
+</script>
+</body>
+</html>
