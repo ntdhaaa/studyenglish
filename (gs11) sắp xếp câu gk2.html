@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(GS11) ÔN TẬP VIẾT LẠI CÂU U678</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8854C0;
+            --secondary: #00C9A7;
+            --correct: #00D26A;
+            --wrong: #FF4757;
+            --background: #f0f3f5;
+            --card-bg: #ffffff;
+            --text-main: #2f3542;
+            --text-light: #57606f;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--background);
+            background-image: radial-gradient(#dcdde1 15%, transparent 16%), radial-gradient(#dcdde1 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            color: var(--text-light);
+            font-weight: 600;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+
+        .timer-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .timer-box {
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 2.2rem;
+            letter-spacing: 5px;
+            box-shadow: 0 8px 0 #5f2a9e;
+            display: inline-block;
+        }
+        .timer-box.warning {
+            background: #ff6b6b;
+            box-shadow: 0 8px 0 #b22234;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+            border: 2px solid #eee;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #f1f2f6;
+            padding-bottom: 10px;
+        }
+
+        .q-tag {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+        
+        .question-text p {
+            margin: 10px 0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #e1e4e8;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.1s;
+            box-shadow: 0 5px 0 #d1d8e0;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+        .option-btn.selected {
+            background: var(--secondary);
+            color: white;
+            border-color: #008f7a;
+            box-shadow: 0 5px 0 #006b5c;
+        }
+        .option-btn:active {
+            box-shadow: 0 2px 0 #d1d8e0;
+            transform: translateY(3px);
+        }
+        .option-btn.correct-highlight {
+            background-color: var(--correct);
+            color: white;
+            border-color: #00b85c;
+            box-shadow: 0 5px 0 #008f47;
+        }
+        .option-btn.wrong-highlight {
+            background-color: var(--wrong);
+            color: white;
+            border-color: #ff2e40;
+            box-shadow: 0 5px 0 #d61e30;
+        }
+
+        .hint-container {
+            margin: 15px 0 5px;
+            display: none;
+        }
+        .hint-btn {
+            background: #f0f4fa;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 0 #b1a0d0;
+        }
+        .hint-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .hint-content {
+            display: none;
+            background: #f8f0fc;
+            border-left: 5px solid var(--primary);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #2c3e50;
+            animation: slideDown 0.3s ease;
+        }
+
+        .explanation-box {
+            display: none;
+            margin-top: 20px;
+            background-color: #f8f0fc;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            animation: slideDown 0.5s ease;
+        }
+        .explanation-header {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .explanation-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #4b4b4b;
+            white-space: pre-wrap;
+        }
+
+        .footer-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #5f2a9e;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .submit-btn:active {
+            box-shadow: 0 3px 0 #5f2a9e;
+            transform: translateY(3px);
+        }
+        .retry-footer-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #008f7a;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .retry-footer-btn:active {
+            box-shadow: 0 3px 0 #008f7a;
+            transform: translateY(3px);
+        }
+        .score-display {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            animation: popIn 0.5s;
+            border: 5px solid var(--secondary);
+        }
+        .final-score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+        .wrong-list {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f0fc;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .feedback-text {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+        .retry-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #008f7a;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-container">
+    <h1>(GS11) ÔN TẬP VIẾT LẠI CÂU U678</h1>
+    <h3>24 câu sắp xếp - 60 phút (Đã xáo trộn đáp án)</h3>
+    <div class="timer-bar">
+        <div class="timer-box" id="timer">60:00</div>
+    </div>
+</div>
+
+<div class="quiz-container" id="quiz-area"></div>
+
+<div class="footer-controls">
+    <div class="score-display">Đã chọn: <span id="progress-text">0</span>/<span id="total-text">24</span></div>
+    <button class="submit-btn" onclick="submitQuiz()">NỘP BÀI</button>
+    <button class="retry-footer-btn" onclick="resetQuiz()">LÀM LẠI</button>
+</div>
+
+<div class="modal-overlay" id="result-modal">
+    <div class="modal-content">
+        <h2 style="color: var(--secondary); font-weight: 800;">KẾT QUẢ</h2>
+        <div class="final-score" id="final-score-display">0/24</div>
+        <div id="wrong-questions-list" class="wrong-list"></div>
+        <p class="feedback-text" id="feedback-msg"></p>
+        <div>
+            <button class="submit-btn" onclick="closeModal()">ĐÓNG</button>
+            <button class="retry-btn" onclick="resetQuiz()">LÀM LẠI</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Original quiz data with correct answers
+    const originalQuizData = [
+        // Question 1
+        {
+            "question": "Question 1: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Additionally, historical buildings tell stories about architectural techniques and social customs of different eras.\n\nb. For example, the Angkor Wat temple complex in Cambodia reveals sophisticated engineering techniques from the 12th century.\n\nc. Preserving our cultural heritage is essential for maintaining our connection to the past.\n\nd. In conclusion, our heritage serves as a bridge between past and present, making preservation efforts vital for cultural continuity.\n\ne. Last but not least, traditional festivals like Chinese New Year demonstrate how customs strengthen community bonds across generations.",
+            "options": ["A. c-a-b-e-d", "B. a-b-c-e-d", "C. c-b-a-e-d", "D. c-e-b-a-d"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn hoàn chỉnh.",
+            "explanation": "Câu c mở đầu đoạn văn, nêu rõ tầm quan trọng của việc bảo tồn di sản văn hóa.\nCâu a tiếp theo bổ sung thông tin về các công trình lịch sử.\nCâu b đưa ra ví dụ cụ thể về Angkor Wat, làm rõ cho câu a.\nCâu e nhấn mạnh thêm về các lễ hội truyền thống, liên kết với cộng đồng.\nCâu d kết luận đoạn văn, nhấn mạnh vai trò của di sản trong việc kết nối quá khứ và hiện tại.\n\nDịch nghĩa: \"Bảo tồn di sản văn hóa của chúng ta là điều cần thiết để duy trì kết nối với quá khứ. Thêm vào đó, các công trình lịch sử kể những câu chuyện về kỹ thuật kiến trúc và phong tục xã hội của các thời kỳ khác nhau. Ví dụ, quần thể đền Angkor Wat ở Campuchia tiết lộ những kỹ thuật kỹ sư tinh vi từ thế kỷ 12. Cuối cùng, di sản của chúng ta đóng vai trò như một cây cầu giữa quá khứ và hiện tại, khiến cho những nỗ lực bảo tồn trở nên quan trọng cho sự liên tục văn hóa.\""
+        },
+        // Question 2
+        {
+            "question": "Question 2: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful letter.\n\nDear Ms. Johnson,\n\na. I hope this letter finds you well.\n\nb. Given your experience in career counseling, I would greatly value your advice on choosing the right path.\n\nc. I am writing to seek your guidance regarding education options after graduating from high school.\n\nd. Thank you for your time and consideration.\n\ne. I look forward to hearing from you soon.",
+            "options": ["A. c-a-b-d-e", "B. a-c-b-d-e", "C. b-a-c-d-e", "D. c-b-a-d-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành bức thư hoàn chỉnh.",
+            "explanation": "Câu c mở đầu bức thư, nêu rõ lý do viết thư.\nCâu a là lời chào hỏi, thể hiện sự quan tâm đến tình hình của người nhận.\nCâu b nêu rõ lý do tìm kiếm sự hướng dẫn từ Ms. Johnson.\nCâu d là lời cảm ơn, kết thúc bức thư.\nCâu e thể hiện mong muốn nhận được phản hồi.\n\nDịch nghĩa: \"Kính gửi bà Johnson, tôi hy vọng bức thư này tìm thấy bà trong tình trạng tốt. Tôi viết thư để tìm kiếm sự hướng dẫn của bà về các lựa chọn giáo dục sau khi tốt nghiệp trung học. Cảm ơn bà đã dành thời gian và sự quan tâm. Tôi mong sớm nhận được phản hồi từ bà. Trân trọng.\""
+        },
+        // Question 3
+        {
+            "question": "Question 3: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of utterances to make a meaningful exchange.\n\na. Sarah: \"That's a great start! Have you thought about opening a bank account too?\"\n\nb. Mark: \"I've been learning to cook simple meals and doing my own laundry.\"\n\nc. Sarah: \"Hey Mark! I heard you're preparing for college. What steps are you taking to become more independent?\"\n\nd. Mark: \"Yes, I want to learn how to manage my finances properly.\"\n\ne. Sarah: \"Well, it sounds like you're really on the right track. Keep it up!\"",
+            "options": ["A. c-b-a-d-e", "B. a-c-b-d-e", "C. b-a-c-d-e", "D. c-a-b-d-e"],
+            "correct": 2,
+            "hint": "Chọn thứ tự hợp lý để tạo thành hội thoại tự nhiên.",
+            "explanation": "Câu b mở đầu cuộc hội thoại, Sarah hỏi Mark về sự chuẩn bị cho đại học.\nCâu c là câu trả lời của Mark về những gì anh ấy đã làm để trở nên độc lập.\nCâu a là phản hồi của Sarah, khuyến khích Mark mở tài khoản ngân hàng.\nCâu d là câu trả lời của Mark về mong muốn quản lý tài chính.\nCâu e là lời động viên của Sarah.\n\nDịch nghĩa: \"Sarah: 'Này Mark! Tôi nghe nói bạn đang chuẩn bị cho đại học. Bạn đang thực hiện những bước nào để trở nên độc lập hơn?' Mark: 'Tôi đã học nấu những món ăn đơn giản và tự giặt đồ.' Sarah: 'Đó là một khởi đầu tuyệt vời! Bạn đã nghĩ đến việc mở tài khoản ngân hàng chưa?'\""
+        },
+        // Question 4
+        {
+            "question": "Question 4: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Consequently, many artifacts and traditional skills are disappearing faster for skyscrapers.\n\nb. Lastly, digital technology offers new opportunities to preserve and share cultural knowledge globally.\n\nc. Our cultural heritage faces numerous challenges in the modern world.\n\nd. Additionally, limited funding makes it difficult to maintain museums and cultural centers properly.\n\ne. In conclusion, despite these obstacles, urgent action is needed to protect our heritage for future generations.\n\nf. To begin with, rapid urbanization threatens historical sites and traditional neighborhoods worldwide.",
+            "options": ["A. c-f-d-b-e", "B. c-f-b-d-e", "C. c-f-d-e-b", "D. c-f-d-a-e-b"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn hoàn chỉnh.",
+            "explanation": "Câu c mở đầu đoạn văn, nêu rõ thách thức đối với di sản văn hóa.\nCâu f tiếp theo nêu ra một trong những thách thức đó là đô thị hóa nhanh chóng.\nCâu d bổ sung thông tin về việc thiếu kinh phí.\nCâu b chỉ ra hậu quả của những thách thức này.\nCâu e kết luận rằng cần hành động khẩn cấp để bảo vệ di sản.\n\nDịch nghĩa: \"Di sản văn hóa của chúng ta đang đối mặt với nhiều thách thức trong thế giới hiện đại. Để bắt đầu, đô thị hóa nhanh chóng đang đe dọa các địa điểm lịch sử và khu phố truyền thống trên toàn cầu. Thêm vào đó, việc thiếu kinh phí khiến cho việc duy trì các bảo tàng và trung tâm văn hóa trở nên khó khăn. Do đó, nhiều hiện vật và kỹ năng truyền thống đang biến mất nhanh chóng. Cuối cùng, mặc dù có những trở ngại này, hành động khẩn cấp là cần thiết để bảo vệ di sản của chúng ta cho các thế hệ tương lai.\""
+        },
+        // Question 5
+        {
+            "question": "Question 5: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful letter.\n\nDear Students,\n\na. We offer various programs including vocational training, university preparation courses, and apprenticeships.\n\nb. Our career counselors are available to help you explore different pathways based on your interests and abilities.\n\nc. I am pleased to inform you about the educational opportunities available at our institution for school-leavers.\n\nd. We believe that every student deserves the chance to pursue their dreams and achieve their goals.\n\ne. Please contact us to schedule an appointment and learn more about these exciting options.",
+            "options": ["A. c-a-b-d-e", "B. a-b-c-d-e", "C. b-c-a-d-e", "D. c-a-b-e-d"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành bức thư hoàn chỉnh.",
+            "explanation": "Câu c mở đầu bức thư, nêu rõ lý do viết thư.\nCâu a mô tả các chương trình mà trường cung cấp.\nCâu b nêu rõ sự hỗ trợ từ các cố vấn nghề nghiệp.\nCâu d khuyến khích liên hệ để tìm hiểu thêm.\nCâu e kết thúc bức thư với lời nhắc nhở.\n\nDịch nghĩa: \"Kính gửi các sinh viên, tôi rất vui được thông báo về các cơ hội giáo dục có sẵn tại cơ sở của chúng tôi cho những người vừa tốt nghiệp. Chúng tôi cung cấp nhiều chương trình bao gồm đào tạo nghề, khóa học chuẩn bị đại học và thực tập. Các cố vấn nghề nghiệp của chúng tôi sẵn sàng giúp bạn khám phá các con đường khác nhau dựa trên sở thích và khả năng của bạn. Xin vui lòng liên hệ với chúng tôi để lên lịch hẹn và tìm hiểu thêm về những lựa chọn thú vị này. Trân trọng.\""
+        },
+        // Question 6
+        {
+            "question": "Question 6: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of utterances to make a meaningful exchange.\n\na. Tom: \"I'm planning to get a part-time job to earn some spending money.\"\n\nb. Lisa: \"Hi Tom! I've been thinking about our conversation last week. What's your biggest goal for becoming more independent this year?\"\n\nc. Tom: \"Exactly! I want to rely less on my parents for everything.\"\n\nd. Lisa: \"That sounds like a smart plan. It will teach you responsibility too.\"\n\ne. Lisa: \"Well, independence is definitely worth working towards. Thanks for sharing your plans with me!\"",
+            "options": ["A. b-a-c-d-e", "B. a-b-c-d-e", "C. b-c-a-d-e", "D. a-c-b-d-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành hội thoại tự nhiên.",
+            "explanation": "Câu b mở đầu cuộc hội thoại, Lisa hỏi Tom về sự chuẩn bị cho đại học.\nCâu a là câu trả lời của Tom về những gì anh ấy đã làm để trở nên độc lập.\nCâu c là phản hồi của Tom về việc muốn trở nên độc lập hơn.\nCâu d là lời động viên của Lisa.\nCâu e kết thúc cuộc hội thoại với sự khẳng định về giá trị của sự độc lập.\n\nDịch nghĩa: \"Lisa: 'Này Tom! Tôi đã nghĩ về cuộc trò chuyện của chúng ta tuần trước. Mục tiêu lớn nhất của bạn để trở nên độc lập hơn trong năm nay là gì?' Tom: 'Tôi đang dự định tìm một công việc bán thời gian để kiếm thêm tiền tiêu.' Lisa: 'Nghe có vẻ như một kế hoạch thông minh. Nó cũng sẽ dạy bạn về trách nhiệm.'\""
+        },
+        // Question 7
+        {
+            "question": "Question 7: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Specifically, when we lose our heritage, we lose part of our collective memory and wisdom.\n\nb. For instance, traditional festivals like Diwali in India bring families together while teaching children about ancient stories and values.\n\nc. Cultural heritage plays a vital role in shaping our identity and sense of belonging.\n\nd. Furthermore, preserving heritage sites such as Machu Picchu creates opportunities for education and cultural tourism.\n\ne. Therefore, protecting our cultural legacy should be a priority for every society.\n\nf. Without doubt, heritage preservation requires collective effort from governments, communities, and individuals working together.",
+            "options": ["A. c-f-b-e-d", "B. c-b-a-f-d-e", "C. c-a-b-d-e", "D. c-f-a-b-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn hoàn chỉnh.",
+            "explanation": "Câu c mở đầu đoạn văn, nêu rõ vai trò của di sản văn hóa.\nCâu f tiếp theo nhấn mạnh rằng việc bảo tồn di sản cần nỗ lực tập thể.\nCâu b đưa ra ví dụ về lễ hội truyền thống.\nCâu e kết luận rằng việc bảo vệ di sản văn hóa là ưu tiên của mọi xã hội.\nCâu d nói về việc bảo tồn các địa điểm di sản.\n\nDịch nghĩa: \"Di sản văn hóa đóng vai trò quan trọng trong việc hình thành bản sắc và cảm giác thuộc về của chúng ta. Không còn nghi ngờ gì nữa, việc bảo tồn di sản đòi hỏi nỗ lực tập thể từ chính phủ, cộng đồng và cá nhân làm việc cùng nhau. Ví dụ, các lễ hội truyền thống như Diwali ở Ấn Độ mang các gia đình lại gần nhau trong khi dạy trẻ em về những câu chuyện và giá trị cổ xưa.\""
+        },
+        // Question 8
+        {
+            "question": "Question 8: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful letter.\n\nDear Career Advisor,\n\na. I am particularly interested in fields related to technology and environmental science.\n\nb. Could you please provide information about scholarship opportunities and admission requirements?\n\nc. I am writing to inquire about higher education options suitable for my academic background and career interests.\n\nd. I have maintained good grades throughout high school and participated in various extracurricular activities.\n\ne. I would be grateful for any guidance you can offer.",
+            "options": ["A. c-a-b-d-e", "B. a-b-c-d-e", "C. b-c-a-d-e", "D. c-a-d-b-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành bức thư hoàn chỉnh.",
+            "explanation": "Câu c mở đầu bức thư, nêu rõ lý do viết thư.\nCâu a nêu rõ lĩnh vực quan tâm của người viết.\nCâu b yêu cầu thông tin về học bổng và yêu cầu nhập học.\nCâu d bổ sung thông tin về thành tích học tập.\nCâu e thể hiện lòng biết ơn về sự hướng dẫn.\n\nDịch nghĩa: \"Kính gửi Cố vấn Nghề nghiệp, tôi viết thư để hỏi về các lựa chọn giáo dục đại học phù hợp với nền tảng học thuật và sở thích nghề nghiệp của tôi. Tôi đặc biệt quan tâm đến các lĩnh vực liên quan đến công nghệ và khoa học môi trường. Tôi đã duy trì điểm số tốt trong suốt thời gian học trung học và tham gia vào nhiều hoạt động ngoại khóa khác nhau. Tôi sẽ rất biết ơn nếu bạn có thể cung cấp thông tin về các cơ hội học bổng và yêu cầu nhập học. Trân trọng.\""
+        },
+        // Question 9
+        {
+            "question": "Question 9: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of utterances to make a meaningful exchange.\n\na. Emma: \"You know what, David? I've been wondering about something. Why do you think it's so important to preserve our cultural heritage?\"\n\nb. David: \"That's a great question! I believe it's because heritage connects us to our ancestors and helps us understand who we are.\"\n\nc. Emma: \"That makes perfect sense. So how can young people like us get more involved?\"\n\nd. David: \"Well, they can volunteer at museums, learn traditional crafts, or participate in cultural festivals.\"\n\ne. Emma: \"I'd love to try learning traditional pottery making! Thanks for the inspiration!\"",
+            "options": ["A. a-b-c-d-e", "B. a-c-b-d-e", "C. b-a-c-d-e", "D. a-b-d-c-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành hội thoại tự nhiên.",
+            "explanation": "Câu a mở đầu cuộc hội thoại, Emma đặt câu hỏi về tầm quan trọng của việc bảo tồn di sản văn hóa.\nCâu b là câu trả lời của David, giải thích lý do.\nCâu c là phản hồi của Emma, thể hiện sự đồng tình và hỏi thêm.\nCâu d là câu trả lời của David về cách thức tham gia.\nCâu e là phản hồi của Emma, thể hiện sự hứng thú.\n\nDịch nghĩa: \"Emma: 'Bạn biết không, David? Tôi đã tự hỏi về điều gì đó. Tại sao bạn nghĩ rằng việc bảo tồn di sản văn hóa lại quan trọng như vậy?' David: 'Đó là một câu hỏi tuyệt vời! Tôi tin rằng di sản kết nối chúng ta với tổ tiên và giúp chúng ta hiểu ai là chúng ta.' Emma: 'Điều đó thật hợp lý. Vậy làm thế nào mà những người trẻ như chúng ta có thể tham gia nhiều hơn?' David: 'Chà, họ có thể tình nguyện tại các bảo tàng, học các nghề thủ công truyền thống, hoặc tham gia vào các lễ hội văn hóa.'\""
+        },
+        // Question 10
+        {
+            "question": "Question 10: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Initially, learning practical skills like cooking and budgeting helps young people manage daily responsibilities.\n\nb. Becoming independent is a crucial step in personal development for young adults.\n\nc. Subsequently, taking on part-time work teaches valuable lessons about time management and professional behavior.\n\nd. Ultimately, making decisions independently builds confidence and critical thinking abilities.\n\ne. In summary, developing independence through these various steps prepares young people for successful adult lives.",
+            "options": ["A. b-a-c-d-e", "B. a-b-c-d-e", "C. b-c-a-d-e", "D. a-b-d-c-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn hoàn chỉnh.",
+            "explanation": "Câu b mở đầu đoạn văn, nêu rõ tầm quan trọng của việc trở nên độc lập.\nCâu a tiếp theo mô tả các kỹ năng thực tế cần thiết.\nCâu c bổ sung thông tin về việc làm bán thời gian.\nCâu d nhấn mạnh lợi ích của việc ra quyết định độc lập.\nCâu e kết luận rằng việc phát triển sự độc lập chuẩn bị cho cuộc sống trưởng thành thành công.\n\nDịch nghĩa: \"Trở nên độc lập là một bước quan trọng trong sự phát triển cá nhân của người lớn trẻ. Ban đầu, việc học các kỹ năng thực tế như nấu ăn và lập ngân sách giúp người trẻ quản lý các trách nhiệm hàng ngày. Tiếp theo, việc đảm nhận công việc bán thời gian dạy những bài học quý giá về quản lý thời gian và hành vi chuyên nghiệp. Cuối cùng, việc ra quyết định độc lập xây dựng sự tự tin và khả năng tư duy phản biện.\""
+        },
+        // Question 11
+        {
+            "question": "Question 11: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of utterances to make a meaningful exchange.\n\na. Sarah: \"Even better! I discovered that a family of hummingbirds built a tiny nest in my rose bush. The nest is so small, it's about the size of a walnut!\"\n\nb. Sarah: \"Hey Mike, I noticed you switched to vaping recently. What made you make the change?\"\n\nc. Mike: \"Yeah, I thought it would be a healthier alternative to traditional cigarettes. Plus, these flavored ones taste pretty good.\"",
+            "options": ["A. b-a-c", "B. a-c-b", "C. c-a-b", "D. a-b-c"],
+            "correct": 1,
+            "hint": "Chọn thứ tự hợp lý để tạo thành hội thoại tự nhiên.",
+            "explanation": "Câu b mở đầu cuộc hội thoại, Sarah hỏi Mike về việc chuyển sang vaping.\nCâu a là câu trả lời của Mike, mô tả phát hiện của Sarah về tổ chim.\nCâu c là phản hồi của Mike, giải thích lý do tại sao anh ấy chuyển sang vaping.\n\nDịch nghĩa: \"Sarah: 'Này Mike, tôi đã nhận thấy bạn chuyển sang vaping gần đây. Điều gì khiến bạn thay đổi?' Mike: 'Vâng, tôi nghĩ đó sẽ là một sự thay thế lành mạnh hơn cho thuốc lá truyền thống. Hơn nữa, những loại có hương vị này thì rất ngon!'\""
+        },
+        // Question 12
+        {
+            "question": "Question 12: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of utterances to make a meaningful exchange.\n\na. Alex: Fifty pineapples? How does that even happen?\n\nb. Emma: So, I was teaching my grandmother how to use her new smartphone, right? And she accidentally ordered 50 pineapples through an online grocery app!\n\nc. Emma: She kept tapping the 'add to cart' button because she thought the app was frozen! But wait, it gets better. When the delivery arrived, she was so embarrassed that she told the driver she runs a secret tropical smoothie business from her retirement home!\n\nd. Emma: Jack, I need your honest opinion on something completely ridiculous that happened to me yesterday.\n\ne. Jack: Oh, this should be good. What happened?",
+            "options": ["A. d-e-b-c-a", "B. d-e-b-a-c", "C. a-b-c-d-e", "D. b-c-d-e-a"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành hội thoại tự nhiên.",
+            "explanation": "Câu d mở đầu cuộc hội thoại, Emma yêu cầu Jack cho ý kiến về một điều kỳ quặc.\nCâu e là phản ứng của Jack, thể hiện sự quan tâm.\nCâu b là câu chuyện của Emma về việc bà cô đã đặt hàng 50 quả dứa.\nCâu c là chi tiết thú vị hơn về tình huống.\nCâu a là phản ứng của Jack về số lượng dứa.\n\nDịch nghĩa: \"Emma: 'Jack, tôi cần ý kiến chân thành của bạn về một điều hoàn toàn kỳ quặc đã xảy ra với tôi hôm qua.' Jack: 'Ồ, điều này chắc chắn sẽ thú vị. Chuyện gì vậy?' Emma: 'Vậy là, tôi đang dạy bà tôi cách sử dụng smartphone mới của bà, đúng không? Và bà đã vô tình đặt hàng 50 quả dứa qua một ứng dụng mua sắm trực tuyến!'\""
+        },
+        // Question 13
+        {
+            "question": "Question 13: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful letter.\n\nDear Tom,\n\na. The best part? They provide mentorship and connect you with potential investors. It's like the ultimate 'having your cake and eating it too' situation—your parents get their wish for your degree, and you get to chase your startup dreams!\n\nb. Get this—there's a new program that lets you build your startup WHILE getting a degree online. Perfect for your AI language app, right?\n\nc. Hope you're surviving the post-graduation chaos! I just attended this amazing workshop that made me think of you.\n\nd. There's an info session next Thursday downtown. Want to join? We can grab those ridiculous rainbow bubble teas afterward!\n\ne. Let me know soon! Your still-undecided friend, LK",
+            "options": ["A. c-b-a-d-e", "B. c-a-b-d-e", "C. b-c-a-d-e", "D. a-b-c-d-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành bức thư tự nhiên.",
+            "explanation": "Câu c mở đầu bức thư, thể hiện sự quan tâm đến Tom.\nCâu b giới thiệu về chương trình mới.\nCâu a nêu rõ lợi ích của chương trình.\nCâu d mời Tom tham gia buổi thông tin.\nCâu e kết thúc bức thư với lời nhắc nhở.\n\nDịch nghĩa: \"Kính gửi Tom, hy vọng bạn đang sống sót qua sự hỗn loạn sau tốt nghiệp! Tôi vừa tham dự một hội thảo tuyệt vời khiến tôi nghĩ đến bạn. Có một chương trình mới cho phép bạn xây dựng startup trong khi học trực tuyến. Phù hợp cho ứng dụng ngôn ngữ AI của bạn, đúng không? Phần tốt nhất? Họ cung cấp sự hướng dẫn và kết nối bạn với các nhà đầu tư tiềm năng.\""
+        },
+        // Question 14
+        {
+            "question": "Question 14: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Smart sensors now watch over ancient temples, while artificial intelligence helps restore centuries-old artworks. This marriage of old and new proves that technology can be a faithful guardian of our past, not its enemy.\n\nb. Young voices are becoming heritage guardians in unexpected ways. Through TikTok dances celebrating traditional ceremonies and Instagram stories showcasing ancestral recipes, social media has become a powerful bridge between generations, making history trendy and accessible.\n\nc. Like delicate threads weaving through time, our heritage connects past and present. Today's digital tools transform ancient stories into vibrant virtual experiences, breathing new life into fading traditions through immersive technologies and interactive platforms.\n\nd. The future of heritage preservation lies not in choosing between tradition and innovation, but in their harmonious dance. Each step forward honors the past while embracing tomorrow's possibilities, ensuring our cultural legacy continues to inspire and evolve.\n\ne. In bustling city streets and quiet villages alike, communities are turning traditional festivals into modern celebrations. Ancient crafts find new expressions through 3D printing, while age-old stories captivate audiences through augmented reality experiences.",
+            "options": ["A. b-e-a-d-c", "B. a-b-c-d-e", "C. c-a-b-d-e", "D. e-b-a-c-d"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn tự nhiên.",
+            "explanation": "Câu b mở đầu đoạn văn, nói về vai trò của giới trẻ trong việc bảo tồn di sản.\nCâu e tiếp theo mô tả cách mà các cộng đồng đang hiện đại hóa các lễ hội truyền thống.\nCâu a nêu rõ sự kết hợp giữa công nghệ và di sản.\nCâu d kết luận rằng tương lai của việc bảo tồn di sản nằm ở sự hòa hợp giữa truyền thống và đổi mới.\nCâu c nhấn mạnh rằng di sản kết nối quá khứ và hiện tại.\n\nDịch nghĩa: \"Giới trẻ đang trở thành những người bảo vệ di sản theo những cách bất ngờ. Qua những điệu nhảy TikTok kỷ niệm các nghi lễ truyền thống và những câu chuyện Instagram giới thiệu các công thức cổ truyền, mạng xã hội đã trở thành một cầu nối mạnh mẽ giữa các thế hệ, khiến lịch sử trở nên thời thượng và dễ tiếp cận.\""
+        },
+        // Question 15
+        {
+            "question": "Question 15: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Between the pixels of our screens and the beats of our hearts, we learn that strength flows from both solitude and connection. Independence isn't walking alone; it's choosing when to lead and when to lean.\n\nb. In the end, independence is a love letter to ourselves - not written in rebellion, but in the quiet confidence of knowing who we are and daring to live that truth, unapologetically and authentically.\n\nc. Like a phoenix rising, true independence ignites from within. It's not just breaking free from old chains, but discovering the power to forge new paths with wisdom and grace, turning challenges into stepping stones.\n\nd. Modern independence is an art of balance - mastering digital tools while staying grounded in timeless values. It's building virtual empires from bedroom desks, yet knowing the worth of a handshake and a kept promise.\n\ne. Financial freedom starts with a mindset before a bank balance. It's about crafting a life rich in choices, where success is measured not in dollars, but in the ability to sleep peacefully with our decisions.",
+            "options": ["A. b-e-d-a-c", "B. c-e-d-a-b", "C. a-b-c-d-e", "D. b-c-d-e-a"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn tự nhiên.",
+            "explanation": "Câu b mở đầu đoạn văn, mô tả sự độc lập như một bức thư tình gửi cho chính mình.\nCâu e nêu rõ rằng tự do tài chính bắt đầu từ tư duy.\nCâu d nói về sự cân bằng trong sự độc lập hiện đại.\nCâu a kết luận rằng sức mạnh đến từ sự kết nối và cô đơn.\nCâu c mô tả sự độc lập như một ngọn lửa từ bên trong.\n\nDịch nghĩa: \"Cuối cùng, sự độc lập là một bức thư tình gửi cho chính mình - không được viết trong sự nổi loạn, mà trong sự tự tin yên tĩnh của việc biết ai là chúng ta và dám sống với sự thật đó, không xin lỗi và chân thật.\""
+        },
+        // Question 16
+        {
+            "question": "Question 16: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Enter the \"Skills Safari\" revolution—students now collect micro-certifications like digital badges, building portfolio NFTs that showcase their talents. Companies are recruiting directly from Discord communities and Metaverse academies, where learning happens through gamified challenges.\n\nb. Welcome to 2044, where school-leavers are becoming \"learning architects,\" designing education paths that traditional career counselors never imagined. Picture virtual reality medical training in the morning, cryptocurrency economics at lunch, and robotics apprenticeships by sunset.\n\nc. AI-powered personal learning assistants now craft custom curricula by analyzing global job trends and individual passion patterns. Students collaborate in holographic study pods with peers from Tokyo to Toronto, breaking down geographical learning barriers.\n\nd. Tomorrow's education isn't about following a path—it's about weaving your own digital-physical learning tapestry. Some are even calling it the \"Education Metarmorphosis,\" where qualifications evolve as fast as technology itself.\n\ne. The \"Reverse University\" trend is gaining momentum—start working at tech companies first, then earn your degree while innovating on real projects. Silicon Valley calls this \"earn-learn-return,\" and it's reshaping traditional education models.",
+            "options": ["A. b-e-c-d-a", "B. a-b-c-d-e", "C. c-a-b-d-e", "D. e-b-a-c-d"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn tự nhiên.",
+            "explanation": "Câu b mở đầu đoạn văn, mô tả tương lai của giáo dục.\nCâu e nêu rõ xu hướng \"Reverse University\".\nCâu c nói về các trợ lý học tập cá nhân sử dụng AI.\nCâu d kết luận rằng giáo dục tương lai không chỉ là theo đuổi một con đường.\nCâu a mở rộng về cách mà sinh viên đang thu thập chứng chỉ.\n\nDịch nghĩa: \"Chào mừng đến với năm 2044, nơi mà những người vừa tốt nghiệp đang trở thành 'kiến trúc sư học tập', thiết kế các con đường giáo dục mà các cố vấn nghề nghiệp truyền thống chưa bao giờ tưởng tượng.\""
+        },
+        // Question 17
+        {
+            "question": "Question 17: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Our heritage isn't just a collection of relics; it's a living, breathing force that evolves with each sunrise, teaching us that the best way to honor our past is to help it bloom in the garden of now.\n\nb. Young hands learn ancient crafts with renewed purpose, breathing fresh life into forgotten arts. Traditional music finds new rhythms in contemporary beats, creating bridges between yesterday and tomorrow.\n\nc. Digital archives now cradle our oldest tales, transforming yellowed manuscripts into eternal pixels, while virtual museums invite curious minds to wander through corridors of history from anywhere in the world.\n\nd. In bustling cities, traditional festivals burst like fireworks against concrete skies, while in quiet villages, grandmothers pass down sacred recipes like precious jewels, each ingredient carrying centuries of love and wisdom.\n\ne. Like delicate threads woven through time, our heritage whispers stories of ancestors who painted their dreams across cave walls and carved their hopes into ancient stones. Each generation adds new colors to this tapestry of tradition, keeping age-old customs dancing in modern hearts.",
+            "options": ["A. a-b-d-e-c", "B. b-c-d-e-a", "C. c-a-b-d-e", "D. e-a-b-d-c"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn tự nhiên.",
+            "explanation": "Câu a mở đầu đoạn văn, nêu rõ vai trò của di sản văn hóa.\nCâu b tiếp theo mô tả cách mà giới trẻ học các nghề thủ công cổ xưa.\nCâu d nói về các lễ hội truyền thống.\nCâu e kết luận rằng di sản là một phần của cuộc sống hiện tại.\nCâu c mở rộng về cách mà công nghệ giúp bảo tồn di sản.\n\nDịch nghĩa: \"Di sản của chúng ta không chỉ là một tập hợp các hiện vật; nó là một lực lượng sống động, thở, phát triển với mỗi bình minh, dạy chúng ta rằng cách tốt nhất để tôn vinh quá khứ của chúng ta là giúp nó nở rộ trong khu vườn của hiện tại.\""
+        },
+        // Question 18
+        {
+            "question": "Question 18: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful letter.\n\nDear Tommy,\n\na. I remember when I first moved out—it was both exciting and scary at the same time.\n\nb. Just remember that becoming independent doesn't mean you have to figure everything out alone. We're still here for you, and it's okay to ask for help when you need it.\n\nc. I heard from Mom that you're planning to move out and get your own apartment next month. As your big brother, I couldn't be more proud of this big step you're taking.\n\nd. I know you'll do great things on your own, but don't forget to call home once in a while.\n\ne. Take care of yourself, and let me know if you need any advice about apartment hunting!",
+            "options": ["A. c-a-b-d-e", "B. a-b-c-d-e", "C. b-c-a-d-e", "D. c-b-a-e-d"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành bức thư tự nhiên.",
+            "explanation": "Câu c mở đầu bức thư, thông báo về việc Tommy dự định chuyển ra ngoài.\nCâu a tiếp theo mô tả cảm xúc của người viết khi lần đầu chuyển ra ngoài.\nCâu b nêu rõ rằng việc trở nên độc lập không có nghĩa là phải tự mình làm mọi thứ.\nCâu d khuyến khích Tommy gọi điện về nhà.\nCâu e kết thúc bức thư với lời nhắc nhở và đề nghị giúp đỡ.\n\nDịch nghĩa: \"Kính gửi Tommy, tôi nghe từ mẹ rằng bạn đang có kế hoạch chuyển ra ngoài và lấy căn hộ riêng vào tháng tới. Là anh trai của bạn, tôi không thể tự hào hơn về bước tiến lớn này mà bạn đang thực hiện. Tôi nhớ khi tôi lần đầu chuyển ra ngoài - đó vừa là điều thú vị vừa là điều đáng sợ. Chỉ cần nhớ rằng việc trở nên độc lập không có nghĩa là bạn phải tự mình giải quyết mọi thứ. Chúng tôi vẫn ở đây vì bạn, và bạn có thể hỏi giúp đỡ khi cần. Hãy chăm sóc bản thân, và cho tôi biết nếu bạn cần bất kỳ lời khuyên nào về việc tìm căn hộ!\""
+        },
+        // Question 19
+        {
+            "question": "Question 19: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Street photographers document vanishing architectural gems, transforming urban decay into powerful online exhibitions that spark preservation movements.\n\nb. In the age of digital museums and virtual reality tours, preserving our heritage has taken an unexpected turn. Traditional artifacts now dance with technology, creating an immersive bridge between past and present.\n\nc. Our heritage isn't just surviving—it's evolving, finding new homes in pixels and platforms while keeping its soul intact.\n\nd. Local communities are turning to social media platforms, where grandparents share ancient recipes through TikTok videos, keeping culinary traditions alive in bite-sized clips.\n\ne. Young artists are reimagining centuries-old folklore through digital art, breathing new life into stories that once lived only in dusty books.",
+            "options": ["A. b-e-a-d-c", "B. b-a-e-d-c", "C. c-b-e-a-d", "D. a-b-c-d-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn tự nhiên.",
+            "explanation": "Câu b mở đầu đoạn văn, giới thiệu về việc bảo tồn di sản trong thời đại số.\nCâu e tiếp theo mô tả cách mà các nghệ sĩ trẻ đang làm mới di sản văn hóa.\nCâu a nêu rõ sự kết hợp giữa công nghệ và di sản.\nCâu d nói về việc cộng đồng sử dụng mạng xã hội để giữ gìn truyền thống.\nCâu c kết luận rằng di sản đang phát triển và tìm kiếm hình thức mới.\n\nDịch nghĩa: \"Trong thời đại của các bảo tàng số và các tour du lịch thực tế ảo, việc bảo tồn di sản của chúng ta đã có một bước ngoặt bất ngờ. Các hiện vật truyền thống giờ đây hòa quyện với công nghệ, tạo ra một cầu nối sống động giữa quá khứ và hiện tại.\""
+        },
+        // Question 20
+        {
+            "question": "Question 20: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Enter the \"Skills Safari\" revolution—students now collect micro-certifications like digital badges, building portfolio NFTs that showcase their talents. Companies are recruiting directly from Discord communities and Metaverse academies, where learning happens through gamified challenges.\n\nb. Welcome to 2044, where school-leavers are becoming \"learning architects,\" designing education paths that traditional career counselors never imagined. Picture virtual reality medical training in the morning, cryptocurrency economics at lunch, and robotics apprenticeships by sunset.\n\nc. AI-powered personal learning assistants now craft custom curricula by analyzing global job trends and individual passion patterns. Students collaborate in holographic study pods with peers from Tokyo to Toronto, breaking down geographical learning barriers.\n\nd. Tomorrow's education isn't about following a path—it's about weaving your own digital-physical learning tapestry. Some are even calling it the \"Education Metarmorphosis,\" where qualifications evolve as fast as technology itself.\n\ne. The \"Reverse University\" trend is gaining momentum—start working at tech companies first, then earn your degree while innovating on real projects. Silicon Valley calls this \"earn-learn-return,\" and it's reshaping traditional education models.",
+            "options": ["A. b-e-c-d-a", "B. a-b-c-d-e", "C. c-a-b-d-e", "D. e-b-a-c-d"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn tự nhiên.",
+            "explanation": "Câu b mở đầu đoạn văn, mô tả tương lai của giáo dục.\nCâu e nêu rõ xu hướng \"Reverse University\".\nCâu c nói về các trợ lý học tập cá nhân sử dụng AI.\nCâu d kết luận rằng giáo dục tương lai không chỉ là theo đuổi một con đường.\nCâu a mở rộng về cách mà sinh viên đang thu thập chứng chỉ.\n\nDịch nghĩa: \"Chào mừng đến với năm 2044, nơi mà những người vừa tốt nghiệp đang trở thành 'kiến trúc sư học tập', thiết kế các con đường giáo dục mà các cố vấn nghề nghiệp truyền thống chưa bao giờ tưởng tượng.\""
+        },
+        // Question 21
+        {
+            "question": "Question 21: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Our heritage isn't just a collection of relics; it's a living, breathing force that evolves with each sunrise, teaching us that the best way to honor our past is to help it bloom in the garden of now.\n\nb. Young hands learn ancient crafts with renewed purpose, breathing fresh life into forgotten arts. Traditional music finds new rhythms in contemporary beats, creating bridges between yesterday and tomorrow.\n\nc. Digital archives now cradle our oldest tales, transforming yellowed manuscripts into eternal pixels, while virtual museums invite curious minds to wander through corridors of history from anywhere in the world.\n\nd. In bustling cities, traditional festivals burst like fireworks against concrete skies, while in quiet villages, grandmothers pass down sacred recipes like precious jewels, each ingredient carrying centuries of love and wisdom.\n\ne. Like delicate threads woven through time, our heritage whispers stories of ancestors who painted their dreams across cave walls and carved their hopes into ancient stones. Each generation adds new colors to this tapestry of tradition, keeping age-old customs dancing in modern hearts.",
+            "options": ["A. a-b-d-e-c", "B. b-c-d-e-a", "C. c-a-b-d-e", "D. e-a-b-d-c"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn tự nhiên.",
+            "explanation": "Câu a mở đầu đoạn văn, nêu rõ vai trò của di sản văn hóa.\nCâu b tiếp theo mô tả cách mà giới trẻ học các nghề thủ công cổ xưa.\nCâu d nói về các lễ hội truyền thống.\nCâu e kết luận rằng di sản là một phần của cuộc sống hiện tại.\nCâu c mở rộng về cách mà công nghệ giúp bảo tồn di sản.\n\nDịch nghĩa: \"Di sản của chúng ta không chỉ là một tập hợp các hiện vật; nó là một lực lượng sống động, thở, phát triển với mỗi bình minh, dạy chúng ta rằng cách tốt nhất để tôn vinh quá khứ của chúng ta là giúp nó nở rộ trong khu vườn của hiện tại.\""
+        },
+        // Question 22
+        {
+            "question": "Question 22: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful letter.\n\nDear Career Advisor,\n\na. I am particularly interested in fields related to technology and environmental science.\n\nb. Could you please provide information about scholarship opportunities and admission requirements?\n\nc. I am writing to inquire about higher education options suitable for my academic background and career interests.\n\nd. I have maintained good grades throughout high school and participated in various extracurricular activities.\n\ne. I would be grateful for any guidance you can offer.",
+            "options": ["A. c-a-b-d-e", "B. a-b-c-d-e", "C. b-c-a-d-e", "D. c-a-d-b-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành bức thư hoàn chỉnh.",
+            "explanation": "Câu c mở đầu bức thư, nêu rõ lý do viết thư.\nCâu a nêu rõ lĩnh vực quan tâm của người viết.\nCâu b yêu cầu thông tin về học bổng và yêu cầu nhập học.\nCâu d bổ sung thông tin về thành tích học tập.\nCâu e thể hiện lòng biết ơn về sự hướng dẫn.\n\nDịch nghĩa: \"Kính gửi Cố vấn Nghề nghiệp, tôi viết thư để hỏi về các lựa chọn giáo dục đại học phù hợp với nền tảng học thuật và sở thích nghề nghiệp của tôi. Tôi đặc biệt quan tâm đến các lĩnh vực liên quan đến công nghệ và khoa học môi trường. Tôi đã duy trì điểm số tốt trong suốt thời gian học trung học và tham gia vào nhiều hoạt động ngoại khóa khác nhau. Tôi sẽ rất biết ơn nếu bạn có thể cung cấp thông tin về các cơ hội học bổng và yêu cầu nhập học. Trân trọng.\""
+        },
+        // Question 23
+        {
+            "question": "Question 23: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of utterances to make a meaningful exchange.\n\na. Emma: \"You know what, David? I've been wondering about something. Why do you think it's so important to preserve our cultural heritage?\"\n\nb. David: \"That's a great question! I believe it's because heritage connects us to our ancestors and helps us understand who we are.\"\n\nc. Emma: \"That makes perfect sense. So how can young people like us get more involved?\"\n\nd. David: \"Well, they can volunteer at museums, learn traditional crafts, or participate in cultural festivals.\"\n\ne. Emma: \"I'd love to try learning traditional pottery making! Thanks for the inspiration!\"",
+            "options": ["A. a-b-c-d-e", "B. a-c-b-d-e", "C. b-a-c-d-e", "D. a-b-d-c-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành hội thoại tự nhiên.",
+            "explanation": "Câu a mở đầu cuộc hội thoại, Emma đặt câu hỏi về tầm quan trọng của việc bảo tồn di sản văn hóa.\nCâu b là câu trả lời của David, giải thích lý do.\nCâu c là phản hồi của Emma, thể hiện sự đồng tình và hỏi thêm.\nCâu d là câu trả lời của David về cách thức tham gia.\nCâu e là phản hồi của Emma, thể hiện sự hứng thú.\n\nDịch nghĩa: \"Emma: 'Bạn biết không, David? Tôi đã tự hỏi về điều gì đó. Tại sao bạn nghĩ rằng việc bảo tồn di sản văn hóa lại quan trọng như vậy?' David: 'Đó là một câu hỏi tuyệt vời! Tôi tin rằng di sản kết nối chúng ta với tổ tiên và giúp chúng ta hiểu ai là chúng ta.' Emma: 'Điều đó thật hợp lý. Vậy làm thế nào mà những người trẻ như chúng ta có thể tham gia nhiều hơn?' David: 'Chà, họ có thể tình nguyện tại các bảo tàng, học các nghề thủ công truyền thống, hoặc tham gia vào các lễ hội văn hóa.'\""
+        },
+        // Question 24
+        {
+            "question": "Question 24: Mark the letter A, B, C or D on your answer sheet to indicate the best arrangement of the sentences to make a meaningful paragraph.\n\na. Initially, learning practical skills like cooking and budgeting helps young people manage daily responsibilities.\n\nb. Becoming independent is a crucial step in personal development for young adults.\n\nc. Subsequently, taking on part-time work teaches valuable lessons about time management and professional behavior.\n\nd. Ultimately, making decisions independently builds confidence and critical thinking abilities.\n\ne. In summary, developing independence through these various steps prepares young people for successful adult lives.",
+            "options": ["A. b-a-c-d-e", "B. a-b-c-d-e", "C. b-c-a-d-e", "D. a-b-d-c-e"],
+            "correct": 0,
+            "hint": "Chọn thứ tự hợp lý để tạo thành đoạn văn hoàn chỉnh.",
+            "explanation": "Câu b mở đầu đoạn văn, nêu rõ tầm quan trọng của việc trở nên độc lập.\nCâu a tiếp theo mô tả các kỹ năng thực tế cần thiết.\nCâu c bổ sung thông tin về việc làm bán thời gian.\nCâu d nhấn mạnh lợi ích của việc ra quyết định độc lập.\nCâu e kết luận rằng việc phát triển sự độc lập chuẩn bị cho cuộc sống trưởng thành thành công.\n\nDịch nghĩa: \"Trở nên độc lập là một bước quan trọng trong sự phát triển cá nhân của người lớn trẻ. Ban đầu, việc học các kỹ năng thực tế như nấu ăn và lập ngân sách giúp người trẻ quản lý các trách nhiệm hàng ngày. Tiếp theo, việc đảm nhận công việc bán thời gian dạy những bài học quý giá về quản lý thời gian và hành vi chuyên nghiệp. Cuối cùng, việc ra quyết định độc lập xây dựng sự tự tin và khả năng tư duy phản biện.\""
+        }
+    ];
+
+    // Function to shuffle array (Fisher-Yates algorithm)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Function to shuffle options for a question and update correct index
+    function shuffleQuestionOptions(question) {
+        // Store the original correct answer text
+        const correctText = question.options[question.correct];
+        
+        // Create array of option objects with their original text
+        const optionObjects = question.options.map((text, index) => ({
+            text: text,
+            originalIndex: index
+        }));
+        
+        // Shuffle the option objects
+        const shuffledOptions = shuffleArray([...optionObjects]);
+        
+        // Update options array with shuffled text
+        question.options = shuffledOptions.map(obj => obj.text);
+        
+        // Find new index of the correct answer
+        question.correct = shuffledOptions.findIndex(obj => obj.text === correctText);
+        
+        return question;
+    }
+
+    // Create a deep copy of original data and shuffle options for all questions
+    let quizData = JSON.parse(JSON.stringify(originalQuizData));
+    quizData = quizData.map(q => shuffleQuestionOptions(q));
+
+    // State
+    let selectedAnswers = new Array(quizData.length).fill(null);
+    let answeredCount = 0;
+    let timerInterval;
+    let timeLeft = 60 * 60;
+    const totalQuestions = quizData.length;
+    let quizSubmitted = false;
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            if (quizSubmitted) return;
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const timerDisplay = document.getElementById('timer');
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (timeLeft <= 60) timerDisplay.classList.add('warning');
+            if (timeLeft <= 0) { clearInterval(timerInterval); autoSubmit(); }
+        }, 1000);
+    }
+
+    function autoSubmit() {
+        if (!quizSubmitted) { alert('Hết giờ làm bài! Bài thi sẽ tự động nộp.'); submitQuiz(); }
+    }
+
+    window.toggleHint = function(index) {
+        const hintDiv = document.getElementById(`hint-${index}`);
+        if (hintDiv) hintDiv.style.display = hintDiv.style.display === 'block' ? 'none' : 'block';
+    };
+
+    function initQuiz() {
+        const quizArea = document.getElementById('quiz-area');
+        document.getElementById('total-text').innerText = totalQuestions;
+        quizArea.innerHTML = '';
+
+        quizData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${index}`;
+
+            let optionsHtml = '';
+            item.options.forEach((opt, optIndex) => {
+                optionsHtml += `<button class="option-btn" onclick="selectAnswer(${index}, ${optIndex})">${opt}</button>`;
+            });
+
+            const hintHtml = `
+                <div class="hint-container" id="hint-container-${index}">
+                    <div class="hint-btn" onclick="toggleHint(${index})">
+                        <span>💡</span> Gợi ý
+                    </div>
+                    <div class="hint-content" id="hint-${index}">${item.hint}</div>
+                </div>
+            `;
+
+            const explanationHtml = `
+                <div class="explanation-box" id="explain-${index}">
+                    <div class="explanation-header">
+                        <span style="font-size: 1.5rem;">📘</span> Giải thích chi tiết:
+                    </div>
+                    <div class="explanation-content">${item.explanation.replace(/\n/g, '<br>')}</div>
+                </div>
+            `;
+
+            card.innerHTML = `
+                <div class="question-header">
+                    <span class="q-tag">Câu ${index+1}</span>
+                </div>
+                <div class="question-text">${item.question}</div>
+                <div class="options-grid" id="options-${index}">
+                    ${optionsHtml}
+                </div>
+                ${hintHtml}
+                ${explanationHtml}
+            `;
+            quizArea.appendChild(card);
+        });
+
+        document.querySelectorAll('.hint-container').forEach(el => el.style.display = 'none');
+    }
+
+    window.selectAnswer = function(qIndex, optIndex) {
+        if (quizSubmitted) return;
+        const buttons = document.querySelectorAll(`#options-${qIndex} .option-btn`);
+        buttons.forEach(btn => btn.classList.remove('selected'));
+        buttons[optIndex].classList.add('selected');
+        if (selectedAnswers[qIndex] === null) {
+            answeredCount++;
+            document.getElementById('progress-text').innerText = answeredCount;
+        }
+        selectedAnswers[qIndex] = optIndex;
+    };
+
+    window.submitQuiz = function() {
+        if (quizSubmitted) return;
+
+        const unanswered = [];
+        for (let i = 0; i < totalQuestions; i++) {
+            if (selectedAnswers[i] === null) {
+                unanswered.push(i + 1);
+            }
+        }
+
+        if (unanswered.length > 0) {
+            const confirmSubmit = confirm(`Bạn chưa trả lời câu ${unanswered.join(', ')}. Bạn có muốn nộp bài không?`);
+            if (!confirmSubmit) {
+                const firstUnanswered = document.getElementById(`card-${unanswered[0] - 1}`);
+                if (firstUnanswered) firstUnanswered.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+        }
+
+        quizSubmitted = true;
+        clearInterval(timerInterval);
+
+        document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+        let correctCount = 0;
+        for (let i = 0; i < totalQuestions; i++) {
+            const buttons = document.querySelectorAll(`#options-${i} .option-btn`);
+            const correctIdx = quizData[i].correct;
+            const explanation = document.getElementById(`explain-${i}`);
+
+            if (selectedAnswers[i] !== null) {
+                if (selectedAnswers[i] === correctIdx) {
+                    correctCount++;
+                    buttons[selectedAnswers[i]].classList.add('correct-highlight');
+                } else {
+                    buttons[selectedAnswers[i]].classList.add('wrong-highlight');
+                    buttons[correctIdx].classList.add('correct-highlight');
+                }
+            } else {
+                buttons[correctIdx].classList.add('correct-highlight');
+            }
+
+            if (explanation) explanation.style.display = 'block';
+        }
+
+        showResults(correctCount);
+    };
+
+    function showResults(correctCount) {
+        const modal = document.getElementById('result-modal');
+        const scoreDisplay = document.getElementById('final-score-display');
+        const wrongList = document.getElementById('wrong-questions-list');
+        const feedback = document.getElementById('feedback-msg');
+
+        scoreDisplay.innerText = `${correctCount}/${totalQuestions}`;
+
+        const wrongQuestions = [];
+        for (let i = 0; i < totalQuestions; i++) {
+            if (selectedAnswers[i] !== quizData[i].correct) {
+                wrongQuestions.push(i + 1);
+            }
+        }
+
+        if (wrongQuestions.length === 0) {
+            wrongList.innerHTML = '<p style="color: var(--correct);">🎉 Chúc mừng! Bạn đã trả lời đúng tất cả các câu!</p>';
+        } else {
+            wrongList.innerHTML = `<p><strong>Câu sai hoặc chưa trả lời:</strong> ${wrongQuestions.join(', ')}</p>`;
+        }
+
+        const percentage = (correctCount / totalQuestions) * 100;
+        if (percentage === 100) feedback.innerText = "Xuất sắc! Bạn đạt điểm tuyệt đối! 🌟";
+        else if (percentage >= 80) feedback.innerText = "Làm tốt lắm! Chỉ một chút nữa là hoàn hảo! 🔥";
+        else if (percentage >= 50) feedback.innerText = "Khá tốt, nhưng hãy xem lại các câu sai nhé! 📚";
+        else feedback.innerText = "Cố gắng hơn nữa, hãy ôn tập lại và thử lại nhé! 💪";
+
+        modal.style.display = 'flex';
+    }
+
+    window.closeModal = function() {
+        document.getElementById('result-modal').style.display = 'none';
+    };
+
+    window.resetQuiz = function() {
+        // Reshuffle options when resetting
+        quizData = JSON.parse(JSON.stringify(originalQuizData)).map(q => shuffleQuestionOptions(q));
+        
+        selectedAnswers = new Array(quizData.length).fill(null);
+        answeredCount = 0;
+        timeLeft = 60 * 60;
+        quizSubmitted = false;
+
+        document.getElementById('timer').textContent = '60:00';
+        document.getElementById('timer').classList.remove('warning');
+        document.getElementById('progress-text').innerText = '0';
+
+        if (timerInterval) clearInterval(timerInterval);
+
+        initQuiz();
+        document.querySelectorAll('.hint-container').forEach(el => el.style.display = 'block');
+        startTimer();
+        closeModal();
+    };
+
+    window.onload = function() {
+        initQuiz();
+        startTimer();
+    };
+</script>
+</body>
+</html>
