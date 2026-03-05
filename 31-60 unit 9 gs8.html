@@ -124,7 +124,7 @@
         </div>
         <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-2xl shadow-lg border-b-4 border-teal-200">
             <span class="text-2xl">🏆</span>
-            <span class="font-bold text-teal-600 text-xl" id="score-display">0/20</span>
+            <span class="font-bold text-teal-600 text-xl" id="score-display">0/30</span>
         </div>
     </header>
 
@@ -141,7 +141,7 @@
             
             <!-- Question Header -->
             <div class="flex justify-between items-start mb-4">
-                <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-lg font-bold text-sm uppercase tracking-wide">Câu <span id="q-number">41</span>/60</span>
+                <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-lg font-bold text-sm uppercase tracking-wide">Câu <span id="q-number">31</span>/60</span>
                 <button onclick="toggleHint()" class="text-yellow-500 hover:text-yellow-600 transition-colors" title="Xem gợi ý">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -199,7 +199,7 @@
             
             <div class="bg-gray-100 rounded-2xl p-6 mb-6">
                 <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Tổng điểm</p>
-                <p id="final-score" class="text-5xl font-black primary-gradient-text mt-2">0/20</p>
+                <p id="final-score" class="text-5xl font-black primary-gradient-text mt-2">0/30</p>
             </div>
 
             <p id="feedback-text" class="text-lg font-bold text-indigo-600 mb-8">Xuất sắc quá đi! 🌟</p>
@@ -269,9 +269,129 @@
             return question;
         }
 
-        // Quiz Data - Questions 41-60
+        // Quiz Data - Questions 31-60 (30 questions)
         const originalQuizData = {
             "questions": [
+                // Câu 31
+                {
+                    "questionNumber": 31,
+                    "question": "Câu 31: The violent ________ with rain and lightning brought down power lines across the city.",
+                    "answerOptions": [
+                        { "text": "A. wind", "rationale": "❌ Sai. 'Wind' chỉ gió, không đủ để mô tả hiện tượng thời tiết này.", "isCorrect": false },
+                        { "text": "B. storm", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Storm' là từ phù hợp nhất trong ngữ cảnh này, vì nó chỉ một hiện tượng thời tiết có mưa và sấm sét.\n\n❌ A. wind: 'Wind' chỉ gió, không đủ để mô tả hiện tượng thời tiết này.\n❌ C. gale: 'Gale' là một cơn gió mạnh, nhưng không đủ để mô tả sự kết hợp với mưa và sấm sét.\n❌ D. breeze: 'Breeze' có nghĩa là gió nhẹ, không phù hợp với ngữ cảnh về một cơn bão mạnh.\n\nDịch nghĩa: 'Cơn bão dữ dội với mưa và sấm sét đã làm đổ các đường dây điện trên khắp thành phố.'", "isCorrect": true },
+                        { "text": "C. gale", "rationale": "❌ Sai. 'Gale' là một cơn gió mạnh, nhưng không đủ để mô tả sự kết hợp với mưa và sấm sét.", "isCorrect": false },
+                        { "text": "D. breeze", "rationale": "❌ Sai. 'Breeze' có nghĩa là gió nhẹ, không phù hợp với ngữ cảnh về một cơn bão mạnh.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào chỉ hiện tượng thời tiết có mưa và sấm sét?"
+                },
+                // Câu 32
+                {
+                    "questionNumber": 32,
+                    "question": "Câu 32: Rescue teams struggled through thick ________ to reach stranded vehicles.",
+                    "answerOptions": [
+                        { "text": "A. sand", "rationale": "❌ Sai. 'Sand' là cát, không phù hợp trong ngữ cảnh này.", "isCorrect": false },
+                        { "text": "B. dust", "rationale": "❌ Sai. 'Dust' là bụi, không phù hợp vì không gây khó khăn cho việc di chuyển như bùn.", "isCorrect": false },
+                        { "text": "C. mud", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Mud' là từ phù hợp nhất vì nó chỉ bùn, thường xuất hiện sau mưa lớn và có thể gây khó khăn cho việc di chuyển.\n\n❌ A. sand: 'Sand' là cát, không phù hợp trong ngữ cảnh này.\n❌ B. dust: 'Dust' là bụi, không phù hợp vì không gây khó khăn cho việc di chuyển như bùn.\n❌ D. soil: 'Soil' là đất, không chính xác trong ngữ cảnh này.\n\nDịch nghĩa: 'Các đội cứu hộ đã vật lộn qua lớp bùn dày để đến với những chiếc xe bị mắc kẹt.'", "isCorrect": true },
+                        { "text": "D. soil", "rationale": "❌ Sai. 'Soil' là đất, không chính xác trong ngữ cảnh này.", "isCorrect": false }
+                    ],
+                    "hint": "Chất gì thường xuất hiện sau mưa lớn và gây lầy lội?"
+                },
+                // Câu 33
+                {
+                    "questionNumber": 33,
+                    "question": "Câu 33: ________, no one was seriously injured during the entire evacuation.",
+                    "answerOptions": [
+                        { "text": "A. Sadly", "rationale": "❌ Sai. 'Sadly' có nghĩa là đáng buồn, không phù hợp với ngữ cảnh tích cực này.", "isCorrect": false },
+                        { "text": "B. Luckily", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Luckily' có nghĩa là may mắn, phù hợp với ngữ cảnh về việc không có ai bị thương nghiêm trọng.\n\n❌ A. Sadly: 'Sadly' có nghĩa là đáng buồn, không phù hợp với ngữ cảnh tích cực này.\n❌ C. Surprisingly: 'Surprisingly' có nghĩa là một cách bất ngờ, không phù hợp với ngữ cảnh.\n❌ D. Clearly: 'Clearly' có nghĩa là rõ ràng, không phù hợp với ngữ cảnh này.\n\nDịch nghĩa: 'May mắn thay, không ai bị thương nghiêm trọng trong suốt quá trình sơ tán.'", "isCorrect": true },
+                        { "text": "C. Surprisingly", "rationale": "❌ Sai. 'Surprisingly' có nghĩa là một cách bất ngờ, không phù hợp với ngữ cảnh.", "isCorrect": false },
+                        { "text": "D. Clearly", "rationale": "❌ Sai. 'Clearly' có nghĩa là rõ ràng, không phù hợp với ngữ cảnh này.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào diễn tả sự may mắn?"
+                },
+                // Câu 34
+                {
+                    "questionNumber": 34,
+                    "question": "Câu 34: Falling ________ from the cliff injured several hikers during the earthquake.",
+                    "answerOptions": [
+                        { "text": "A. stones", "rationale": "❌ Sai. 'Stones' có nghĩa là đá nhỏ hơn, không phù hợp trong ngữ cảnh này.", "isCorrect": false },
+                        { "text": "B. rocks", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Rocks' là từ phù hợp nhất vì nó chỉ những viên đá lớn có thể rơi từ vách đá và gây thương tích.\n\n❌ A. stones: 'Stones' có nghĩa là đá nhỏ hơn, không phù hợp trong ngữ cảnh này.\n❌ C. sand: 'Sand' là cát, không thể gây thương tích như đá.\n❌ D. dirt: 'Dirt' là đất, không phù hợp với ngữ cảnh về việc rơi từ vách đá.\n\nDịch nghĩa: 'Những viên đá rơi từ vách đá đã làm bị thương một số người đi bộ đường dài trong trận động đất.'", "isCorrect": true },
+                        { "text": "C. sand", "rationale": "❌ Sai. 'Sand' là cát, không thể gây thương tích như đá.", "isCorrect": false },
+                        { "text": "D. dirt", "rationale": "❌ Sai. 'Dirt' là đất, không phù hợp với ngữ cảnh về việc rơi từ vách đá.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào chỉ những viên đá lớn từ vách núi?"
+                },
+                // Câu 35
+                {
+                    "questionNumber": 35,
+                    "question": "Câu 35: A severe ________ with lightning strikes caused several house fires.",
+                    "answerOptions": [
+                        { "text": "A. rainstorm", "rationale": "❌ Sai. 'Rainstorm' chỉ có mưa, không nhất thiết có sấm sét.", "isCorrect": false },
+                        { "text": "B. windstorm", "rationale": "❌ Sai. 'Windstorm' chỉ có gió mạnh, không liên quan đến sấm sét.", "isCorrect": false },
+                        { "text": "C. thunderstorm", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Thunderstorm' là cơn bão có sấm sét, phù hợp với ngữ cảnh về việc gây ra hỏa hoạn.\n\n❌ A. rainstorm: 'Rainstorm' chỉ có mưa, không nhất thiết có sấm sét.\n❌ B. windstorm: 'Windstorm' chỉ có gió mạnh, không liên quan đến sấm sét.\n❌ D. hailstorm: 'Hailstorm' là bão đá, không phù hợp với ngữ cảnh này.\n\nDịch nghĩa: 'Một cơn bão sấm sét nghiêm trọng với các tia sét đã gây ra một số vụ hỏa hoạn trong nhà.'", "isCorrect": true },
+                        { "text": "D. hailstorm", "rationale": "❌ Sai. 'Hailstorm' là bão đá, không phù hợp với ngữ cảnh này.", "isCorrect": false }
+                    ],
+                    "hint": "Loại bão nào có sấm sét?"
+                },
+                // Câu 36
+                {
+                    "questionNumber": 36,
+                    "question": "Câu 36: Please complete this ________ about your emergency preparedness plans.",
+                    "answerOptions": [
+                        { "text": "A. survey", "rationale": "❌ Sai. 'Survey' có nghĩa là khảo sát, nhưng không cụ thể như 'questionnaire'.", "isCorrect": false },
+                        { "text": "B. form", "rationale": "❌ Sai. 'Form' có nghĩa là mẫu, không chính xác trong ngữ cảnh này.", "isCorrect": false },
+                        { "text": "C. questionnaire", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Questionnaire' là bảng câu hỏi, phù hợp với ngữ cảnh về việc thu thập thông tin.\n\n❌ A. survey: 'Survey' có nghĩa là khảo sát, nhưng không cụ thể như 'questionnaire'.\n❌ B. form: 'Form' có nghĩa là mẫu, không chính xác trong ngữ cảnh này.\n❌ D. document: 'Document' có nghĩa là tài liệu, không phù hợp với ngữ cảnh.\n\nDịch nghĩa: 'Xin vui lòng hoàn thành bảng câu hỏi này về kế hoạch chuẩn bị khẩn cấp của bạn.'", "isCorrect": true },
+                        { "text": "D. document", "rationale": "❌ Sai. 'Document' có nghĩa là tài liệu, không phù hợp với ngữ cảnh.", "isCorrect": false }
+                    ],
+                    "hint": "Bảng câu hỏi để thu thập thông tin?"
+                },
+                // Câu 37
+                {
+                    "questionNumber": 37,
+                    "question": "Câu 37: Rising sea temperatures may ________ more frequent hurricanes.",
+                    "answerOptions": [
+                        { "text": "A. create", "rationale": "❌ Sai. 'Create' có nghĩa là tạo ra, không chính xác trong ngữ cảnh này.", "isCorrect": false },
+                        { "text": "B. produce", "rationale": "❌ Sai. 'Produce' có nghĩa là sản xuất, không phù hợp với ngữ cảnh.", "isCorrect": false },
+                        { "text": "C. cause", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Cause' có nghĩa là gây ra, phù hợp với ngữ cảnh về sự gia tăng tần suất bão.\n\n❌ A. create: 'Create' có nghĩa là tạo ra, không chính xác trong ngữ cảnh này.\n❌ B. produce: 'Produce' có nghĩa là sản xuất, không phù hợp với ngữ cảnh.\n❌ D. make: 'Make' có nghĩa là làm, không chính xác trong ngữ cảnh này.\n\nDịch nghĩa: 'Nhiệt độ biển tăng có thể gây ra nhiều cơn bão hơn.'", "isCorrect": true },
+                        { "text": "D. make", "rationale": "❌ Sai. 'Make' có nghĩa là làm, không chính xác trong ngữ cảnh này.", "isCorrect": false }
+                    ],
+                    "hint": "Động từ nào có nghĩa là 'gây ra'?"
+                },
+                // Câu 38
+                {
+                    "questionNumber": 38,
+                    "question": "Câu 38: Follow the safety ________ in the manual carefully when assembling emergency equipment.",
+                    "answerOptions": [
+                        { "text": "A. guidelines", "rationale": "❌ Sai. 'Guidelines' có nghĩa là hướng dẫn chung, không cụ thể như 'instructions'.", "isCorrect": false },
+                        { "text": "B. instructions", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Instructions' có nghĩa là hướng dẫn, phù hợp với ngữ cảnh về việc lắp ráp thiết bị khẩn cấp.\n\n❌ A. guidelines: 'Guidelines' có nghĩa là hướng dẫn chung, không cụ thể như 'instructions'.\n❌ C. directions: 'Directions' có nghĩa là chỉ dẫn, không chính xác trong ngữ cảnh này.\n❌ D. steps: 'Steps' có nghĩa là các bước, không phù hợp với ngữ cảnh.\n\nDịch nghĩa: 'Hãy làm theo hướng dẫn an toàn trong tài liệu một cách cẩn thận khi lắp ráp thiết bị khẩn cấp.'", "isCorrect": true },
+                        { "text": "C. directions", "rationale": "❌ Sai. 'Directions' có nghĩa là chỉ dẫn, không chính xác trong ngữ cảnh này.", "isCorrect": false },
+                        { "text": "D. steps", "rationale": "❌ Sai. 'Steps' có nghĩa là các bước, không phù hợp với ngữ cảnh.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'hướng dẫn chi tiết'?"
+                },
+                // Câu 39
+                {
+                    "questionNumber": 39,
+                    "question": "Câu 39: The new warning ________ can alert millions of people within seconds.",
+                    "answerOptions": [
+                        { "text": "A. network", "rationale": "❌ Sai. 'Network' có nghĩa là mạng lưới, không chính xác trong ngữ cảnh này.", "isCorrect": false },
+                        { "text": "B. system", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'System' có nghĩa là hệ thống, phù hợp với ngữ cảnh về cảnh báo.\n\n❌ A. network: 'Network' có nghĩa là mạng lưới, không chính xác trong ngữ cảnh này.\n❌ C. program: 'Program' có nghĩa là chương trình, không phù hợp với ngữ cảnh.\n❌ D. service: 'Service' có nghĩa là dịch vụ, không chính xác trong ngữ cảnh này.\n\nDịch nghĩa: 'Hệ thống cảnh báo mới có thể cảnh báo hàng triệu người trong vòng vài giây.'", "isCorrect": true },
+                        { "text": "C. program", "rationale": "❌ Sai. 'Program' có nghĩa là chương trình, không phù hợp với ngữ cảnh.", "isCorrect": false },
+                        { "text": "D. service", "rationale": "❌ Sai. 'Service' có nghĩa là dịch vụ, không chính xác trong ngữ cảnh này.", "isCorrect": false }
+                    ],
+                    "hint": "Hệ thống cảnh báo?"
+                },
+                // Câu 40
+                {
+                    "questionNumber": 40,
+                    "question": "Câu 40: The recent ________ has highlighted the need for better emergency planning.",
+                    "answerOptions": [
+                        { "text": "A. incident", "rationale": "❌ Sai. 'Incident' có nghĩa là sự cố, không đủ nghiêm trọng như 'disaster'.", "isCorrect": false },
+                        { "text": "B. disaster", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Disaster' có nghĩa là thảm họa, phù hợp với ngữ cảnh về sự kiện đã xảy ra.\n\n❌ A. incident: 'Incident' có nghĩa là sự cố, không đủ nghiêm trọng như 'disaster'.\n❌ C. accident: 'Accident' có nghĩa là tai nạn, không phù hợp với ngữ cảnh.\n❌ D. crisis: 'Crisis' có nghĩa là khủng hoảng, không chính xác trong ngữ cảnh này.\n\nDịch nghĩa: 'Thảm họa gần đây đã làm nổi bật nhu cầu về kế hoạch khẩn cấp tốt hơn.'", "isCorrect": true },
+                        { "text": "C. accident", "rationale": "❌ Sai. 'Accident' có nghĩa là tai nạn, không phù hợp với ngữ cảnh.", "isCorrect": false },
+                        { "text": "D. crisis", "rationale": "❌ Sai. 'Crisis' có nghĩa là khủng hoảng, không chính xác trong ngữ cảnh này.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào chỉ thảm họa?"
+                },
                 // Câu 41
                 {
                     "questionNumber": 41,
@@ -281,10 +401,7 @@
                         { "text": "B. were searching", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: At + giờ cụ thể trong quá khứ (3 a.m. last night) → dùng thì quá khứ tiếp diễn để diễn tả hành động đang xảy ra tại thời điểm đó.\n\n❌ A. searched: 'Searched' là thì quá khứ đơn, không diễn tả hành động đang diễn ra tại thời điểm cụ thể.\n❌ C. are searching: 'Are searching' là thì hiện tại tiếp diễn, không phù hợp với ngữ cảnh về thời gian.\n❌ D. have searched: 'Have searched' là thì hiện tại hoàn thành, không phù hợp với ngữ cảnh.\n\nDịch nghĩa: 'Vào lúc 3 giờ sáng hôm qua, các đội khẩn cấp đã tìm kiếm qua đống đổ nát để tìm người sống sót.'", "isCorrect": true },
                         { "text": "C. are searching", "rationale": "❌ Sai. 'Are searching' là thì hiện tại tiếp diễn, không phù hợp với ngữ cảnh về thời gian.", "isCorrect": false },
                         { "text": "D. have searched", "rationale": "❌ Sai. 'Have searched' là thì hiện tại hoàn thành, không phù hợp với ngữ cảnh.", "isCorrect": false }
-                    ],
-                    "hint": "At + giờ cụ thể trong quá khứ → thì gì?"
-                },
-                // Câu 42
+                  // Câu 42
                 {
                     "questionNumber": 42,
                     "question": "Câu 42: While the firefighters ________ the blaze, paramedics treated injured residents.",
@@ -667,4 +784,4 @@
 
     </script>
 </body>
-</html>
+</html>      
