@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(GS12) LƯỢNG Từ - MẠO TỪ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0fdfa;
+            background-image: radial-gradient(#ccfbf1 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+
+        .btn-3d {
+            transition: all 0.1s;
+            border-bottom-width: 6px;
+            position: relative;
+            top: 0px;
+        }
+        
+        .btn-3d:active {
+            border-bottom-width: 0px;
+            top: 6px;
+        }
+
+        .btn-default {
+            background-color: white;
+            color: #4b5563;
+            border-color: #e5e7eb;
+            border-bottom-color: #d1d5db;
+        }
+        .btn-default:hover {
+            background-color: #f9fafb;
+            transform: translateY(-2px);
+            border-bottom-width: 8px;
+            top: -2px;
+        }
+        .btn-default:active {
+            transform: translateY(4px);
+            border-bottom-width: 0px;
+            top: 4px;
+        }
+
+        .btn-correct {
+            background-color: #00D26A !important;
+            color: white !important;
+            border-color: #00b85c !important;
+            border-bottom-color: #008f47 !important;
+            pointer-events: none;
+        }
+
+        .btn-wrong {
+            background-color: #FF4757 !important;
+            color: white !important;
+            border-color: #ff2e40 !important;
+            border-bottom-color: #cc1e2e !important;
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            pointer-events: none;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c4b5fd; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a78bfa; 
+        }
+
+        .primary-gradient-text {
+            background: linear-gradient(to right, #8854C0, #00C9A7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: auto;
+        }
+        .image-modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .image-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1002;
+        }
+        .image-modal-close:hover {
+            color: #00C9A7;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Image Zoom Modal -->
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <span class="image-modal-close" onclick="closeImageModal()">&times;</span>
+        <img class="image-modal-content" id="modalImage">
+    </div>
+
+    <!-- Header Branding -->
+    <header class="w-full max-w-4xl flex justify-between items-center mb-6">
+        <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-2xl shadow-lg border-b-4 border-purple-200">
+            <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">G</div>
+            <div>
+                <h1 class="font-bold text-purple-700 leading-tight">(GS12) LƯỢNG TỪ - MẠO TỪ</h1>
+                <p class="text-xs text-gray-500 font-semibold">Đồ ăn không đếm được phổ biến</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-2xl shadow-lg border-b-4 border-teal-200">
+            <span class="text-2xl">🏆</span>
+            <span class="font-bold text-teal-600 text-xl" id="score-display">0/65</span>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main id="quiz-container" class="w-full max-w-3xl relative perspective-1000">
+        
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-200 rounded-full h-4 mb-6 border-2 border-white shadow-sm overflow-hidden">
+            <div id="progress-bar" class="bg-gradient-to-r from-purple-500 to-teal-400 h-full rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+        </div>
+
+        <!-- Question Card -->
+        <div id="card-content" class="bg-white rounded-3xl shadow-2xl border-4 border-indigo-100 p-6 md:p-8 relative overflow-hidden min-h-[400px]">
+            
+            <!-- Question Header -->
+            <div class="flex justify-between items-start mb-4">
+                <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-lg font-bold text-sm uppercase tracking-wide">Câu <span id="q-number">1</span>/65</span>
+                <button onclick="toggleHint()" class="text-yellow-500 hover:text-yellow-600 transition-colors" title="Xem gợi ý">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Question Text -->
+            <h2 id="question-text" class="text-xl md:text-2xl font-extrabold text-gray-800 mb-8 leading-relaxed">
+                Loading...
+            </h2>
+
+            <!-- Options Grid -->
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- Options will be injected here -->
+            </div>
+
+            <!-- Hint Box (Hidden) -->
+            <div id="hint-box" class="hidden absolute top-16 right-6 bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-r shadow-lg max-w-xs z-20 fade-in-up">
+                <p class="font-bold text-yellow-800 text-sm">💡 Gợi ý:</p>
+                <p id="hint-text" class="text-yellow-900 text-sm mt-1">...</p>
+            </div>
+
+            <!-- Explanation Box (Hidden initially) -->
+            <div id="explanation-box" class="hidden mt-6 bg-indigo-50 border-2 border-indigo-200 rounded-xl p-5 fade-in-up">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-2xl">📘</span>
+                    <h3 class="font-bold text-indigo-700 text-lg">Giải thích chi tiết:</h3>
+                </div>
+                <div id="explanation-content" class="text-gray-700 text-base leading-relaxed whitespace-pre-line custom-scrollbar max-h-60 overflow-y-auto pr-2">
+                    <!-- Content goes here -->
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="mt-8 flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden btn-3d bg-teal-500 hover:bg-teal-400 text-white font-bold py-3 px-8 rounded-xl text-lg shadow-lg border-b-4 border-teal-700 active:border-b-0 active:translate-y-1">
+                    Câu tiếp theo ➜
+                </button>
+                <button id="finish-btn" onclick="finishQuiz()" class="hidden btn-3d bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-8 rounded-xl text-lg shadow-lg border-b-4 border-purple-800 active:border-b-0 active:translate-y-1">
+                    Nộp bài & Xem điểm 🏁
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl transform scale-100 animate-bounce-in relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-4 bg-gradient-to-r from-purple-500 to-teal-400"></div>
+            
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-3xl font-extrabold text-gray-800 mb-2">Hoàn thành!</h2>
+            <p class="text-gray-500 mb-6">Bạn đã làm rất tốt bài kiểm tra này.</p>
+            
+            <div class="bg-gray-100 rounded-2xl p-6 mb-6">
+                <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Tổng điểm</p>
+                <p id="final-score" class="text-5xl font-black primary-gradient-text mt-2">0/65</p>
+            </div>
+
+            <p id="feedback-text" class="text-lg font-bold text-indigo-600 mb-8">Xuất sắc quá đi! 🌟</p>
+
+            <button onclick="location.reload()" class="w-full btn-3d bg-purple-600 hover:bg-purple-500 text-white font-bold py-4 rounded-xl text-xl border-b-4 border-purple-800">
+                Làm lại bài này 🔄
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Image zoom function
+        function openImageModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = src;
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        // Audio Context for sound effects
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(500, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.5);
+            } else {
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+                oscillator.frequency.linearRampToValueAtTime(200, audioCtx.currentTime + 0.15);
+                oscillator.frequency.linearRampToValueAtTime(150, audioCtx.currentTime + 0.3);
+                
+                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.5);
+            }
+        }
+
+        // Function to shuffle array (Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Function to shuffle options for a question and update correct index
+        function shuffleQuestionOptions(question) {
+            const correctText = question.answerOptions.find(opt => opt.isCorrect).text;
+            const shuffledOptions = shuffleArray([...question.answerOptions]);
+            question.answerOptions = shuffledOptions;
+            return question;
+        }
+
+        // ---------- DỮ LIỆU BÀI TẬP ĐẦY ĐỦ 65 CÂU ----------
+        const originalQuizData = {
+            "questions": [
+                // ==================== PHẦN 1: LƯỢNG TỪ (30 câu) ====================
+                // Câu 1
+                {
+                    "questionNumber": 1,
+                    "question": "There are __________ approaches to solving this complex mathematical problem, but only a few yield accurate results.",
+                    "answerOptions": [
+                        { "text": "A. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false },
+                        { "text": "B. a little", "rationale": "❌ Sai. 'a little' chỉ một lượng nhỏ.", "isCorrect": false },
+                        { "text": "C. a multitude of", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'A multitude of' có nghĩa là nhiều, thường được dùng để chỉ số lượng lớn các phương pháp hoặc cách tiếp cận.\n\n❌ A. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n❌ B. a little: không phù hợp vì 'a little' chỉ một lượng nhỏ.\n❌ D. a great deal of: không phù hợp vì 'a great deal of' thường dùng với danh từ không đếm được.\n\nDịch nghĩa: Có nhiều cách tiếp cận để giải quyết vấn đề toán học phức tạp này, nhưng chỉ một vài cách cho kết quả chính xác.", "isCorrect": true },
+                        { "text": "D. a great deal of", "rationale": "❌ Sai. 'a great deal of' thường dùng với danh từ không đếm được.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào có nghĩa là 'nhiều' và dùng với danh từ đếm được?"
+                },
+                // Câu 2
+                {
+                    "questionNumber": 2,
+                    "question": "The CEO has invested __________ time and effort into restructuring the company's outdated policies.",
+                    "answerOptions": [
+                        { "text": "A. a large number of", "rationale": "❌ Sai. 'a large number of' dùng cho danh từ đếm được.", "isCorrect": false },
+                        { "text": "B. a considerable amount of", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'A considerable amount of' có nghĩa là một lượng đáng kể, phù hợp với việc đầu tư thời gian và công sức.\n\n❌ A. a large number of: không phù hợp vì 'a large number of' dùng cho danh từ đếm được.\n❌ C. quite a few: không phù hợp vì 'quite a few' chỉ một số lượng lớn nhưng không phải là 'đáng kể'.\n❌ D. scores of: không phù hợp vì 'scores of' thường chỉ một số lượng lớn nhưng không chính xác như 'considerable amount'.\n\nDịch nghĩa: Giám đốc điều hành đã đầu tư một lượng đáng kể thời gian và công sức vào việc tái cấu trúc các chính sách lỗi thời của công ty.", "isCorrect": true },
+                        { "text": "C. quite a few", "rationale": "❌ Sai. 'quite a few' chỉ một số lượng lớn nhưng không phải là 'đáng kể'.", "isCorrect": false },
+                        { "text": "D. scores of", "rationale": "❌ Sai. 'scores of' thường chỉ một số lượng lớn nhưng không chính xác như 'considerable amount'.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào chỉ một lượng đáng kể cho danh từ không đếm được?"
+                },
+                // Câu 3
+                {
+                    "questionNumber": 3,
+                    "question": "__________ the applicants possessed the required qualifications, so the recruitment process had to be extended.",
+                    "answerOptions": [
+                        { "text": "A. Neither of", "rationale": "❌ Sai. 'Neither of' chỉ hai người hoặc hai vật.", "isCorrect": false },
+                        { "text": "B. Either of", "rationale": "❌ Sai. 'Either of' chỉ một trong hai.", "isCorrect": false },
+                        { "text": "C. None of", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'None of' có nghĩa là không ai trong số đó, phù hợp với ngữ cảnh câu.\n\n❌ A. Neither of: không phù hợp vì 'neither of' chỉ hai người hoặc hai vật.\n❌ B. Either of: không phù hợp vì 'either of' chỉ một trong hai.\n❌ D. Both of: không phù hợp vì 'both of' chỉ hai người hoặc hai vật.\n\nDịch nghĩa: Không ai trong số các ứng viên có đủ trình độ yêu cầu, vì vậy quá trình tuyển dụng phải được kéo dài.", "isCorrect": true },
+                        { "text": "D. Both of", "rationale": "❌ Sai. 'Both of' chỉ hai người hoặc hai vật.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'không ai trong số đó'?"
+                },
+                // Câu 4
+                {
+                    "questionNumber": 4,
+                    "question": "She has published __________ research papers on quantum physics over the past decade.",
+                    "answerOptions": [
+                        { "text": "A. a great deal of", "rationale": "❌ Sai. 'a great deal of' dùng cho danh từ không đếm được.", "isCorrect": false },
+                        { "text": "B. a little", "rationale": "❌ Sai. 'a little' chỉ một lượng nhỏ.", "isCorrect": false },
+                        { "text": "C. a good many", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'A good many' có nghĩa là nhiều, thường dùng với danh từ đếm được.\n\n❌ A. a great deal of: không phù hợp vì 'a great deal of' dùng cho danh từ không đếm được.\n❌ B. a little: không phù hợp vì 'a little' chỉ một lượng nhỏ.\n❌ D. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n\nDịch nghĩa: Cô ấy đã xuất bản nhiều bài nghiên cứu về vật lý lượng tử trong suốt thập kỷ qua.", "isCorrect": true },
+                        { "text": "D. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào có nghĩa là 'nhiều' và dùng với danh từ đếm được?"
+                },
+                // Câu 5
+                {
+                    "questionNumber": 5,
+                    "question": "Would you like __________ more coffee before we proceed with the meeting?",
+                    "answerOptions": [
+                        { "text": "A. any", "rationale": "❌ Sai. 'any' thường dùng trong câu phủ định hoặc nghi vấn.", "isCorrect": false },
+                        { "text": "B. some", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Some' được dùng để chỉ một lượng không xác định nhưng có thể chấp nhận được.\n\n❌ A. any: không phù hợp vì 'any' thường dùng trong câu phủ định hoặc nghi vấn.\n❌ C. little: không phù hợp vì 'little' chỉ một lượng nhỏ.\n❌ D. few: không phù hợp vì 'few' thường mang nghĩa tiêu cực.\n\nDịch nghĩa: Bạn có muốn thêm một ít cà phê trước khi chúng ta tiếp tục cuộc họp không?", "isCorrect": true },
+                        { "text": "C. little", "rationale": "❌ Sai. 'little' chỉ một lượng nhỏ.", "isCorrect": false },
+                        { "text": "D. few", "rationale": "❌ Sai. 'few' thường mang nghĩa tiêu cực.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào dùng để đề nghị lịch sự trong câu hỏi?"
+                },
+                // Câu 6
+                {
+                    "questionNumber": 6,
+                    "question": "The archaeological site contained __________ artifacts dating back to the Bronze Age.",
+                    "answerOptions": [
+                        { "text": "A. a vast array of", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'A vast array of' có nghĩa là một loạt lớn, phù hợp với ngữ cảnh của câu.\n\n❌ B. a significant amount of: không phù hợp vì 'amount' thường dùng cho danh từ không đếm được.\n❌ C. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n❌ D. a little: không phù hợp vì 'a little' chỉ một lượng nhỏ.\n\nDịch nghĩa: Khu khảo cổ chứa một loạt lớn các hiện vật có niên đại từ thời kỳ đồ đồng.", "isCorrect": true },
+                        { "text": "B. a significant amount of", "rationale": "❌ Sai. 'amount' thường dùng cho danh từ không đếm được.", "isCorrect": false },
+                        { "text": "C. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false },
+                        { "text": "D. a little", "rationale": "❌ Sai. 'a little' chỉ một lượng nhỏ.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào chỉ số lượng lớn cho danh từ đếm được?"
+                },
+                // Câu 7
+                {
+                    "questionNumber": 7,
+                    "question": "__________ the students in the advanced placement class have been admitted to prestigious universities.",
+                    "answerOptions": [
+                        { "text": "A. Most", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'Most' có nghĩa là phần lớn, phù hợp với ngữ cảnh câu.\n\n❌ B. Almost: không phù hợp vì 'almost' có nghĩa là gần như, không chắc chắn.\n❌ C. Mostly: không phù hợp vì 'mostly' chỉ trạng thái chủ yếu, không phải số lượng.\n❌ D. The most: không phù hợp vì 'the most' thường dùng để so sánh.\n\nDịch nghĩa: Phần lớn các sinh viên trong lớp học nâng cao đã được nhận vào các trường đại học danh tiếng.", "isCorrect": true },
+                        { "text": "B. Almost", "rationale": "❌ Sai. 'almost' có nghĩa là gần như, không chắc chắn.", "isCorrect": false },
+                        { "text": "C. Mostly", "rationale": "❌ Sai. 'mostly' chỉ trạng thái chủ yếu, không phải số lượng.", "isCorrect": false },
+                        { "text": "D. The most", "rationale": "❌ Sai. 'the most' thường dùng để so sánh.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'phần lớn'?"
+                },
+                // Câu 8
+                {
+                    "questionNumber": 8,
+                    "question": "The professor provided us with __________ valuable feedback on our dissertations.",
+                    "answerOptions": [
+                        { "text": "A. a few", "rationale": "❌ Sai. 'a few' chỉ một số lượng nhỏ.", "isCorrect": false },
+                        { "text": "B. a great many", "rationale": "❌ Sai. 'a great many' thường dùng cho danh từ đếm được.", "isCorrect": false },
+                        { "text": "C. a wealth of", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'A wealth of' có nghĩa là một lượng lớn, thường dùng để chỉ thông tin hoặc tài nguyên.\n\n❌ A. a few: không phù hợp vì 'a few' chỉ một số lượng nhỏ.\n❌ B. a great many: không phù hợp vì 'a great many' thường dùng cho danh từ đếm được.\n❌ D. scores of: không phù hợp vì 'scores of' thường chỉ một số lượng lớn nhưng không chính xác như 'wealth of'.\n\nDịch nghĩa: Giáo sư đã cung cấp cho chúng tôi một lượng lớn phản hồi quý giá về các luận văn của chúng tôi.", "isCorrect": true },
+                        { "text": "D. scores of", "rationale": "❌ Sai. 'scores of' thường chỉ một số lượng lớn nhưng không chính xác như 'wealth of'.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào chỉ một lượng lớn thông tin?"
+                },
+                // Câu 9
+                {
+                    "questionNumber": 9,
+                    "question": "There are __________ seats left for the concert, so you should purchase your tickets immediately.",
+                    "answerOptions": [
+                        { "text": "A. little", "rationale": "❌ Sai. 'little' chỉ một lượng nhỏ.", "isCorrect": false },
+                        { "text": "B. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false },
+                        { "text": "C. a little", "rationale": "❌ Sai. 'a little' chỉ một lượng nhỏ.", "isCorrect": false },
+                        { "text": "D. a few", "rationale": "✅ Đáp án đúng: D\n\nGiải thích: 'A few' có nghĩa là một số, thường dùng với danh từ đếm được.\n\n❌ A. little: không phù hợp vì 'little' chỉ một lượng nhỏ.\n❌ B. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n❌ C. a little: không phù hợp vì 'a little' chỉ một lượng nhỏ.\n\nDịch nghĩa: Có một vài chỗ ngồi còn lại cho buổi hòa nhạc, vì vậy bạn nên mua vé ngay lập tức.", "isCorrect": true }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'một vài' dùng với danh từ đếm được?"
+                },
+                // Câu 10
+                {
+                    "questionNumber": 10,
+                    "question": "She demonstrated __________ patience while dealing with the challenging customers.",
+                    "answerOptions": [
+                        { "text": "A. a large number of", "rationale": "❌ Sai. 'a large number of' dùng cho danh từ đếm được.", "isCorrect": false },
+                        { "text": "B. an abundance of", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'An abundance of' có nghĩa là một lượng lớn, thường dùng để chỉ sự phong phú.\n\n❌ A. a large number of: không phù hợp vì 'a large number of' dùng cho danh từ đếm được.\n❌ C. a great many: không phù hợp vì 'a great many' thường dùng cho danh từ đếm được.\n❌ D. a wide range of: không phù hợp vì 'a wide range of' thường chỉ sự đa dạng hơn là số lượng.\n\nDịch nghĩa: Cô ấy đã thể hiện một lượng lớn sự kiên nhẫn khi đối phó với những khách hàng khó khăn.", "isCorrect": true },
+                        { "text": "C. a great many", "rationale": "❌ Sai. 'a great many' thường dùng cho danh từ đếm được.", "isCorrect": false },
+                        { "text": "D. a wide range of", "rationale": "❌ Sai. 'a wide range of' thường chỉ sự đa dạng hơn là số lượng.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào chỉ sự phong phú, dồi dào?"
+                },
+                // Câu 11
+                {
+                    "questionNumber": 11,
+                    "question": "__________ the two theories adequately explains the observed phenomena without significant contradictions.",
+                    "answerOptions": [
+                        { "text": "A. Both of", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'Both of' có nghĩa là cả hai, phù hợp với ngữ cảnh câu.\n\n❌ B. All of: không phù hợp vì 'all of' thường dùng cho nhiều hơn hai.\n❌ C. Neither of: không phù hợp vì 'neither of' chỉ hai người hoặc hai vật.\n❌ D. None of: không phù hợp vì 'none of' chỉ không có ai trong số đó.\n\nDịch nghĩa: Cả hai lý thuyết đều giải thích đầy đủ các hiện tượng quan sát được mà không có mâu thuẫn đáng kể nào.", "isCorrect": true },
+                        { "text": "B. All of", "rationale": "❌ Sai. 'all of' thường dùng cho nhiều hơn hai.", "isCorrect": false },
+                        { "text": "C. Neither of", "rationale": "❌ Sai. 'neither of' chỉ hai người hoặc hai vật.", "isCorrect": false },
+                        { "text": "D. None of", "rationale": "❌ Sai. 'none of' chỉ không có ai trong số đó.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'cả hai'?"
+                },
+                // Câu 12
+                {
+                    "questionNumber": 12,
+                    "question": "The committee spent __________ hours deliberating before reaching a unanimous decision.",
+                    "answerOptions": [
+                        { "text": "A. quite a few", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'Quite a few' có nghĩa là nhiều, thường dùng với danh từ đếm được.\n\n❌ B. a little: không phù hợp vì 'a little' chỉ một lượng nhỏ.\n❌ C. a great amount of: không phù hợp vì 'amount' thường dùng cho danh từ không đếm được.\n❌ D. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n\nDịch nghĩa: Nhiều giờ đồng hồ đã trôi qua trước khi ủy ban đưa ra quyết định nhất trí.", "isCorrect": true },
+                        { "text": "B. a little", "rationale": "❌ Sai. 'a little' chỉ một lượng nhỏ.", "isCorrect": false },
+                        { "text": "C. a great amount of", "rationale": "❌ Sai. 'amount' thường dùng cho danh từ không đếm được.", "isCorrect": false },
+                        { "text": "D. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào có nghĩa là 'nhiều' cho danh từ đếm được?"
+                },
+                // Câu 13
+                {
+                    "questionNumber": 13,
+                    "question": "You can choose __________ book you like from the library; the borrowing limit is five.",
+                    "answerOptions": [
+                        { "text": "A. some", "rationale": "❌ Sai. 'some' không phù hợp trong câu này.", "isCorrect": false },
+                        { "text": "B. any", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Any' được dùng trong câu hỏi để chỉ một lựa chọn không xác định.\n\n❌ A. some: không phù hợp vì 'some' thường dùng trong câu khẳng định.\n❌ C. a few: không phù hợp vì 'a few' chỉ một số lượng nhỏ.\n❌ D. little: không phù hợp vì 'little' chỉ một lượng nhỏ.\n\nDịch nghĩa: Bạn có thể chọn bất kỳ cuốn sách nào bạn thích từ thư viện; giới hạn mượn là năm cuốn.", "isCorrect": true },
+                        { "text": "C. a few", "rationale": "❌ Sai. 'a few' chỉ một số lượng nhỏ.", "isCorrect": false },
+                        { "text": "D. little", "rationale": "❌ Sai. 'little' chỉ một lượng nhỏ.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'bất kỳ' trong câu khẳng định?"
+                },
+                // Câu 14
+                {
+                    "questionNumber": 14,
+                    "question": "__________ participants completed the marathon despite the adverse weather conditions.",
+                    "answerOptions": [
+                        { "text": "A. Most of", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'Most of' có nghĩa là phần lớn, phù hợp với ngữ cảnh câu.\n\n❌ B. The most: không phù hợp vì 'the most' thường dùng để so sánh.\n❌ C. Mostly: không phù hợp vì 'mostly' chỉ trạng thái chủ yếu, không phải số lượng.\n❌ D. Almost: không phù hợp vì 'almost' có nghĩa là gần như, không chắc chắn.\n\nDịch nghĩa: Phần lớn các người tham gia đã hoàn thành cuộc marathon mặc dù điều kiện thời tiết xấu.", "isCorrect": true },
+                        { "text": "B. The most", "rationale": "❌ Sai. 'the most' thường dùng để so sánh.", "isCorrect": false },
+                        { "text": "C. Mostly", "rationale": "❌ Sai. 'mostly' chỉ trạng thái chủ yếu, không phải số lượng.", "isCorrect": false },
+                        { "text": "D. Almost", "rationale": "❌ Sai. 'almost' có nghĩa là gần như, không chắc chắn.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào có nghĩa là 'phần lớn'?"
+                },
+                // Câu 15
+                {
+                    "questionNumber": 15,
+                    "question": "The chef added __________ salt to the sauce, which enhanced the flavors perfectly.",
+                    "answerOptions": [
+                        { "text": "A. a few", "rationale": "❌ Sai. 'a few' dùng với danh từ đếm được.", "isCorrect": false },
+                        { "text": "B. a little", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'A little' có nghĩa là một chút, dùng với danh từ không đếm được.\n\n❌ A. a few: không phù hợp vì 'a few' dùng với danh từ đếm được.\n❌ C. a large number of: không phù hợp vì 'a large number of' dùng với danh từ đếm được.\n❌ D. many: không phù hợp vì 'many' dùng với danh từ đếm được.\n\nDịch nghĩa: Đầu bếp đã thêm một chút muối vào nước sốt, điều này đã làm tăng hương vị một cách hoàn hảo.", "isCorrect": true },
+                        { "text": "C. a large number of", "rationale": "❌ Sai. 'a large number of' dùng với danh từ đếm được.", "isCorrect": false },
+                        { "text": "D. many", "rationale": "❌ Sai. 'many' dùng với danh từ đếm được.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'một chút' cho danh từ không đếm được?"
+                },
+                // Câu 16
+                {
+                    "questionNumber": 16,
+                    "question": "__________ the candidates were invited for a second interview after the initial screening.",
+                    "answerOptions": [
+                        { "text": "A. Neither of", "rationale": "❌ Sai. 'Neither of' chỉ hai người hoặc hai vật.", "isCorrect": false },
+                        { "text": "B. Either of", "rationale": "❌ Sai. 'Either of' chỉ một trong hai.", "isCorrect": false },
+                        { "text": "C. Both of", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Both of' có nghĩa là cả hai, phù hợp với ngữ cảnh câu.\n\n❌ A. Neither of: không phù hợp vì 'neither of' chỉ hai người hoặc hai vật.\n❌ B. Either of: không phù hợp vì 'either of' chỉ một trong hai.\n❌ D. Much of: không phù hợp vì 'much of' dùng cho danh từ không đếm được.\n\nDịch nghĩa: Cả hai ứng viên đều được mời phỏng vấn lần hai sau khi sàng lọc ban đầu.", "isCorrect": true },
+                        { "text": "D. Much of", "rationale": "❌ Sai. 'much of' dùng cho danh từ không đếm được.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'cả hai'?"
+                },
+                // Câu 17
+                {
+                    "questionNumber": 17,
+                    "question": "The company has received __________ complaints about their customer service since implementing the new policy.",
+                    "answerOptions": [
+                        { "text": "A. a great deal of", "rationale": "❌ Sai. 'a great deal of' dùng cho danh từ không đếm được.", "isCorrect": false },
+                        { "text": "B. a significant number of", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'A significant number of' có nghĩa là một số lượng đáng kể, phù hợp với ngữ cảnh câu.\n\n❌ A. a great deal of: không phù hợp vì 'a great deal of' dùng cho danh từ không đếm được.\n❌ C. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n❌ D. a little: không phù hợp vì 'a little' chỉ một lượng nhỏ.\n\nDịch nghĩa: Công ty đã nhận được một số lượng đáng kể các khiếu nại về dịch vụ khách hàng của họ kể từ khi thực hiện chính sách mới.", "isCorrect": true },
+                        { "text": "C. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false },
+                        { "text": "D. a little", "rationale": "❌ Sai. 'a little' chỉ một lượng nhỏ.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào chỉ số lượng đáng kể cho danh từ đếm được?"
+                },
+                // Câu 18
+                {
+                    "questionNumber": 18,
+                    "question": "She has __________ close friends she can confide in, which makes her feel isolated.",
+                    "answerOptions": [
+                        { "text": "A. a few", "rationale": "❌ Sai. 'a few' chỉ một số lượng nhỏ nhưng có thể chấp nhận được.", "isCorrect": false },
+                        { "text": "B. a little", "rationale": "❌ Sai. 'a little' chỉ một lượng nhỏ.", "isCorrect": false },
+                        { "text": "C. few", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Few' có nghĩa là rất ít, thường mang nghĩa tiêu cực.\n\n❌ A. a few: không phù hợp vì 'a few' chỉ một số lượng nhỏ nhưng có thể chấp nhận được.\n❌ B. a little: không phù hợp vì 'a little' chỉ một lượng nhỏ.\n❌ D. little: không phù hợp vì 'little' chỉ một lượng nhỏ.\n\nDịch nghĩa: Cô ấy có rất ít bạn bè thân thiết mà cô có thể tâm sự, điều này khiến cô cảm thấy cô đơn.", "isCorrect": true },
+                        { "text": "D. little", "rationale": "❌ Sai. 'little' chỉ một lượng nhỏ.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'rất ít' (mang nghĩa tiêu cực)?"
+                },
+                // Câu 19
+                {
+                    "questionNumber": 19,
+                    "question": "The documentary provided __________ insight into the lives of endangered species.",
+                    "answerOptions": [
+                        { "text": "A. many", "rationale": "❌ Sai. 'many' thường dùng với danh từ đếm được.", "isCorrect": false },
+                        { "text": "B. a large number of", "rationale": "❌ Sai. 'a large number of' dùng cho danh từ đếm được.", "isCorrect": false },
+                        { "text": "C. a wealth of", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'A wealth of' có nghĩa là một lượng lớn, thường dùng để chỉ thông tin hoặc tài nguyên.\n\n❌ A. many: không phù hợp vì 'many' thường dùng với danh từ đếm được.\n❌ B. a large number of: không phù hợp vì 'a large number of' dùng cho danh từ đếm được.\n❌ D. scores of: không phù hợp vì 'scores of' thường chỉ một số lượng lớn nhưng không chính xác như 'wealth of'.\n\nDịch nghĩa: Bộ phim tài liệu đã cung cấp một lượng lớn thông tin về cuộc sống của các loài động vật có nguy cơ tuyệt chủng.", "isCorrect": true },
+                        { "text": "D. scores of", "rationale": "❌ Sai. 'scores of' thường chỉ một số lượng lớn nhưng không chính xác như 'wealth of'.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào chỉ một lượng lớn thông tin?"
+                },
+                // Câu 20
+                {
+                    "questionNumber": 20,
+                    "question": "__________ the employees agreed with the proposed changes to the work schedule.",
+                    "answerOptions": [
+                        { "text": "A. Almost", "rationale": "❌ Sai. 'almost' có nghĩa là gần như, không chắc chắn.", "isCorrect": false },
+                        { "text": "B. Mostly", "rationale": "❌ Sai. 'mostly' chỉ trạng thái chủ yếu, không phải số lượng.", "isCorrect": false },
+                        { "text": "C. Most of", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Most of' có nghĩa là phần lớn, phù hợp với ngữ cảnh câu.\n\n❌ A. Almost: không phù hợp vì 'almost' có nghĩa là gần như, không chắc chắn.\n❌ B. Mostly: không phù hợp vì 'mostly' chỉ trạng thái chủ yếu, không phải số lượng.\n❌ D. The most: không phù hợp vì 'the most' thường dùng để so sánh.\n\nDịch nghĩa: Phần lớn các nhân viên đồng ý với những thay đổi được đề xuất cho lịch làm việc.", "isCorrect": true },
+                        { "text": "D. The most", "rationale": "❌ Sai. 'the most' thường dùng để so sánh.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào có nghĩa là 'phần lớn'?"
+                },
+                // Câu 21
+                {
+                    "questionNumber": 21,
+                    "question": "You'll need to wait __________ minutes while we process your application.",
+                    "answerOptions": [
+                        { "text": "A. a little", "rationale": "❌ Sai. 'a little' chỉ một lượng nhỏ.", "isCorrect": false },
+                        { "text": "B. a few", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'A few' có nghĩa là một số, thường dùng với danh từ đếm được.\n\n❌ A. a little: không phù hợp vì 'a little' chỉ một lượng nhỏ.\n❌ C. a great deal of: không phù hợp vì 'a great deal of' dùng cho danh từ không đếm được.\n❌ D. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n\nDịch nghĩa: Bạn sẽ cần phải chờ một vài phút trong khi chúng tôi xử lý đơn đăng ký của bạn.", "isCorrect": true },
+                        { "text": "C. a great deal of", "rationale": "❌ Sai. 'a great deal of' dùng cho danh từ không đếm được.", "isCorrect": false },
+                        { "text": "D. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'một vài' dùng với danh từ đếm được?"
+                },
+                // Câu 22
+                {
+                    "questionNumber": 22,
+                    "question": "There is __________ evidence to support the controversial theory proposed by the researcher.",
+                    "answerOptions": [
+                        { "text": "A. few", "rationale": "❌ Sai. 'few' dùng với danh từ đếm được.", "isCorrect": false },
+                        { "text": "B. little", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Little' có nghĩa là không đủ, thường dùng với danh từ không đếm được.\n\n❌ A. few: không phù hợp vì 'few' dùng với danh từ đếm được.\n❌ C. a few: không phù hợp vì 'a few' chỉ một số lượng nhỏ.\n❌ D. many: không phù hợp vì 'many' dùng với danh từ đếm được.\n\nDịch nghĩa: Có rất ít bằng chứng để hỗ trợ lý thuyết gây tranh cãi được đề xuất bởi nhà nghiên cứu.", "isCorrect": true },
+                        { "text": "C. a few", "rationale": "❌ Sai. 'a few' chỉ một số lượng nhỏ.", "isCorrect": false },
+                        { "text": "D. many", "rationale": "❌ Sai. 'many' dùng với danh từ đếm được.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'không đủ' cho danh từ không đếm được?"
+                },
+                // Câu 23
+                {
+                    "questionNumber": 23,
+                    "question": "The gallery features paintings by __________ renowned artists from the Renaissance period.",
+                    "answerOptions": [
+                        { "text": "A. a great deal of", "rationale": "❌ Sai. 'a great deal of' dùng cho danh từ không đếm được.", "isCorrect": false },
+                        { "text": "B. an abundance of", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'An abundance of' có nghĩa là một lượng lớn, thường dùng để chỉ sự phong phú.\n\n❌ A. a great deal of: không phù hợp vì 'a great deal of' dùng cho danh từ không đếm được.\n❌ C. a host of: không phù hợp vì 'a host of' thường chỉ một số lượng lớn nhưng không chính xác như 'abundance'.\n❌ D. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n\nDịch nghĩa: Phòng trưng bày có các bức tranh của nhiều nghệ sĩ nổi tiếng từ thời Phục hưng.", "isCorrect": true },
+                        { "text": "C. a host of", "rationale": "❌ Sai. 'a host of' thường chỉ một số lượng lớn nhưng không chính xác như 'abundance'.", "isCorrect": false },
+                        { "text": "D. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào chỉ sự phong phú?"
+                },
+                // Câu 24
+                {
+                    "questionNumber": 24,
+                    "question": "She visits her grandparents __________ three weeks to ensure they're doing well.",
+                    "answerOptions": [
+                        { "text": "A. every", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'Every' có nghĩa là mỗi, thường dùng để chỉ tần suất.\n\n❌ B. each: không phù hợp vì 'each' nhấn mạnh từng cá nhân riêng lẻ.\n❌ C. all: không phù hợp vì 'all' chỉ tất cả.\n❌ D. both: không phù hợp vì 'both' chỉ hai.\n\nDịch nghĩa: Cô ấy thăm ông bà ba tuần một lần để đảm bảo họ vẫn khỏe.", "isCorrect": true },
+                        { "text": "B. each", "rationale": "❌ Sai. 'each' nhấn mạnh từng cá nhân riêng lẻ.", "isCorrect": false },
+                        { "text": "C. all", "rationale": "❌ Sai. 'all' chỉ tất cả.", "isCorrect": false },
+                        { "text": "D. both", "rationale": "❌ Sai. 'both' chỉ hai.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'mỗi' để chỉ tần suất?"
+                },
+                // Câu 25
+                {
+                    "questionNumber": 25,
+                    "question": "__________ the books on the recommended reading list are available in the university library.",
+                    "answerOptions": [
+                        { "text": "A. Almost", "rationale": "❌ Sai. 'almost' có nghĩa là gần như, không chắc chắn.", "isCorrect": false },
+                        { "text": "B. Mostly", "rationale": "❌ Sai. 'mostly' chỉ trạng thái chủ yếu, không phải số lượng.", "isCorrect": false },
+                        { "text": "C. Most", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Most' có nghĩa là phần lớn, phù hợp với ngữ cảnh câu.\n\n❌ A. Almost: không phù hợp vì 'almost' có nghĩa là gần như, không chắc chắn.\n❌ B. Mostly: không phù hợp vì 'mostly' chỉ trạng thái chủ yếu, không phải số lượng.\n❌ D. The most: không phù hợp vì 'the most' thường dùng để so sánh.\n\nDịch nghĩa: Hầu hết các cuốn sách trong danh sách đọc được đề xuất đều có sẵn trong thư viện trường đại học.", "isCorrect": true },
+                        { "text": "D. The most", "rationale": "❌ Sai. 'the most' thường dùng để so sánh.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'hầu hết'?"
+                },
+                // Câu 26
+                {
+                    "questionNumber": 26,
+                    "question": "The consultant offered __________ solutions to improve the company's efficiency.",
+                    "answerOptions": [
+                        { "text": "A. a great deal of", "rationale": "❌ Sai. 'a great deal of' dùng cho danh từ không đếm được.", "isCorrect": false },
+                        { "text": "B. a wide range of", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'A wide range of' có nghĩa là nhiều loại, đa dạng.\n\n❌ A. a great deal of: không phù hợp vì 'a great deal of' dùng cho danh từ không đếm được.\n❌ C. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n❌ D. a little: không phù hợp vì 'a little' chỉ một lượng nhỏ.\n\nDịch nghĩa: Chuyên gia tư vấn đã đưa ra nhiều giải pháp đa dạng để cải thiện hiệu quả của công ty.", "isCorrect": true },
+                        { "text": "C. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false },
+                        { "text": "D. a little", "rationale": "❌ Sai. 'a little' chỉ một lượng nhỏ.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào chỉ sự đa dạng?"
+                },
+                // Câu 27
+                {
+                    "questionNumber": 27,
+                    "question": "__________ the participants understood the instructions, so the workshop proceeded smoothly.",
+                    "answerOptions": [
+                        { "text": "A. All of", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'All of' có nghĩa là tất cả, phù hợp với ngữ cảnh câu.\n\n❌ B. Every of: không phù hợp vì 'every' không đi với 'of'.\n❌ C. Each of: không phù hợp vì 'each of' nhấn mạnh từng cá nhân riêng lẻ.\n❌ D. Both of: không phù hợp vì 'both of' chỉ hai.\n\nDịch nghĩa: Tất cả những người tham gia đều hiểu hướng dẫn, vì vậy hội thảo diễn ra suôn sẻ.", "isCorrect": true },
+                        { "text": "B. Every of", "rationale": "❌ Sai. 'every' không đi với 'of'.", "isCorrect": false },
+                        { "text": "C. Each of", "rationale": "❌ Sai. 'each of' nhấn mạnh từng cá nhân riêng lẻ.", "isCorrect": false },
+                        { "text": "D. Both of", "rationale": "❌ Sai. 'both of' chỉ hai.", "isCorrect": false }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'tất cả'?"
+                },
+                // Câu 28
+                {
+                    "questionNumber": 28,
+                    "question": "She has published __________ articles in peer-reviewed journals, establishing herself as an expert in her field.",
+                    "answerOptions": [
+                        { "text": "A. a considerable amount of", "rationale": "❌ Sai. 'amount' dùng cho danh từ không đếm được.", "isCorrect": false },
+                        { "text": "B. a myriad of", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'A myriad of' có nghĩa là vô số, rất nhiều.\n\n❌ A. a considerable amount of: không phù hợp vì 'amount' dùng cho danh từ không đếm được.\n❌ C. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n❌ D. a little: không phù hợp vì 'a little' chỉ một lượng nhỏ.\n\nDịch nghĩa: Cô ấy đã xuất bản vô số bài báo trên các tạp chí được bình duyệt, khẳng định mình là một chuyên gia trong lĩnh vực của mình.", "isCorrect": true },
+                        { "text": "C. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false },
+                        { "text": "D. a little", "rationale": "❌ Sai. 'a little' chỉ một lượng nhỏ.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào có nghĩa là 'vô số'?"
+                },
+                // Câu 29
+                {
+                    "questionNumber": 29,
+                    "question": "Would you like __________ more time to complete the assignment, or can you submit it now?",
+                    "answerOptions": [
+                        { "text": "A. any", "rationale": "❌ Sai. 'any' thường dùng trong câu phủ định hoặc nghi vấn.", "isCorrect": false },
+                        { "text": "B. few", "rationale": "❌ Sai. 'few' dùng với danh từ đếm được.", "isCorrect": false },
+                        { "text": "C. a few", "rationale": "❌ Sai. 'a few' dùng với danh từ đếm được.", "isCorrect": false },
+                        { "text": "D. a little", "rationale": "✅ Đáp án đúng: D\n\nGiải thích: 'A little' có nghĩa là một chút, dùng với danh từ không đếm được.\n\n❌ A. any: không phù hợp vì 'any' thường dùng trong câu phủ định hoặc nghi vấn.\n❌ B. few: không phù hợp vì 'few' dùng với danh từ đếm được.\n❌ C. a few: không phù hợp vì 'a few' dùng với danh từ đếm được.\n\nDịch nghĩa: Bạn có muốn thêm một chút thời gian để hoàn thành bài tập không, hay bạn có thể nộp ngay bây giờ?", "isCorrect": true }
+                    ],
+                    "hint": "Từ nào có nghĩa là 'một chút' cho danh từ không đếm được?"
+                },
+                // Câu 30
+                {
+                    "questionNumber": 30,
+                    "question": "The university offers __________ scholarships to international students demonstrating exceptional academic merit.",
+                    "answerOptions": [
+                        { "text": "A. a great many", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'A great many' có nghĩa là nhiều, thường dùng với danh từ đếm được.\n\n❌ B. a great deal of: không phù hợp vì 'a great deal of' dùng cho danh từ không đếm được.\n❌ C. much: không phù hợp vì 'much' thường dùng với danh từ không đếm được.\n❌ D. a large amount of: không phù hợp vì 'amount' dùng cho danh từ không đếm được.\n\nDịch nghĩa: Trường đại học cung cấp nhiều học bổng cho sinh viên quốc tế có thành tích học tập xuất sắc.", "isCorrect": true },
+                        { "text": "B. a great deal of", "rationale": "❌ Sai. 'a great deal of' dùng cho danh từ không đếm được.", "isCorrect": false },
+                        { "text": "C. much", "rationale": "❌ Sai. 'much' thường dùng với danh từ không đếm được.", "isCorrect": false },
+                        { "text": "D. a large amount of", "rationale": "❌ Sai. 'amount' dùng cho danh từ không đếm được.", "isCorrect": false }
+                    ],
+                    "hint": "Cụm từ nào có nghĩa là 'nhiều' cho danh từ đếm được?"
+                },
+                // ==================== PHẦN 2: MẠO TỪ (20 câu) ====================
+                // Câu 31
+                {
+                    "questionNumber": 31,
+                    "question": "She aspires to become __________ economist working for __________ international organization such as the World Bank.",
+                    "answerOptions": [
+                        { "text": "A. an / an", "rationale": "❌ Sai. Không phù hợp.", "isCorrect": false },
+                        { "text": "B. a / an", "rationale": "❌ Sai. 'a' không thể dùng cho 'economist' bắt đầu bằng nguyên âm.", "isCorrect": false },
+                        { "text": "C. an / the", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'An economist' vì 'economist' bắt đầu bằng nguyên âm, và 'the international organization' vì chỉ một tổ chức cụ thể.\n\n❌ A. an / an: không phù hợp vì 'an' không thể dùng hai lần cho danh từ xác định.\n❌ B. a / an: không phù hợp vì 'a' không thể dùng cho danh từ bắt đầu bằng nguyên âm.\n❌ D. the / an: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n\nDịch nghĩa: Cô ấy khao khát trở thành một nhà kinh tế làm việc cho một tổ chức quốc tế như Ngân hàng Thế giới.", "isCorrect": true },
+                        { "text": "D. the / an", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Chú ý nguyên âm và danh từ xác định."
+                },
+                // Câu 32
+                {
+                    "questionNumber": 32,
+                    "question": "__________ Mount Everest, which is __________ highest peak in the world, continues to attract climbers from around the globe.",
+                    "answerOptions": [
+                        { "text": "A. The / the", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'The Mount Everest' vì chỉ một ngọn núi cụ thể, và 'the highest peak' vì chỉ một đỉnh núi cụ thể.\n\n❌ B. X / the: không phù hợp vì 'X' không thể dùng cho danh từ xác định.\n❌ C. A / a: không phù hợp vì 'A' không thể dùng cho danh từ xác định.\n❌ D. The / a: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n\nDịch nghĩa: Núi Everest, đỉnh cao nhất thế giới, tiếp tục thu hút những người leo núi từ khắp nơi trên thế giới.", "isCorrect": true },
+                        { "text": "B. X / the", "rationale": "❌ Sai. 'X' không thể dùng cho danh từ xác định.", "isCorrect": false },
+                        { "text": "C. A / a", "rationale": "❌ Sai. 'A' không thể dùng cho danh từ xác định.", "isCorrect": false },
+                        { "text": "D. The / a", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Dùng mạo từ xác định cho tên núi và so sánh nhất."
+                },
+                // Câu 33
+                {
+                    "questionNumber": 33,
+                    "question": "He received __________ honorary degree from __________ university in recognition of his philanthropic work.",
+                    "answerOptions": [
+                        { "text": "A. a / a", "rationale": "❌ Sai. 'a' không thể dùng cho 'honorary' bắt đầu bằng nguyên âm.", "isCorrect": false },
+                        { "text": "B. an / an", "rationale": "❌ Sai. 'an' không thể dùng cho 'university' bắt đầu bằng phụ âm.", "isCorrect": false },
+                        { "text": "C. an / a", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'An honorary degree' vì 'honorary' bắt đầu bằng nguyên âm, và 'a university' vì 'university' bắt đầu bằng phụ âm.\n\n❌ A. a / a: không phù hợp vì 'a' không thể dùng cho danh từ bắt đầu bằng nguyên âm.\n❌ B. an / an: không phù hợp vì 'an' không thể dùng hai lần cho danh từ không xác định.\n❌ D. the / the: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n\nDịch nghĩa: Anh ấy đã nhận được một bằng danh dự từ một trường đại học để ghi nhận công việc từ thiện của mình.", "isCorrect": true },
+                        { "text": "D. the / the", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Chú ý 'honorary' (âm câm h) và 'university' (bắt đầu bằng phụ âm)."
+                },
+                // Câu 34
+                {
+                    "questionNumber": 34,
+                    "question": "We need to discuss __________ issue that arose during __________ meeting yesterday afternoon.",
+                    "answerOptions": [
+                        { "text": "A. a / a", "rationale": "❌ Sai. Không phù hợp vì danh từ đã xác định.", "isCorrect": false },
+                        { "text": "B. an / the", "rationale": "❌ Sai. 'an' không phù hợp.", "isCorrect": false },
+                        { "text": "C. the / the", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'The issue' vì chỉ một vấn đề cụ thể, và 'the meeting' vì chỉ một cuộc họp cụ thể.\n\n❌ A. a / a: không phù hợp vì 'a' không thể dùng cho danh từ xác định.\n❌ B. an / the: không phù hợp vì 'an' không thể dùng cho danh từ xác định.\n❌ D. the / a: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n\nDịch nghĩa: Chúng ta cần thảo luận về vấn đề đã phát sinh trong cuộc họp hôm qua.", "isCorrect": true },
+                        { "text": "D. the / a", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Cả hai danh từ đều đã được xác định."
+                },
+                // Câu 35
+                {
+                    "questionNumber": 35,
+                    "question": "She plays __________ violin with remarkable skill, but she has never had __________ formal training.",
+                    "answerOptions": [
+                        { "text": "A. the / a", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'The violin' vì chỉ một nhạc cụ cụ thể, và 'a formal training' vì chỉ một loại đào tạo không xác định.\n\n❌ B. a / the: không phù hợp vì 'a' không thể dùng cho danh từ xác định.\n❌ C. the / X: không phù hợp vì 'X' không thể dùng cho danh từ xác định.\n❌ D. X / a: không phù hợp vì 'X' không thể dùng cho danh từ xác định.\n\nDịch nghĩa: Cô ấy chơi violin với kỹ năng đáng kinh ngạc, nhưng cô ấy chưa bao giờ có đào tạo chính thức.", "isCorrect": true },
+                        { "text": "B. a / the", "rationale": "❌ Sai. 'a' không thể dùng cho danh từ xác định.", "isCorrect": false },
+                        { "text": "C. the / X", "rationale": "❌ Sai. 'X' không thể dùng cho danh từ xác định.", "isCorrect": false },
+                        { "text": "D. X / a", "rationale": "❌ Sai. 'X' không thể dùng cho danh từ xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Nhạc cụ đi với 'the', đào tạo không xác định đi với 'a'."
+                },
+                // Câu 36
+                {
+                    "questionNumber": 36,
+                    "question": "__________ history of __________ ancient Rome is fascinating to many scholars.",
+                    "answerOptions": [
+                        { "text": "A. A / an", "rationale": "❌ Sai. Không phù hợp.", "isCorrect": false },
+                        { "text": "B. The / X", "rationale": "❌ Sai. 'ancient Rome' là tên riêng, không cần mạo từ.", "isCorrect": false },
+                        { "text": "C. The / an", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'The history' vì chỉ một lịch sử cụ thể, và 'an ancient Rome' vì 'ancient' bắt đầu bằng nguyên âm.\n\n❌ A. A / an: không phù hợp vì 'A' không thể dùng cho danh từ xác định.\n❌ B. The / X: không phù hợp vì 'X' không thể dùng cho danh từ xác định.\n❌ D. X / the: không phù hợp vì 'X' không thể dùng cho danh từ xác định.\n\nDịch nghĩa: Lịch sử của Rome cổ đại rất hấp dẫn đối với nhiều học giả.", "isCorrect": true },
+                        { "text": "D. X / the", "rationale": "❌ Sai. 'X' không thể dùng cho danh từ xác định.", "isCorrect": false }
+                    ],
+                    "hint": "'History' đi với 'the' khi nói về lịch sử cụ thể."
+                },
+                // Câu 37
+                {
+                    "questionNumber": 37,
+                    "question": "He's been suffering from __________ flu, so he won't be able to attend __________ conference.",
+                    "answerOptions": [
+                        { "text": "A. a / a", "rationale": "❌ Sai. Không phù hợp.", "isCorrect": false },
+                        { "text": "B. the / the", "rationale": "❌ Sai. 'flu' không cần mạo từ.", "isCorrect": false },
+                        { "text": "C. X / the", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'X' không cần mạo từ vì 'flu' là một bệnh cụ thể, và 'the conference' vì chỉ một hội nghị cụ thể.\n\n❌ A. a / a: không phù hợp vì 'a' không thể dùng cho danh từ xác định.\n❌ B. the / the: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n❌ D. the / a: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n\nDịch nghĩa: Anh ấy đã bị cảm cúm, vì vậy anh ấy sẽ không thể tham dự hội nghị.", "isCorrect": true },
+                        { "text": "D. the / a", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Tên bệnh thường không dùng mạo từ, hội nghị xác định dùng 'the'."
+                },
+                // Câu 38
+                {
+                    "questionNumber": 38,
+                    "question": "She is __________ most talented student I have ever taught; she has __________ unique ability to grasp complex concepts.",
+                    "answerOptions": [
+                        { "text": "A. a / a", "rationale": "❌ Sai. 'most talented' là so sánh nhất, phải dùng 'the'.", "isCorrect": false },
+                        { "text": "B. the / a", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'The most talented student' vì là so sánh nhất, và 'a unique ability' vì 'unique' bắt đầu bằng phụ âm.\n\n❌ A. a / a: không phù hợp vì 'a' không thể dùng cho so sánh nhất.\n❌ C. the / the: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n❌ D. a / the: không phù hợp vì 'a' không thể dùng cho so sánh nhất.\n\nDịch nghĩa: Cô ấy là sinh viên tài năng nhất mà tôi từng dạy; cô ấy có một khả năng độc đáo để nắm bắt các khái niệm phức tạp.", "isCorrect": true },
+                        { "text": "C. the / the", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false },
+                        { "text": "D. a / the", "rationale": "❌ Sai. 'a' không thể dùng cho so sánh nhất.", "isCorrect": false }
+                    ],
+                    "hint": "So sánh nhất dùng 'the', 'unique' đi với 'a'."
+                },
+                // Câu 39
+                {
+                    "questionNumber": 39,
+                    "question": "We had __________ lunch at __________ restaurant that overlooks the harbor.",
+                    "answerOptions": [
+                        { "text": "A. a / a", "rationale": "❌ Sai. 'lunch' là bữa ăn, không dùng mạo từ.", "isCorrect": false },
+                        { "text": "B. the / the", "rationale": "❌ Sai. 'lunch' không xác định.", "isCorrect": false },
+                        { "text": "C. X / a", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'X' không dùng mạo từ cho 'lunch', và 'a restaurant' vì chỉ một nhà hàng không xác định.\n\n❌ A. a / a: không phù hợp vì 'a' không thể dùng cho 'lunch'.\n❌ B. the / the: không phù hợp vì 'lunch' không xác định.\n❌ D. X / the: không phù hợp vì 'the' chỉ nhà hàng xác định.\n\nDịch nghĩa: Chúng tôi đã ăn trưa tại một nhà hàng nhìn ra bến cảng.", "isCorrect": true },
+                        { "text": "D. X / the", "rationale": "❌ Sai. 'the' chỉ nhà hàng xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Bữa ăn thường không dùng mạo từ."
+                },
+                // Câu 40
+                {
+                    "questionNumber": 40,
+                    "question": "__________ Amazon rainforest is often referred to as __________ lungs of the Earth.",
+                    "answerOptions": [
+                        { "text": "A. An / the", "rationale": "❌ Sai. 'Amazon' là tên riêng, dùng 'the'.", "isCorrect": false },
+                        { "text": "B. The / the", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'The Amazon rainforest' vì chỉ một khu rừng cụ thể, và 'the lungs' vì chỉ một bộ phận cụ thể.\n\n❌ A. An / the: không phù hợp vì 'An' không thể dùng cho danh từ xác định.\n❌ C. The / X: không phù hợp vì 'X' không thể dùng cho danh từ xác định.\n❌ D. X / the: không phù hợp vì 'X' không thể dùng cho danh từ xác định.\n\nDịch nghĩa: Rừng nhiệt đới Amazon thường được gọi là lá phổi của Trái đất.", "isCorrect": true },
+                        { "text": "C. The / X", "rationale": "❌ Sai. 'X' không thể dùng cho danh từ xác định.", "isCorrect": false },
+                        { "text": "D. X / the", "rationale": "❌ Sai. 'X' không thể dùng cho danh từ xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Tên sông, rừng dùng 'the'."
+                },
+                // Câu 41
+                {
+                    "questionNumber": 41,
+                    "question": "She's looking for __________ job where she can utilize her linguistic skills. She speaks __________ French and __________ German fluently.",
+                    "answerOptions": [
+                        { "text": "A. a / X / X", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'A job' vì chỉ một công việc không xác định, và 'French/German' là tên ngôn ngữ, không dùng mạo từ.\n\n❌ B. the / the / the: không phù hợp vì 'the' không thể dùng cho ngôn ngữ.\n❌ C. a / the / the: không phù hợp vì 'the' không thể dùng cho ngôn ngữ.\n❌ D. the / X / X: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n\nDịch nghĩa: Cô ấy đang tìm một công việc mà cô ấy có thể sử dụng kỹ năng ngôn ngữ của mình. Cô ấy nói tiếng Pháp và tiếng Đức lưu loát.", "isCorrect": true },
+                        { "text": "B. the / the / the", "rationale": "❌ Sai. 'the' không thể dùng cho ngôn ngữ.", "isCorrect": false },
+                        { "text": "C. a / the / the", "rationale": "❌ Sai. 'the' không thể dùng cho ngôn ngữ.", "isCorrect": false },
+                        { "text": "D. the / X / X", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Tên ngôn ngữ không dùng mạo từ."
+                },
+                // Câu 42
+                {
+                    "questionNumber": 42,
+                    "question": "He sustained __________ injury during __________ football match on Saturday.",
+                    "answerOptions": [
+                        { "text": "A. an / a", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'An injury' vì 'injury' bắt đầu bằng nguyên âm, và 'a football match' vì chỉ một trận đấu không xác định.\n\n❌ B. the / the: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n❌ C. an / the: không phù hợp vì 'the' chỉ trận đấu xác định.\n❌ D. a / the: không phù hợp vì 'a' không thể dùng cho 'injury' bắt đầu bằng nguyên âm.\n\nDịch nghĩa: Anh ấy bị thương trong một trận đấu bóng đá vào thứ Bảy.", "isCorrect": true },
+                        { "text": "B. the / the", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false },
+                        { "text": "C. an / the", "rationale": "❌ Sai. 'the' chỉ trận đấu xác định.", "isCorrect": false },
+                        { "text": "D. a / the", "rationale": "❌ Sai. 'a' không thể dùng cho 'injury' bắt đầu bằng nguyên âm.", "isCorrect": false }
+                    ],
+                    "hint": "Chú ý 'injury' bắt đầu bằng nguyên âm."
+                },
+                // Câu 43
+                {
+                    "questionNumber": 43,
+                    "question": "__________ honesty is __________ virtue that is highly valued in all cultures.",
+                    "answerOptions": [
+                        { "text": "A. The / a", "rationale": "❌ Sai. 'Honesty' là danh từ trừu tượng, không dùng 'the'.", "isCorrect": false },
+                        { "text": "B. An / the", "rationale": "❌ Sai. 'An' không thể dùng cho 'honesty'.", "isCorrect": false },
+                        { "text": "C. X / a", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'X' không dùng mạo từ cho danh từ trừu tượng 'honesty', và 'a virtue' vì chỉ một đức tính không xác định.\n\n❌ A. The / a: không phù hợp vì 'The' không thể dùng cho danh từ trừu tượng.\n❌ B. An / the: không phù hợp vì 'An' không thể dùng cho 'honesty'.\n❌ D. X / the: không phù hợp vì 'the' chỉ đức tính xác định.\n\nDịch nghĩa: Sự trung thực là một đức tính được đánh giá cao trong tất cả các nền văn hóa.", "isCorrect": true },
+                        { "text": "D. X / the", "rationale": "❌ Sai. 'the' chỉ đức tính xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Danh từ trừu tượng không dùng mạo từ."
+                },
+                // Câu 44
+                {
+                    "questionNumber": 44,
+                    "question": "She's been appointed __________ head of the department, which is __________ significant achievement for someone her age.",
+                    "answerOptions": [
+                        { "text": "A. the / a", "rationale": "❌ Sai. Chức vụ đứng một mình không dùng 'the'.", "isCorrect": false },
+                        { "text": "B. X / a", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'X' không dùng mạo từ cho chức vụ 'head of the department', và 'a significant achievement' vì chỉ một thành tựu không xác định.\n\n❌ A. the / a: không phù hợp vì 'the' không thể dùng cho chức vụ đứng một mình.\n❌ C. a / the: không phù hợp vì 'a' không thể dùng cho chức vụ.\n❌ D. the / the: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n\nDịch nghĩa: Cô ấy đã được bổ nhiệm làm trưởng phòng, đây là một thành tựu đáng kể cho một người ở độ tuổi của cô ấy.", "isCorrect": true },
+                        { "text": "C. a / the", "rationale": "❌ Sai. 'a' không thể dùng cho chức vụ.", "isCorrect": false },
+                        { "text": "D. the / the", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Chức vụ đứng một mình không dùng mạo từ."
+                },
+                // Câu 45
+                {
+                    "questionNumber": 45,
+                    "question": "We're planning to visit __________ Netherlands next spring to see __________ tulip fields in bloom.",
+                    "answerOptions": [
+                        { "text": "A. X / the", "rationale": "❌ Sai. 'Netherlands' là quốc gia dạng số nhiều, phải dùng 'the'.", "isCorrect": false },
+                        { "text": "B. The / the", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'The Netherlands' vì chỉ một quốc gia cụ thể, và 'the tulip fields' vì chỉ một loại cánh đồng cụ thể.\n\n❌ A. X / the: không phù hợp vì 'X' không thể dùng cho danh từ xác định.\n❌ C. The / X: không phù hợp vì 'X' không thể dùng cho danh từ xác định.\n❌ D. A / the: không phù hợp vì 'A' không thể dùng cho danh từ xác định.\n\nDịch nghĩa: Chúng tôi đang lên kế hoạch thăm Hà Lan vào mùa xuân tới để xem các cánh đồng tulip nở rộ.", "isCorrect": true },
+                        { "text": "C. The / X", "rationale": "❌ Sai. 'X' không thể dùng cho danh từ xác định.", "isCorrect": false },
+                        { "text": "D. A / the", "rationale": "❌ Sai. 'A' không thể dùng cho danh từ xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Quốc gia dạng số nhiều dùng 'the'."
+                },
+                // Câu 46
+                {
+                    "questionNumber": 46,
+                    "question": "He's __________ only person I know who can solve __________ Rubik's Cube in under a minute.",
+                    "answerOptions": [
+                        { "text": "A. a / a", "rationale": "❌ Sai. 'only' yêu cầu 'the'.", "isCorrect": false },
+                        { "text": "B. an / the", "rationale": "❌ Sai. 'an' không thể dùng cho 'only'.", "isCorrect": false },
+                        { "text": "C. the / a", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'The only person' vì 'only' yêu cầu mạo từ xác định, và 'a Rubik's Cube' vì chỉ một loại đồ chơi không xác định.\n\n❌ A. a / a: không phù hợp vì 'a' không thể dùng cho 'only'.\n❌ B. an / the: không phù hợp vì 'an' không thể dùng cho 'only'.\n❌ D. the / X: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n\nDịch nghĩa: Anh ấy là người duy nhất tôi biết có thể giải Rubik's Cube trong vòng chưa đầy một phút.", "isCorrect": true },
+                        { "text": "D. the / X", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false }
+                    ],
+                    "hint": "'Only' đi với 'the'."
+                },
+                // Câu 47
+                {
+                    "questionNumber": 47,
+                    "question": "She always wanted to study at __________ Oxford University, but she ended up attending __________ University of Cambridge.",
+                    "answerOptions": [
+                        { "text": "A. X / the", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'X' không dùng mạo từ cho 'Oxford University' vì là tên riêng, và 'the University of Cambridge' vì cấu trúc 'the University of'.\n\n❌ B. The / X: không phù hợp vì 'The' không thể dùng cho tên riêng.\n❌ C. The / the: không phù hợp vì 'The' không thể dùng cho tên riêng.\n❌ D. X / X: không phù hợp vì 'University of Cambridge' phải dùng 'the'.\n\nDịch nghĩa: Cô ấy luôn muốn học tại Đại học Oxford, nhưng cuối cùng cô ấy đã học tại Đại học Cambridge.", "isCorrect": true },
+                        { "text": "B. The / X", "rationale": "❌ Sai. 'The' không thể dùng cho tên riêng.", "isCorrect": false },
+                        { "text": "C. The / the", "rationale": "❌ Sai. 'The' không thể dùng cho tên riêng.", "isCorrect": false },
+                        { "text": "D. X / X", "rationale": "❌ Sai. 'University of Cambridge' phải dùng 'the'.", "isCorrect": false }
+                    ],
+                    "hint": "Tên trường dạng 'University of...' dùng 'the'."
+                },
+                // Câu 48
+                {
+                    "questionNumber": 48,
+                    "question": "It was __________ extraordinary performance that received __________ standing ovation.",
+                    "answerOptions": [
+                        { "text": "A. a / a", "rationale": "❌ Sai. 'extraordinary' bắt đầu bằng nguyên âm.", "isCorrect": false },
+                        { "text": "B. an / a", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'An extraordinary performance' vì 'extraordinary' bắt đầu bằng nguyên âm, và 'a standing ovation' vì chỉ một phản ứng không xác định.\n\n❌ A. a / a: không phù hợp vì 'a' không thể dùng cho danh từ bắt đầu bằng nguyên âm.\n❌ C. the / the: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n❌ D. an / X: không phù hợp vì 'X' không thể dùng cho danh từ xác định.\n\nDịch nghĩa: Đó là một buổi biểu diễn phi thường đã nhận được một tràng vỗ tay đứng.", "isCorrect": true },
+                        { "text": "C. the / the", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false },
+                        { "text": "D. an / X", "rationale": "❌ Sai. 'X' không thể dùng cho danh từ xác định.", "isCorrect": false }
+                    ],
+                    "hint": "'Extraordinary' bắt đầu bằng nguyên âm."
+                },
+                // Câu 49
+                {
+                    "questionNumber": 49,
+                    "question": "He took __________ photograph of __________ moon rising over the mountains.",
+                    "answerOptions": [
+                        { "text": "A. a / a", "rationale": "❌ Sai. 'moon' là duy nhất, phải dùng 'the'.", "isCorrect": false },
+                        { "text": "B. the / the", "rationale": "❌ Sai. 'photograph' không xác định.", "isCorrect": false },
+                        { "text": "C. a / the", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'A photograph' vì chỉ một bức ảnh không xác định, và 'the moon' vì chỉ một thiên thể cụ thể.\n\n❌ A. a / a: không phù hợp vì 'a' không thể dùng cho 'moon'.\n❌ B. the / the: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n❌ D. the / a: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n\nDịch nghĩa: Anh ấy đã chụp một bức ảnh về mặt trăng đang mọc lên trên những ngọn núi.", "isCorrect": true },
+                        { "text": "D. the / a", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false }
+                    ],
+                    "hint": "Mặt trăng là duy nhất, dùng 'the'."
+                },
+                // Câu 50
+                {
+                    "questionNumber": 50,
+                    "question": "__________ patience is __________ essential quality for __________ teacher working with young children.",
+                    "answerOptions": [
+                        { "text": "A. The / an / a", "rationale": "❌ Sai. 'patience' là danh từ trừu tượng, không dùng 'the'.", "isCorrect": false },
+                        { "text": "B. X / an / a", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'X' không dùng mạo từ cho danh từ trừu tượng 'patience', 'an essential quality' vì 'essential' bắt đầu bằng nguyên âm, và 'a teacher' vì chỉ một giáo viên không xác định.\n\n❌ A. The / an / a: không phù hợp vì 'The' không thể dùng cho danh từ trừu tượng.\n❌ C. X / the / the: không phù hợp vì 'the' không thể dùng cho danh từ không xác định.\n❌ D. A / an / the: không phù hợp vì 'A' không thể dùng cho 'patience'.\n\nDịch nghĩa: Sự kiên nhẫn là một phẩm chất thiết yếu cho một giáo viên làm việc với trẻ nhỏ.", "isCorrect": true },
+                        { "text": "C. X / the / the", "rationale": "❌ Sai. 'the' không thể dùng cho danh từ không xác định.", "isCorrect": false },
+                        { "text": "D. A / an / the", "rationale": "❌ Sai. 'A' không thể dùng cho 'patience'.", "isCorrect": false }
+                    ],
+                    "hint": "Danh từ trừu tượng không dùng mạo từ."
+                },
+                // ==================== PHẦN 3: TỪ CHỈ ĐƠN VỊ (15 câu) ====================
+                // Câu 51
+                {
+                    "questionNumber": 51,
+                    "question": "The recipe requires one __________ of garlic, minced finely to release its full flavor.",
+                    "answerOptions": [
+                        { "text": "A. slice", "rationale": "❌ Sai. 'slice' chỉ một lát.", "isCorrect": false },
+                        { "text": "B. clove", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Clove of garlic' là cách diễn đạt chính xác để chỉ một nhánh tỏi.\n\n❌ A. slice: không phù hợp vì 'slice' chỉ một lát.\n❌ C. bar: không phù hợp vì 'bar' không liên quan đến tỏi.\n❌ D. loaf: không phù hợp vì 'loaf' chỉ một ổ bánh.\n\nDịch nghĩa: Công thức yêu cầu một nhánh tỏi, băm nhỏ để giải phóng hương vị đầy đủ của nó.", "isCorrect": true },
+                        { "text": "C. bar", "rationale": "❌ Sai. 'bar' không liên quan đến tỏi.", "isCorrect": false },
+                        { "text": "D. loaf", "rationale": "❌ Sai. 'loaf' chỉ một ổ bánh.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của tỏi là gì?"
+                },
+                // Câu 52
+                {
+                    "questionNumber": 52,
+                    "question": "She bought a __________ of freshly baked bread from the artisan bakery this morning.",
+                    "answerOptions": [
+                        { "text": "A. stick", "rationale": "❌ Sai. 'stick' không liên quan đến bánh.", "isCorrect": false },
+                        { "text": "B. bar", "rationale": "❌ Sai. 'bar' không liên quan đến bánh.", "isCorrect": false },
+                        { "text": "C. loaf", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Loaf of bread' là cách diễn đạt chính xác để chỉ một ổ bánh.\n\n❌ A. stick: không phù hợp vì 'stick' không liên quan đến bánh.\n❌ B. bar: không phù hợp vì 'bar' không liên quan đến bánh.\n❌ D. slice: không phù hợp vì 'slice' chỉ một lát.\n\nDịch nghĩa: Cô ấy đã mua một ổ bánh mới nướng từ tiệm bánh thủ công sáng nay.", "isCorrect": true },
+                        { "text": "D. slice", "rationale": "❌ Sai. 'slice' chỉ một lát.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của bánh mì là gì?"
+                },
+                // Câu 53
+                {
+                    "questionNumber": 53,
+                    "question": "He added a __________ of butter to the pan to sauté the mushrooms and onions.",
+                    "answerOptions": [
+                        { "text": "A. slab", "rationale": "❌ Sai. 'slab' thường chỉ một miếng lớn.", "isCorrect": false },
+                        { "text": "B. knob", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Knob of butter' là cách diễn đạt chính xác để chỉ một miếng bơ.\n\n❌ A. slab: không phù hợp vì 'slab' thường chỉ một miếng lớn.\n❌ C. stick: không phù hợp vì 'stick' thường chỉ một thanh bơ.\n❌ D. pinch: không phù hợp vì 'pinch' chỉ một lượng nhỏ.\n\nDịch nghĩa: Anh ấy đã thêm một miếng bơ vào chảo để xào nấm và hành tây.", "isCorrect": true },
+                        { "text": "C. stick", "rationale": "❌ Sai. 'stick' thường chỉ một thanh bơ.", "isCorrect": false },
+                        { "text": "D. pinch", "rationale": "❌ Sai. 'pinch' chỉ một lượng nhỏ.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của bơ là gì?"
+                },
+                // Câu 54
+                {
+                    "questionNumber": 54,
+                    "question": "The cocktail recipe calls for a __________ of lemon zest to enhance the citrus aroma.",
+                    "answerOptions": [
+                        { "text": "A. twist", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'Twist of lemon zest' là cách diễn đạt chính xác để chỉ một miếng vỏ chanh.\n\n❌ B. slice: không phù hợp vì 'slice' chỉ một lát.\n❌ C. bar: không phù hợp vì 'bar' không liên quan đến chanh.\n❌ D. clove: không phù hợp vì 'clove' chỉ một nhánh tỏi.\n\nDịch nghĩa: Công thức cocktail yêu cầu một miếng vỏ chanh để tăng cường hương thơm chanh.", "isCorrect": true },
+                        { "text": "B. slice", "rationale": "❌ Sai. 'slice' chỉ một lát.", "isCorrect": false },
+                        { "text": "C. bar", "rationale": "❌ Sai. 'bar' không liên quan đến chanh.", "isCorrect": false },
+                        { "text": "D. clove", "rationale": "❌ Sai. 'clove' chỉ một nhánh tỏi.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của vỏ chanh là gì?"
+                },
+                // Câu 55
+                {
+                    "questionNumber": 55,
+                    "question": "She wrapped the gift in elegant paper and sealed it with a __________ of ribbon.",
+                    "answerOptions": [
+                        { "text": "A. slice", "rationale": "❌ Sai. 'slice' không liên quan đến ruy băng.", "isCorrect": false },
+                        { "text": "B. loaf", "rationale": "❌ Sai. 'loaf' không liên quan đến ruy băng.", "isCorrect": false },
+                        { "text": "C. stick", "rationale": "❌ Sai. 'stick' không liên quan đến ruy băng.", "isCorrect": false },
+                        { "text": "D. length", "rationale": "✅ Đáp án đúng: D\n\nGiải thích: 'Length of ribbon' là cách diễn đạt chính xác để chỉ một đoạn ruy băng.\n\n❌ A. slice: không phù hợp vì 'slice' không liên quan đến ruy băng.\n❌ B. loaf: không phù hợp vì 'loaf' không liên quan đến ruy băng.\n❌ C. stick: không phù hợp vì 'stick' không liên quan đến ruy băng.\n\nDịch nghĩa: Cô ấy đã gói quà trong giấy đẹp và niêm phong nó bằng một đoạn ruy băng.", "isCorrect": true }
+                    ],
+                    "hint": "Đơn vị của ruy băng là gì?"
+                },
+                // Câu 56
+                {
+                    "questionNumber": 56,
+                    "question": "He ordered a __________ of steak, cooked medium-rare, with roasted vegetables on the side.",
+                    "answerOptions": [
+                        { "text": "A. slab", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'Slab of steak' là cách diễn đạt chính xác để chỉ một miếng thịt bò.\n\n❌ B. clove: không phù hợp vì 'clove' chỉ một nhánh tỏi.\n❌ C. pinch: không phù hợp vì 'pinch' chỉ một lượng nhỏ.\n❌ D. bar: không phù hợp vì 'bar' không liên quan đến thịt.\n\nDịch nghĩa: Anh ấy đã gọi một miếng thịt bò, nấu chín vừa, với rau củ nướng bên cạnh.", "isCorrect": true },
+                        { "text": "B. clove", "rationale": "❌ Sai. 'clove' chỉ một nhánh tỏi.", "isCorrect": false },
+                        { "text": "C. pinch", "rationale": "❌ Sai. 'pinch' chỉ một lượng nhỏ.", "isCorrect": false },
+                        { "text": "D. bar", "rationale": "❌ Sai. 'bar' không liên quan đến thịt.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của thịt bò là gì?"
+                },
+                // Câu 57
+                {
+                    "questionNumber": 57,
+                    "question": "The artist sketched the landscape using a __________ of charcoal on textured paper.",
+                    "answerOptions": [
+                        { "text": "A. loaf", "rationale": "❌ Sai. 'loaf' không liên quan đến than chì.", "isCorrect": false },
+                        { "text": "B. stick", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Stick of charcoal' là cách diễn đạt chính xác để chỉ một thanh than chì.\n\n❌ A. loaf: không phù hợp vì 'loaf' không liên quan đến than chì.\n❌ C. slice: không phù hợp vì 'slice' không liên quan đến than chì.\n❌ D. knob: không phù hợp vì 'knob' không liên quan đến than chì.\n\nDịch nghĩa: Nghệ sĩ đã phác thảo phong cảnh bằng một thanh than chì trên giấy có kết cấu.", "isCorrect": true },
+                        { "text": "C. slice", "rationale": "❌ Sai. 'slice' không liên quan đến than chì.", "isCorrect": false },
+                        { "text": "D. knob", "rationale": "❌ Sai. 'knob' không liên quan đến than chì.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của than chì là gì?"
+                },
+                // Câu 58
+                {
+                    "questionNumber": 58,
+                    "question": "She placed a __________ of chocolate on each guest's pillow as a welcoming gesture.",
+                    "answerOptions": [
+                        { "text": "A. loaf", "rationale": "❌ Sai. 'loaf' không liên quan đến sô cô la.", "isCorrect": false },
+                        { "text": "B. bar", "rationale": "✅ Đáp án đúng: B\n\nGiải thích: 'Bar of chocolate' là cách diễn đạt chính xác để chỉ một thanh sô cô la.\n\n❌ A. loaf: không phù hợp vì 'loaf' không liên quan đến sô cô la.\n❌ C. clove: không phù hợp vì 'clove' chỉ một nhánh tỏi.\n❌ D. pinch: không phù hợp vì 'pinch' chỉ một lượng nhỏ.\n\nDịch nghĩa: Cô ấy đã đặt một thanh sô cô la trên mỗi gối của khách như một cử chỉ chào đón.", "isCorrect": true },
+                        { "text": "C. clove", "rationale": "❌ Sai. 'clove' chỉ một nhánh tỏi.", "isCorrect": false },
+                        { "text": "D. pinch", "rationale": "❌ Sai. 'pinch' chỉ một lượng nhỏ.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của sô cô la là gì?"
+                },
+                // Câu 59
+                {
+                    "questionNumber": 59,
+                    "question": "The chef added a __________ of salt to bring out the natural flavors of the ingredients.",
+                    "answerOptions": [
+                        { "text": "A. slice", "rationale": "❌ Sai. 'slice' không liên quan đến muối.", "isCorrect": false },
+                        { "text": "B. loaf", "rationale": "❌ Sai. 'loaf' không liên quan đến muối.", "isCorrect": false },
+                        { "text": "C. pinch", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Pinch of salt' là cách diễn đạt chính xác để chỉ một lượng nhỏ muối.\n\n❌ A. slice: không phù hợp vì 'slice' không liên quan đến muối.\n❌ B. loaf: không phù hợp vì 'loaf' không liên quan đến muối.\n❌ D. stick: không phù hợp vì 'stick' không liên quan đến muối.\n\nDịch nghĩa: Đầu bếp đã thêm một chút muối để làm nổi bật hương vị tự nhiên của các nguyên liệu.", "isCorrect": true },
+                        { "text": "D. stick", "rationale": "❌ Sai. 'stick' không liên quan đến muối.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của muối là gì?"
+                },
+                // Câu 60
+                {
+                    "questionNumber": 60,
+                    "question": "He cut a thick __________ of cheese to accompany the apple slices and crackers.",
+                    "answerOptions": [
+                        { "text": "A. wedge", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'Wedge of cheese' là cách diễn đạt chính xác để chỉ một miếng phô mai.\n\n❌ B. clove: không phù hợp vì 'clove' chỉ một nhánh tỏi.\n❌ C. bar: không phù hợp vì 'bar' không liên quan đến phô mai.\n❌ D. knob: không phù hợp vì 'knob' không liên quan đến phô mai.\n\nDịch nghĩa: Anh ấy đã cắt một miếng phô mai dày để ăn kèm với những lát táo và bánh quy.", "isCorrect": true },
+                        { "text": "B. clove", "rationale": "❌ Sai. 'clove' chỉ một nhánh tỏi.", "isCorrect": false },
+                        { "text": "C. bar", "rationale": "❌ Sai. 'bar' không liên quan đến phô mai.", "isCorrect": false },
+                        { "text": "D. knob", "rationale": "❌ Sai. 'knob' không liên quan đến phô mai.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của phô mai là gì?"
+                },
+                // Câu 61
+                {
+                    "questionNumber": 61,
+                    "question": "She bought a __________ of scented soap from the local market as a souvenir.",
+                    "answerOptions": [
+                        { "text": "A. loaf", "rationale": "❌ Sai. 'loaf' không liên quan đến xà phòng.", "isCorrect": false },
+                        { "text": "B. slice", "rationale": "❌ Sai. 'slice' không liên quan đến xà phòng.", "isCorrect": false },
+                        { "text": "C. bar", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Bar of soap' là cách diễn đạt chính xác để chỉ một thanh xà phòng.\n\n❌ A. loaf: không phù hợp vì 'loaf' không liên quan đến xà phòng.\n❌ B. slice: không phù hợp vì 'slice' không liên quan đến xà phòng.\n❌ D. pinch: không phù hợp vì 'pinch' chỉ một lượng nhỏ.\n\nDịch nghĩa: Cô ấy đã mua một thanh xà phòng thơm từ chợ địa phương như một món quà lưu niệm.", "isCorrect": true },
+                        { "text": "D. pinch", "rationale": "❌ Sai. 'pinch' chỉ một lượng nhỏ.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của xà phòng là gì?"
+                },
+                // Câu 62
+                {
+                    "questionNumber": 62,
+                    "question": "The recipe calls for three __________ of celery, finely chopped, to add crunch to the salad.",
+                    "answerOptions": [
+                        { "text": "A. sticks", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'Sticks of celery' là cách diễn đạt chính xác để chỉ những cọng cần tây.\n\n❌ B. cloves: không phù hợp vì 'cloves' chỉ nhánh tỏi.\n❌ C. loaves: không phù hợp vì 'loaves' chỉ ổ bánh.\n❌ D. bars: không phù hợp vì 'bars' không liên quan đến cần tây.\n\nDịch nghĩa: Công thức yêu cầu ba cọng cần tây, băm nhỏ, để thêm độ giòn cho món salad.", "isCorrect": true },
+                        { "text": "B. cloves", "rationale": "❌ Sai. 'cloves' chỉ nhánh tỏi.", "isCorrect": false },
+                        { "text": "C. loaves", "rationale": "❌ Sai. 'loaves' chỉ ổ bánh.", "isCorrect": false },
+                        { "text": "D. bars", "rationale": "❌ Sai. 'bars' không liên quan đến cần tây.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của cần tây là gì?"
+                },
+                // Câu 63
+                {
+                    "questionNumber": 63,
+                    "question": "He ordered a __________ of ham and a __________ of Swiss cheese for his sandwich.",
+                    "answerOptions": [
+                        { "text": "A. slice / slice", "rationale": "✅ Đáp án đúng: A\n\nGiải thích: 'Slice of ham' và 'slice of Swiss cheese' là cách diễn đạt chính xác để chỉ một lát thịt và một lát phô mai.\n\n❌ B. bar / bar: không phù hợp vì 'bar' không liên quan đến thịt và phô mai.\n❌ C. clove / clove: không phù hợp vì 'clove' chỉ nhánh tỏi.\n❌ D. loaf / loaf: không phù hợp vì 'loaf' chỉ ổ bánh.\n\nDịch nghĩa: Anh ấy đã gọi một lát thịt ham và một lát phô mai Thụy Sĩ cho bánh sandwich của mình.", "isCorrect": true },
+                        { "text": "B. bar / bar", "rationale": "❌ Sai. 'bar' không liên quan đến thịt và phô mai.", "isCorrect": false },
+                        { "text": "C. clove / clove", "rationale": "❌ Sai. 'clove' chỉ nhánh tỏi.", "isCorrect": false },
+                        { "text": "D. loaf / loaf", "rationale": "❌ Sai. 'loaf' chỉ ổ bánh.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của thịt nguội và phô mai là gì?"
+                },
+                // Câu 64
+                {
+                    "questionNumber": 64,
+                    "question": "She added a __________ of honey to her tea instead of sugar for a healthier option.",
+                    "answerOptions": [
+                        { "text": "A. pinch", "rationale": "❌ Sai. 'pinch' chỉ một lượng nhỏ.", "isCorrect": false },
+                        { "text": "B. knob", "rationale": "❌ Sai. 'knob' không liên quan đến mật ong.", "isCorrect": false },
+                        { "text": "C. drizzle", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Drizzle of honey' là cách diễn đạt chính xác để chỉ một lượng nhỏ mật ong.\n\n❌ A. pinch: không phù hợp vì 'pinch' chỉ một lượng nhỏ.\n❌ B. knob: không phù hợp vì 'knob' không liên quan đến mật ong.\n❌ D. clove: không phù hợp vì 'clove' chỉ nhánh tỏi.\n\nDịch nghĩa: Cô ấy đã thêm một chút mật ong vào trà của mình thay vì đường để có lựa chọn lành mạnh hơn.", "isCorrect": true },
+                        { "text": "D. clove", "rationale": "❌ Sai. 'clove' chỉ nhánh tỏi.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của mật ong là gì?"
+                },
+                // Câu 65
+                {
+                    "questionNumber": 65,
+                    "question": "The monument was constructed from a massive __________ of granite transported from the nearby quarry.",
+                    "answerOptions": [
+                        { "text": "A. slice", "rationale": "❌ Sai. 'slice' không liên quan đến đá.", "isCorrect": false },
+                        { "text": "B. bar", "rationale": "❌ Sai. 'bar' không liên quan đến đá.", "isCorrect": false },
+                        { "text": "C. block", "rationale": "✅ Đáp án đúng: C\n\nGiải thích: 'Block of granite' là cách diễn đạt chính xác để chỉ một khối đá granit.\n\n❌ A. slice: không phù hợp vì 'slice' không liên quan đến đá.\n❌ B. bar: không phù hợp vì 'bar' không liên quan đến đá.\n❌ D. clove: không phù hợp vì 'clove' chỉ nhánh tỏi.\n\nDịch nghĩa: Đài tưởng niệm được xây dựng từ một khối đá granit khổng lồ được vận chuyển từ mỏ đá gần đó.", "isCorrect": true },
+                        { "text": "D. clove", "rationale": "❌ Sai. 'clove' chỉ nhánh tỏi.", "isCorrect": false }
+                    ],
+                    "hint": "Đơn vị của đá là gì?"
+                }
+            ]
+        };
+
+        // Create a deep copy and shuffle options for all questions
+        let quizData = JSON.parse(JSON.stringify(originalQuizData));
+        quizData.questions = quizData.questions.map(q => shuffleQuestionOptions(q));
+
+        // APP LOGIC
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const totalQuestions = quizData.questions.length;
+        let answered = false;
+
+        // Render Question
+        function renderQuestion(index) {
+            answered = false;
+            const q = quizData.questions[index];
+            
+            // Update Text
+            document.getElementById('q-number').textContent = q.questionNumber;
+            document.getElementById('question-text').textContent = q.question;
+            document.getElementById('hint-text').textContent = q.hint;
+            document.getElementById('hint-box').classList.add('hidden');
+            
+            // Update Progress
+            const progress = ((index) / totalQuestions) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            // Reset UI
+            document.getElementById('explanation-box').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('finish-btn').classList.add('hidden');
+            
+            // Options
+            const optionsDiv = document.getElementById('options-grid');
+            optionsDiv.innerHTML = '';
+
+            q.answerOptions.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `btn-3d btn-default w-full p-4 rounded-xl text-lg font-bold text-gray-700 flex items-center justify-between group`;
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm border-2 border-indigo-200 group-hover:bg-indigo-200 transition-colors">
+                            ${String.fromCharCode(65 + idx)}
+                        </span>
+                        <span>${opt.text}</span>
+                    </div>
+                `;
+                btn.onclick = () => checkAnswer(btn, opt, q);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        // Check Answer
+        function checkAnswer(btn, option, questionData) {
+            if (answered) return;
+            answered = true;
+
+            const allBtns = document.querySelectorAll('#options-grid button');
+
+            if (option.isCorrect) {
+                score++;
+                document.getElementById('score-display').textContent = `${score}/${totalQuestions}`;
+                btn.classList.remove('btn-default');
+                btn.classList.add('btn-correct');
+                playSound('correct');
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            } else {
+                btn.classList.remove('btn-default');
+                btn.classList.add('btn-wrong');
+                playSound('wrong');
+                
+                questionData.answerOptions.forEach((opt, idx) => {
+                    if (opt.isCorrect) {
+                        allBtns[idx].classList.remove('btn-default');
+                        allBtns[idx].classList.add('btn-correct');
+                        allBtns[idx].style.opacity = "0.7";
+                    }
+                });
+            }
+
+            allBtns.forEach(b => b.disabled = true);
+
+            showExplanation(questionData.answerOptions.find(o => o.isCorrect).rationale);
+
+            if (currentQuestionIndex < totalQuestions - 1) {
+                document.getElementById('next-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('finish-btn').classList.remove('hidden');
+                document.getElementById('progress-bar').style.width = '100%';
+            }
+        }
+
+        function showExplanation(rationaleText) {
+            const expBox = document.getElementById('explanation-box');
+            const expContent = document.getElementById('explanation-content');
+            
+            let formattedText = rationaleText
+                .replace(/✅/g, '<span class="text-green-600 font-bold text-lg">✅</span>')
+                .replace(/❌/g, '<span class="text-red-500 font-bold">❌</span>')
+                .replace(/\n/g, '<br>');
+            
+            expContent.innerHTML = formattedText;
+            expBox.classList.remove('hidden');
+        }
+
+        function toggleHint() {
+            document.getElementById('hint-box').classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            renderQuestion(currentQuestionIndex);
+        }
+
+        function finishQuiz() {
+            const modal = document.getElementById('result-modal');
+            const finalScoreEl = document.getElementById('final-score');
+            const feedbackEl = document.getElementById('feedback-text');
+
+            finalScoreEl.textContent = `${score}/${totalQuestions}`;
+            
+            const percentage = (score / totalQuestions) * 100;
+            if (percentage === 100) {
+                feedbackEl.textContent = "Tuyệt đỉnh! Không sai câu nào! 🌟👽";
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+            } else if (percentage >= 80) {
+                feedbackEl.textContent = "Làm tốt lắm! Em rất thông minh! 🚀";
+            } else if (percentage >= 50) {
+                feedbackEl.textContent = "Cố gắng thêm chút nữa nhé! 💪";
+            } else {
+                feedbackEl.textContent = "Hãy ôn tập lại từ vựng nhé! 📚";
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        // Initialize
+        renderQuestion(0);
+        document.getElementById('score-display').textContent = `0/${totalQuestions}`;
+
+    </script>
+</body>
+</html>
