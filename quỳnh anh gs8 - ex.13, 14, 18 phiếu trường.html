@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUỲNH ANH GS8 - BÀI ÔN TRONG PHIẾU (Ex.13, 14, 18)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8854C0;
+            --secondary: #00C9A7;
+            --correct: #00D26A;
+            --wrong: #FF4757;
+            --background: #f0f3f5;
+            --card-bg: #ffffff;
+            --text-main: #2f3542;
+            --text-light: #57606f;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--background);
+            background-image: radial-gradient(#dcdde1 15%, transparent 16%), radial-gradient(#dcdde1 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        .quiz-container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        .section-title {
+            font-weight: 800;
+            font-size: 1.6rem;
+            margin: 40px 0 20px;
+            color: var(--secondary);
+            border-left: 12px solid var(--primary);
+            padding-left: 20px;
+            background: linear-gradient(to right, #f0e8ff, transparent);
+            border-radius: 0 40px 40px 0;
+        }
+
+        /* ===== CARD CHUNG ===== */
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+            border: 2px solid #eee;
+            transition: transform 0.3s;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #f1f2f6;
+            padding-bottom: 10px;
+        }
+
+        .q-tag {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* ===== DẠNG TỰ LUẬN (Ex13 & Ex18) ===== */
+        .answer-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e1e4e8;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 5px 0 #d1d8e0;
+            transition: all 0.1s;
+            box-sizing: border-box;
+        }
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 5px 0 #00a187;
+        }
+        .answer-input.error {
+            border-color: var(--wrong);
+            box-shadow: 0 5px 0 #b22234;
+            background-color: #fff0f0;
+            animation: shake 0.3s;
+        }
+        .answer-input.correct {
+            border-color: var(--correct);
+            box-shadow: 0 5px 0 #008f47;
+            background-color: #f0fff0;
+        }
+        .answer-input.wrong {
+            border-color: var(--wrong);
+            box-shadow: 0 5px 0 #b22234;
+            background-color: #fff0f0;
+        }
+
+        .check-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .check-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            box-shadow: 0 5px 0 #5f2a9e;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .check-btn:active {
+            box-shadow: 0 2px 0 #5f2a9e;
+            transform: translateY(3px);
+        }
+        .check-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .feedback-message {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 30px;
+        }
+        .feedback-message.correct-feedback {
+            color: #008f47;
+            background: #e0ffe0;
+        }
+        .feedback-message.wrong-feedback {
+            color: #b22234;
+            background: #ffe0e0;
+        }
+
+        /* ===== DẠNG TRẮC NGHIỆM (Ex14) ===== */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        @media (max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+        }
+        .option-btn {
+            background: white;
+            border: 2px solid #e1e4e8;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 0 5px 0 #d1d8e0;
+            text-align: left;
+            word-break: break-word;
+        }
+        .option-btn.selected {
+            background: var(--secondary);
+            color: white;
+            border-color: #008f7a;
+            box-shadow: 0 5px 0 #006b5c;
+        }
+        .option-btn.correct-highlight {
+            background-color: var(--correct);
+            color: white;
+            border-color: #00b85c;
+            box-shadow: 0 5px 0 #008f47;
+        }
+        .option-btn.wrong-highlight {
+            background-color: var(--wrong);
+            color: white;
+            border-color: #ff2e40;
+            box-shadow: 0 5px 0 #d61e30;
+        }
+        .option-btn:disabled { opacity: 0.8; cursor: not-allowed; }
+
+        /* ===== GIẢI THÍCH CHUNG ===== */
+        .explanation-box {
+            margin-top: 20px;
+            background-color: #f8f0fc;
+            border-left: 6px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+        .explanation-header {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .explanation-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #2d3436;
+            white-space: pre-wrap;
+        }
+
+        .footer-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        .score-display {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+        .reset-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 30px;
+            box-shadow: 0 5px 0 #008f7a;
+            cursor: pointer;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-5deg); }
+            75% { transform: translateX(5px) rotate(5deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="header-container">
+    <h1>QUỲNH ANH GS8 - BÀI ÔN TRONG PHIẾU (Ex.13, 14, 18)</h1>
+</div>
+<div class="quiz-container" id="quizArea"></div>
+<div class="footer-controls">
+    <div class="score-display" id="scoreDisplay">Đã kiểm tra: 0/0</div>
+    <button class="reset-btn" onclick="resetAll()">⟲ Làm lại bài</button>
+</div>
+
+<script>
+    // ---------- Ex13 - TỰ LUẬN (viết lại câu) ----------
+    const ex13 = [
+        { 
+            type: 'essay',
+            section: 'Ex13. Complete the second sentence (word in brackets)',
+            question: '1. Hanging out with friends at the shopping mall is my daughter’s favourite hobby. (best)',
+            answer: 'My daughter likes hanging out with friends at the shopping mall best.',
+            explanation: 'Đáp án: My daughter likes hanging out with friends at the shopping mall best.\n\nGiải thích: Cấu trúc "favourite hobby" (sở thích yêu thích) đồng nghĩa với việc ai đó thích làm gì nhất. Ta dùng động từ "like" và trạng từ "best" (nhất) để diễn tả điều này.\n\nDịch nghĩa:\nGốc: Đi chơi với bạn bè ở trung tâm thương mại là sở thích yêu thích nhất của con gái tôi.\nViết lại: Con gái tôi thích đi chơi với bạn bè ở trung tâm thương mại nhất.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex13. Complete the second sentence (word in brackets)',
+            question: '2. You must read the instructions carefully, or you won’t understand how to use this vacuum cleaner properly. (don’t)',
+            answer: 'If you don’t read the instructions carefully, you won’t understand how to use this vacuum cleaner properly.',
+            explanation: 'Đáp án: If you don’t read the instructions carefully, you won’t understand how to use this vacuum cleaner properly.\n\nGiải thích: Câu gốc sử dụng cấu trúc "must do... or..." (phải làm gì nếu không thì...). Ta có thể viết lại bằng câu điều kiện loại 1: "If you don\'t... (Nếu bạn không...), you won\'t...".\n\nDịch nghĩa:\nGốc: Bạn phải đọc hướng dẫn cẩn thận, nếu không bạn sẽ không hiểu cách sử dụng máy hút bụi này đúng cách.\nViết lại: Nếu bạn không đọc hướng dẫn cẩn thận, bạn sẽ không hiểu cách sử dụng máy hút bụi này đúng cách.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex13. Complete the second sentence (word in brackets)',
+            question: '3. Although ordering food online is convenient, it can be more expensive and sometimes have delivery delays. (however)',
+            answer: 'Ordering food online is convenient. However, it can be more expensive and sometimes have delivery delays.',
+            explanation: 'Đáp án: Ordering food online is convenient. However, it can be more expensive and sometimes have delivery delays.\n\nGiải thích: "Although" (mặc dù) dùng để nối hai mệnh đề chỉ sự tương phản trong cùng một câu. "However" (tuy nhiên) cũng chỉ sự tương phản nhưng thường đứng đầu câu thứ hai để nối với câu trước đó.\n\nDịch nghĩa:\nGốc: Mặc dù đặt đồ ăn trực tuyến rất tiện lợi, nhưng nó có thể đắt hơn và đôi khi bị giao hàng trễ.\nViết lại: Đặt đồ ăn trực tuyến rất tiện lợi. Tuy nhiên, nó có thể đắt hơn và đôi khi bị giao hàng trễ.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex13. Complete the second sentence (word in brackets)',
+            question: '4. It’s a good idea to open a cafeteria in such a crowded street. (should)',
+            answer: 'You/We should open a cafeteria in such a crowded street.',
+            explanation: 'Đáp án: You/We should open a cafeteria in such a crowded street.\n\nGiải thích: Cấu trúc "It\'s a good idea to..." (đó là một ý kiến hay để làm gì) dùng để đưa ra lời khuyên, tương đương với động từ khuyết thiếu "should" (nên).\n\nDịch nghĩa:\nGốc: Mở một quán cà phê trên con đường đông đúc thế này là một ý kiến hay đấy.\nViết lại: Bạn/Chúng ta nên mở một quán cà phê trên con đường đông đúc thế này.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex13. Complete the second sentence (word in brackets)',
+            question: '5. Ice sheets and glaciers are shrinking. Sea levels are rising at the same time. (while)',
+            answer: 'Ice sheets and glaciers are shrinking while sea levels are rising.',
+            explanation: 'Đáp án: Ice sheets and glaciers are shrinking while sea levels are rising.\n\nGiải thích: "While" (trong khi) được dùng để diễn tả hai hành động xảy ra song song, cùng một lúc ("at the same time").\n\nDịch nghĩa:\nGốc: Các dải băng và sông băng đang thu hẹp lại. Mực nước biển đang dâng lên cùng lúc đó.\nViết lại: Các dải băng và sông băng đang thu hẹp lại trong khi mực nước biển đang dâng lên.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex13. Complete the second sentence (word in brackets)',
+            question: '6. I finish my study. I will take a walk in the park. (as soon as)',
+            answer: 'I will take a walk in the park as soon as I finish my study.',
+            explanation: 'Đáp án: I will take a walk in the park as soon as I finish my study.\n\nGiải thích: "As soon as" (ngay khi) được dùng để nối hai hành động, diễn tả hành động sẽ xảy ra ngay lập tức sau một hành động khác. Mệnh đề chứa "as soon as" chia ở thì hiện tại, mệnh đề chính chia ở thì tương lai.\n\nDịch nghĩa:\nGốc: Tôi học bài xong. Tôi sẽ đi dạo trong công viên.\nViết lại: Tôi sẽ đi dạo trong công viên ngay khi tôi học bài xong.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex13. Complete the second sentence (word in brackets)',
+            question: '7. We have killed off all our marine life. We must not wait till then. (until)',
+            answer: 'We must not wait until we have killed off all our marine life.',
+            explanation: 'Đáp án: We must not wait until we have killed off all our marine life.\n\nGiải thích: "Until" (cho đến khi) dùng để chỉ một hành động kéo dài cho đến một thời điểm hoặc một hành động khác xảy ra. Câu gốc mang hàm ý "không được chờ đợi cho tới lúc đó", nên ta dùng thể phủ định "must not wait until..."\n\nDịch nghĩa:\nGốc: Chúng ta đã giết sạch toàn bộ sinh vật biển. Chúng ta không được đợi đến lúc đó.\nViết lại: Chúng ta không được đợi cho đến khi chúng ta giết sạch toàn bộ sinh vật biển.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex13. Complete the second sentence (word in brackets)',
+            question: '8. The earthquake caused severe damage. It happened last week. (After)',
+            answer: 'After the earthquake happened last week, it caused severe damage.',
+            explanation: 'Đáp án: After the earthquake happened last week, it caused severe damage.\n\nGiải thích: "After" (sau khi) dùng để nối hai sự việc, sự việc xảy ra trước đi cùng "after". Có thể đặt mệnh đề chứa "after" ở đầu hoặc cuối câu.\n\nDịch nghĩa:\nGốc: Trận động đất đã gây ra thiệt hại nghiêm trọng. Nó xảy ra vào tuần trước.\nViết lại: Sau khi xảy ra vào tuần trước, trận động đất đã gây ra thiệt hại nghiêm trọng.'
+        }
+    ];
+
+    // ---------- Ex14 - TRẮC NGHIỆM ----------
+    const ex14 = [
+        { 
+            type: 'mcq',
+            section: 'Ex14. Write sentences using the suggestions below',
+            question: 'Question 29: Before / mom / get / home / we / finish / clean / house.',
+            options: [
+                'A. Before Mom get home, we finish cleaning the house.',
+                'B. Before Mom gets home, we will finish cleaning the house.',
+                'C. Before Mom gets home, we finish clean the house.',
+                'D. Before Mom getting home, we will finish clean the house.'
+            ],
+            correct: 1,
+            explanation: 'Đáp án: Question 29: Before / mom / get / home / we / finish / clean / house.\n\nA. Before Mom get home, we finish cleaning the house.\nSai: "get" cần phải chia theo ngôi thứ ba số ít là "gets". Câu này cũng thiếu "will" để chỉ hành động tương lai.\n\nB. Before Mom gets home, we will finish cleaning the house.\nĐúng: Câu này sử dụng đúng thì hiện tại đơn cho "gets" và thì tương lai cho "will finish".\n\nC. Before Mom gets home, we finish clean the house.\nSai: "finish clean" không đúng ngữ pháp. Cần phải là "finish cleaning".\n\nD. Before Mom getting home, we will finish clean the house.\nSai: "getting" không đúng trong ngữ cảnh này. Cần phải là "gets". Cũng cần "cleaning" thay vì "clean".\n\nDịch nghĩa: Trước khi mẹ về nhà, chúng tôi sẽ hoàn thành việc dọn dẹp nhà cửa.'
+        },
+        { 
+            type: 'mcq',
+            section: 'Ex14. Write sentences using the suggestions below',
+            question: 'Question 30: Not / talk / driver / while / he / drive.',
+            options: [
+                'A. Do not talk to the driver while he drives.',
+                'B. Not talk to the driver while he is driving.',
+                'C. Do not talk driver while he is drive.',
+                'D. Do not talk to driver while he driving.'
+            ],
+            correct: 0,
+            explanation: 'Đáp án: Question 30: Not / talk / driver / while / he / drive.\n\nA. Do not talk to the driver while he drives.\nĐúng: Câu này sử dụng đúng cấu trúc và thì hiện tại đơn.\n\nB. Not talk to the driver while he is driving.\nSai: Câu này thiếu chủ ngữ và động từ "do" để tạo thành câu mệnh lệnh.\n\nC. Do not talk driver while he is drive.\nSai: Thiếu giới từ "to" sau "talk" và "drive" cần phải là "driving".\n\nD. Do not talk to driver while he driving.\nSai: Thiếu mạo từ "the" trước "driver" và "is" cần thêm vào trước "driving".\n\nDịch nghĩa: Đừng nói chuyện với tài xế trong khi anh ấy lái xe.'
+        },
+        { 
+            type: 'mcq',
+            section: 'Ex14. Write sentences using the suggestions below',
+            question: 'Question 31: After / Earth Hour / over / we / save / a lot of / power.',
+            options: [
+                'A. After Earth Hour over, we save a lot of power.',
+                'B. After Earth Hour is over, we saved a lot of power.',
+                'C. After Earth Hour was over we saving a lot of power.',
+                'D. After Earth Hour over, we saved lot of power.'
+            ],
+            correct: 1,
+            explanation: 'Đáp án: Question 31: After / Earth Hour / over / we / save / a lot of / power.\n\nA. After Earth Hour over, we save a lot of power.\nSai: Thiếu động từ "is" sau "Earth Hour".\n\nB. After Earth Hour is over, we saved a lot of power.\nĐúng: Câu này sử dụng đúng cấu trúc và ngữ pháp.\n\nC. After Earth Hour was over we saving a lot of power.\nSai: "was" không phù hợp với "saving". Nên dùng "saved".\n\nD. After Earth Hour over, we saved lot of power.\nSai: Thiếu động từ "is" và "a" trước "lot".\n\nDịch nghĩa: Sau khi Giờ Trái Đất kết thúc, chúng tôi đã tiết kiệm được rất nhiều năng lượng.'
+        },
+        { 
+            type: 'mcq',
+            section: 'Ex14. Write sentences using the suggestions below',
+            question: 'Question 32: Fire / start / as soon as / boys / leave / campsite.',
+            options: [
+                'A. The fire started as soon as the boys left the campsite.',
+                'B. The fire start as soon as the boys leave the campsite.',
+                'C. Fire started as soon as boys leaving the campsite.',
+                'D. The fire started as soon as the boys leave campsite.'
+            ],
+            correct: 0,
+            explanation: 'Đáp án: Question 32: Fire / start / as soon as / boys / leave / campsite.\n\nA. The fire started as soon as the boys left the campsite.\nĐúng: Câu này sử dụng đúng thì quá khứ cho cả hai động từ.\n\nB. The fire start as soon as the boys leave the campsite.\nSai: "start" cần phải là "started" để phù hợp với thì quá khứ.\n\nC. Fire started as soon as boys leaving the campsite.\nSai: "leaving" không đúng, cần phải là "left".\n\nD. The fire started as soon as the boys leave campsite.\nSai: Thiếu mạo từ "the" trước "campsite".\n\nDịch nghĩa: Ngọn lửa bùng lên ngay khi bọn trẻ rời khỏi khu cắm trại.'
+        },
+        { 
+            type: 'mcq',
+            section: 'Ex14. Write sentences using the suggestions below',
+            question: 'Question 33: Villagers / not / have / electricity / until / they / install / new generator.',
+            options: [
+                'A. The villagers not have electricity until they install a new generator.',
+                'B. The villagers did not have electricity until they installed a new generator.',
+                'C. Villagers did not had electricity until they install a new generator.',
+                'D. The villagers not had electricity until they installed new generator.'
+            ],
+            correct: 1,
+            explanation: 'Đáp án: Question 33: Villagers / not / have / electricity / until / they / install / new generator.\n\nA. The villagers not have electricity until they install a new generator.\nSai: Thiếu động từ "do" trong câu phủ định. Cần phải là "do not".\n\nB. The villagers did not have electricity until they installed a new generator.\nĐúng: Câu này sử dụng đúng thì quá khứ cho cả hai động từ.\n\nC. Villagers did not had electricity until they install a new generator.\nSai: "had" cần phải là "have" để phù hợp với thì quá khứ.\n\nD. The villagers not had electricity until they installed new generator.\nSai: Thiếu động từ "did" và "a" trước "new generator".\n\nDịch nghĩa: Những người dân làng không có điện cho đến khi họ lắp đặt một máy phát điện mới.'
+        },
+        { 
+            type: 'mcq',
+            section: 'Ex14. Write sentences using the suggestions below',
+            question: 'Question 34: Sellers / often try / make / the process of / shopping online / easier / more convenient.',
+            options: [
+                'A. Sellers often try make the process of shopping online easier and more convenient.',
+                'B. Sellers often try to make the process of shopping online easier and more convenient.',
+                'C. Sellers often trying to make the process of shopping online easier convenient.',
+                'D. Sellers often try making the process shopping online easier and convenient.'
+            ],
+            correct: 1,
+            explanation: 'Đáp án: Question 34: Sellers / often try / make / the process of / shopping online / easier / more convenient.\n\nA. Sellers often try make the process of shopping online easier and more convenient.\nSai: Thiếu "to" trước "make".\n\nB. Sellers often try to make the process of shopping online easier and more convenient.\nĐúng: Câu này sử dụng đúng cấu trúc và ngữ pháp.\n\nC. Sellers often trying to make the process of shopping online easier convenient.\nSai: "trying" không đúng thì, cần phải là "try". Cũng thiếu "and" trước "convenient".\n\nD. Sellers often try making the process shopping online easier and convenient.\nSai: "making" không đúng trong ngữ cảnh này, cần phải là "to make".\n\nDịch nghĩa: Các nhà bán hàng thường cố gắng làm cho quá trình mua sắm trực tuyến dễ dàng và thuận tiện hơn.'
+        },
+        { 
+            type: 'mcq',
+            section: 'Ex14. Write sentences using the suggestions below',
+            question: 'Question 35: Window shopping / one / my favourite activities / travelling / another city.',
+            options: [
+                'A. Window shopping is one my favourite activities travelling another city.',
+                'B. Window shopping is one of my favourite activities when travelling to another city.',
+                'C. Window shopping one of my favourite activities travelling another city.',
+                'D. Window shopping is one of favourite activities when travel another city.'
+            ],
+            correct: 1,
+            explanation: 'Đáp án: Question 35: Window shopping / one / my favourite activities / travelling / another city.\n\nA. Window shopping is one my favourite activities travelling another city.\nSai: Thiếu "of" trước "my" và cần giới từ "to" trước "another city".\n\nB. Window shopping is one of my favourite activities when travelling to another city.\nĐúng: Câu này sử dụng đúng cấu trúc và ngữ pháp.\n\nC. Window shopping one of my favourite activities travelling another city.\nSai: Thiếu động từ "is" và cần "to" trước "another city".\n\nD. Window shopping is one of favourite activities when travel another city.\nSai: Thiếu "the" trước "favourite" và "travelling" cần phải là "travelling to".\n\nDịch nghĩa: Đi mua sắm không mua hàng là một trong những hoạt động yêu thích của tôi khi du lịch đến một thành phố khác.'
+        },
+        { 
+            type: 'mcq',
+            section: 'Ex14. Write sentences using the suggestions below',
+            question: 'Question 36: Ha Noi Night Market / must-see place / visitors.',
+            options: [
+                'A. Ha Noi Night Market is must-see place for visitors.',
+                'B. Ha Noi Night Market is a must-see place for visitors.',
+                'C. Ha Noi Night Market must-see place visitors.',
+                'D. Ha Noi Night Market is the must-see place visitors.'
+            ],
+            correct: 1,
+            explanation: 'Đáp án: Question 36: Ha Noi Night Market / must-see place / visitors.\n\nA. Ha Noi Night Market is must-see place for visitors.\nSai: Thiếu mạo từ "a" trước "must-see".\n\nB. Ha Noi Night Market is a must-see place for visitors.\nĐúng: Câu này sử dụng đúng cấu trúc và ngữ pháp.\n\nC. Ha Noi Night Market must-see place visitors.\nSai: Thiếu động từ "is" và cần "a" trước "must-see".\n\nD. Ha Noi Night Market is the must-see place visitors.\nSai: Thiếu "for" trước "visitors".\n\nDịch nghĩa: Chợ đêm Hà Nội là một địa điểm không thể bỏ qua cho du khách.'
+        }
+    ];
+
+    // ---------- Ex18 - TỰ LUẬN (sắp xếp từ) ----------
+    const ex18 = [
+        { 
+            type: 'essay',
+            section: 'Ex18. Reorder the words/phrases to make correct sentences',
+            question: '1. raining/ It was/ heavily /the/ was flooding/ river/ while/',
+            answer: 'It was raining heavily while the river was flooding.',
+            explanation: 'Đáp án đúng: It was raining heavily while the river was flooding.\n\nDịch nghĩa: Trời đang mưa to thì con sông bị ngập lụt.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex18. Reorder the words/phrases to make correct sentences',
+            question: '2. The/ was blowing/ wind/ strongly/ tornado/ as the/ approached/',
+            answer: 'The tornado was approaching as the wind was blowing strongly.',
+            explanation: 'Đáp án đúng: The tornado was approaching as the wind was blowing strongly.\n\nDịch nghĩa: Cơn lốc xoáy đang tiến gần khi gió thổi mạnh.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex18. Reorder the words/phrases to make correct sentences',
+            question: '3. The/ was erupting/ volcano/, sending/ into the sky/ lava and ash/',
+            answer: 'The volcano was erupting, sending lava and ash into the sky.',
+            explanation: 'Đáp án đúng: The volcano was erupting, sending lava and ash into the sky.\n\nDịch nghĩa: Ngọn núi lửa đang phun trào, gửi dung nham và tro lên bầu trời.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex18. Reorder the words/phrases to make correct sentences',
+            question: '4. The/ was approaching/ hurricane/ the coast,/ widespread/ causing/ panic/',
+            answer: 'The hurricane was approaching the coast, causing widespread panic.',
+            explanation: 'Đáp án đúng: The hurricane was approaching the coast, causing widespread panic.\n\nDịch nghĩa: Cơn bão đang tiến gần bờ biển, gây ra sự hoảng loạn rộng rãi.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex18. Reorder the words/phrases to make correct sentences',
+            question: '5. The/ were/ spreading/ battling/ firefighters/ the rapidly/ wildfire/',
+            answer: 'Firefighters were battling the rapidly spreading wildfire.',
+            explanation: 'Đáp án đúng: Firefighters were battling the rapidly spreading wildfire.\n\nDịch nghĩa: Các nhân viên cứu hỏa đang chiến đấu với đám cháy rừng lan nhanh.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex18. Reorder the words/phrases to make correct sentences',
+            question: '6. It/ heavily/ was snowing/ when/ occurred/ the avalanche/',
+            answer: 'It was heavily snowing when the avalanche occurred.',
+            explanation: 'Đáp án đúng: It was heavily snowing when the avalanche occurred.\n\nDịch nghĩa: Trời đang tuyết rơi dày khi trận lở tuyết xảy ra.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex18. Reorder the words/phrases to make correct sentences',
+            question: '7. was/ The tsunami/ approaching/ shore/ the/, creating/ emergency/ a state of/',
+            answer: 'The tsunami was approaching the shore, creating a state of emergency.',
+            explanation: 'Đáp án đúng: The tsunami was approaching the shore, creating a state of emergency.\n\nDịch nghĩa: Cơn sóng thần đang tiến gần bờ, tạo ra tình trạng khẩn cấp.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex18. Reorder the words/phrases to make correct sentences',
+            question: '8. The/ were raging/ thunderstorms/, accompanied/ gusts/ by powerful/ of wind/',
+            answer: 'The thunderstorms were raging, accompanied by powerful gusts of wind.',
+            explanation: 'Đáp án đúng: The thunderstorms were raging, accompanied by powerful gusts of wind.\n\nDịch nghĩa: Những cơn bão đang hoành hành, kèm theo những cơn gió mạnh.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex18. Reorder the words/phrases to make correct sentences',
+            question: '9. The/ was continuing/ drought/, leading to/ water/ a severe/ shortage/',
+            answer: 'The drought was continuing, leading to a severe water shortage.',
+            explanation: 'Đáp án đúng: The drought was continuing, leading to a severe water shortage.\n\nDịch nghĩa: Nạn hạn hán đang tiếp diễn, dẫn đến tình trạng thiếu nước nghiêm trọng.'
+        },
+        { 
+            type: 'essay',
+            section: 'Ex18. Reorder the words/phrases to make correct sentences',
+            question: '10. The/ was shaking/ earthquake/ causing/ the ground/, to collapse/ buildings/',
+            answer: 'The earthquake was shaking the ground, causing buildings to collapse.',
+            explanation: 'Đáp án đúng: The earthquake was shaking the ground, causing buildings to collapse.\n\nDịch nghĩa: Trận động đất đang làm rung chuyển mặt đất, khiến các tòa nhà sụp đổ.'
+        }
+    ];
+
+    // Gộp tất cả theo thứ tự: Ex13 → Ex14 → Ex18
+    const allQuestions = [...ex13, ...ex14, ...ex18];
+
+    // State
+    let essayAnswers = new Array(allQuestions.length).fill('');
+    let essayChecked = new Array(allQuestions.length).fill(false);
+    let mcqSelected = new Array(allQuestions.length).fill(null);
+    let mcqAnsweredCount = 0;
+    let essayCheckedCount = 0;
+
+    function updateScoreDisplay() {
+        const totalEssay = allQuestions.filter(q => q.type === 'essay').length;
+        const totalMcq = allQuestions.filter(q => q.type === 'mcq').length;
+        const total = allQuestions.length;
+        const checked = essayCheckedCount + mcqAnsweredCount;
+        document.getElementById('scoreDisplay').innerText = `Đã kiểm tra: ${checked}/${total}`;
+    }
+
+    function renderQuiz() {
+        const area = document.getElementById('quizArea');
+        area.innerHTML = '';
+        let currentSection = '';
+
+        allQuestions.forEach((q, idx) => {
+            if (q.section !== currentSection) {
+                currentSection = q.section;
+                const title = document.createElement('div');
+                title.className = 'section-title';
+                title.innerText = currentSection;
+                area.appendChild(title);
+            }
+
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${idx}`;
+
+            if (q.type === 'essay') {
+                // Dạng tự luận (Ex13 & Ex18)
+                card.innerHTML = `
+                    <div class="question-header">
+                        <span class="q-tag">Câu ${idx+1}</span>
+                    </div>
+                    <div class="question-text">${q.question}</div>
+                    <input type="text" class="answer-input" id="input-${idx}" placeholder="Nhập câu trả lời..." value="${essayAnswers[idx] || ''}" ${essayChecked[idx] ? 'disabled' : ''}>
+                    <div class="check-wrapper">
+                        <button class="check-btn" id="check-${idx}" onclick="checkEssay(${idx})" ${essayChecked[idx] ? 'disabled' : ''}>🔍 Kiểm tra</button>
+                        <span id="feedback-${idx}" class="feedback-message"></span>
+                    </div>
+                    <div class="explanation-box" id="explain-${idx}">
+                        <div class="explanation-header">📘 Giải thích chi tiết:</div>
+                        <div class="explanation-content">${q.explanation.replace(/\n/g, '<br>')}</div>
+                    </div>
+                `;
+            } else {
+                // Dạng trắc nghiệm (Ex14)
+                const optionsHtml = q.options.map((opt, optIdx) => 
+                    `<button class="option-btn" onclick="selectMcq(${idx}, ${optIdx})" ${mcqSelected[idx] !== null ? 'disabled' : ''}>${opt}</button>`
+                ).join('');
+                
+                card.innerHTML = `
+                    <div class="question-header">
+                        <span class="q-tag">Câu ${idx+1}</span>
+                    </div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options-grid" id="options-${idx}">${optionsHtml}</div>
+                    <div class="explanation-box" id="explain-${idx}">
+                        <div class="explanation-header">📘 Giải thích chi tiết:</div>
+                        <div class="explanation-content">${q.explanation.replace(/\n/g, '<br>')}</div>
+                    </div>
+                `;
+            }
+            area.appendChild(card);
+        });
+
+        // Khôi phục trạng thái đã chọn/kiểm tra
+        for (let i = 0; i < allQuestions.length; i++) {
+            const q = allQuestions[i];
+            if (q.type === 'essay' && essayChecked[i]) {
+                const input = document.getElementById(`input-${i}`);
+                const feedback = document.getElementById(`feedback-${i}`);
+                if (input && feedback) {
+                    const isCorrect = essayAnswers[i].toLowerCase().trim() === q.answer.toLowerCase().trim();
+                    input.classList.add(isCorrect ? 'correct' : 'wrong');
+                    feedback.innerHTML = isCorrect ? '✅ Đúng!' : `❌ Sai! Đáp án đúng là: ${q.answer}`;
+                    feedback.className = isCorrect ? 'feedback-message correct-feedback' : 'feedback-message wrong-feedback';
+                }
+                document.getElementById(`explain-${i}`).style.display = 'block';
+            } else if (q.type === 'mcq' && mcqSelected[i] !== null) {
+                const btns = document.querySelectorAll(`#options-${i} .option-btn`);
+                const correctIdx = q.correct;
+                if (mcqSelected[i] === correctIdx) {
+                    btns[mcqSelected[i]].classList.add('correct-highlight');
+                } else {
+                    btns[mcqSelected[i]].classList.add('wrong-highlight');
+                    btns[correctIdx].classList.add('correct-highlight');
+                }
+                document.getElementById(`explain-${i}`).style.display = 'block';
+            }
+        }
+
+        updateScoreDisplay();
+    }
+
+    // Hàm cho dạng tự luận
+    window.checkEssay = function(idx) {
+        const input = document.getElementById(`input-${idx}`);
+        const checkBtn = document.getElementById(`check-${idx}`);
+        const feedback = document.getElementById(`feedback-${idx}`);
+        const explanation = document.getElementById(`explain-${idx}`);
+        const userAnswer = input.value.trim();
+        const correctAnswer = allQuestions[idx].answer;
+
+        if (!userAnswer) {
+            input.classList.add('error');
+            setTimeout(() => input.classList.remove('error'), 1000);
+            return;
+        }
+
+        input.classList.remove('error');
+        
+        const isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+        
+        if (isCorrect) {
+            input.classList.add('correct');
+            input.classList.remove('wrong');
+            feedback.innerHTML = '✅ Đúng!';
+            feedback.className = 'feedback-message correct-feedback';
+        } else {
+            input.classList.add('wrong');
+            input.classList.remove('correct');
+            feedback.innerHTML = `❌ Sai! Đáp án đúng là: ${correctAnswer}`;
+            feedback.className = 'feedback-message wrong-feedback';
+        }
+
+        explanation.style.display = 'block';
+        input.disabled = true;
+        checkBtn.disabled = true;
+        
+        essayAnswers[idx] = userAnswer;
+        if (!essayChecked[idx]) {
+            essayChecked[idx] = true;
+            essayCheckedCount++;
+        }
+        updateScoreDisplay();
+    };
+
+    // Hàm cho dạng trắc nghiệm
+    window.selectMcq = function(idx, optIdx) {
+        if (mcqSelected[idx] !== null) return;
+
+        const btns = document.querySelectorAll(`#options-${idx} .option-btn`);
+        const q = allQuestions[idx];
+        const correctIdx = q.correct;
+        const explanation = document.getElementById(`explain-${idx}`);
+
+        btns.forEach(btn => btn.classList.remove('selected'));
+        btns[optIdx].classList.add('selected');
+
+        mcqSelected[idx] = optIdx;
+        
+        // Disable tất cả các nút
+        btns.forEach(btn => btn.disabled = true);
+
+        // Tô màu kết quả
+        if (optIdx === correctIdx) {
+            btns[optIdx].classList.add('correct-highlight');
+        } else {
+            btns[optIdx].classList.add('wrong-highlight');
+            btns[correctIdx].classList.add('correct-highlight');
+        }
+
+        explanation.style.display = 'block';
+        
+        mcqAnsweredCount++;
+        updateScoreDisplay();
+    };
+
+    window.resetAll = function() {
+        essayAnswers = new Array(allQuestions.length).fill('');
+        essayChecked = new Array(allQuestions.length).fill(false);
+        mcqSelected = new Array(allQuestions.length).fill(null);
+        mcqAnsweredCount = 0;
+        essayCheckedCount = 0;
+        renderQuiz();
+    };
+
+    window.onload = function() {
+        renderQuiz();
+    };
+</script>
+</body>
+</html>
