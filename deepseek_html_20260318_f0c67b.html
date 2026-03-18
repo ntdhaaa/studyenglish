@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(GS11) WORD FORM U9. SOCIAL ISSUES</title>
+    <!-- Google Fonts: Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- jQuery (for scroll animations) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        /* each page full viewport */
+        .page {
+            min-height: 100vh;
+            width: 100%;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content-container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 30px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        /* lý thuyết áp dụng – khung chính */
+        .theory-card {
+            background: linear-gradient(145deg, #f0f4ff, #ffffff);
+            border: 2px solid #2a5298;
+            border-radius: 25px;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(26, 54, 93, 0.2);
+        }
+
+        .theory-card h3 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: #1e3c72;
+            border-left: 8px solid #ffb347;
+            padding-left: 20px;
+            margin-bottom: 25px;
+        }
+
+        .rule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .rule-item {
+            background: #e9edf5;
+            border-radius: 18px;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: #0a1f3b;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.02);
+            border-left: 5px solid #2a5298;
+            transition: 0.2s;
+        }
+        .rule-item i {
+            color: #ff8c42;
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+        .rule-item strong {
+            color: #1e3c72;
+        }
+
+        .section-subtitle {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1e3c72;
+            margin: 40px 0 25px;
+            border-bottom: 4px solid #2a5298;
+            padding-bottom: 10px;
+        }
+
+        /* ảnh lý thuyết nếu có */
+        .full-image {
+            width: 100%;
+            border-radius: 25px;
+            border: 3px solid #2a5298;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 20px 0;
+        }
+        .full-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 40, 80, 0.4);
+        }
+
+        /* Modal phóng ảnh */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .image-modal.active {
+            display: flex;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 15px;
+            border: 4px solid #ffb347;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 45px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-close:hover {
+            color: #ffb347;
+        }
+
+        /* bài tập word form giữ nguyên style cũ */
+        .exercise-list {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+        .exercise-item {
+            background: #f7fafc;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            border-left: 6px solid #2a5298;
+        }
+        .exercise-number {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+        .word-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .word-label {
+            min-width: 140px;
+            font-weight: 700;
+            color: #0b2b4a;
+        }
+        .word-input {
+            flex: 1;
+            min-width: 180px;
+            padding: 10px 18px;
+            border: 2px solid #d0d9e8;
+            border-radius: 40px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .word-input:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 0 4px rgba(42,82,152,0.2);
+            outline: none;
+        }
+        .word-input.correct {
+            background-color: #c6f6d5;
+            border-color: #2f9e44;
+        }
+        .word-input.wrong {
+            background-color: #ffe3e3;
+            border-color: #e03131;
+        }
+        .feedback-badge {
+            font-size: 0.95rem;
+            font-weight: 700;
+            min-width: 180px;
+            color: #1e3c72;
+        }
+
+        /* trắc nghiệm */
+        .quiz-list {
+            margin: 20px 0;
+        }
+        .quiz-item {
+            background: #f1f5fd;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            border-left: 6px solid #ff9f4b;
+        }
+        .quiz-question {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #102a4c;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .quiz-option {
+            background: white;
+            border: 2px solid #bac8dc;
+            border-radius: 40px;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-weight: 600;
+            text-align: center;
+        }
+        .quiz-option:hover {
+            background: #dbe4f0;
+            border-color: #2a5298;
+        }
+        .quiz-option.correct-option {
+            background: #2f9e44;
+            color: white;
+            border-color: #1e7b2b;
+        }
+        .quiz-option.wrong-option {
+            background: #e03131;
+            color: white;
+            border-color: #b02020;
+        }
+        .quiz-feedback {
+            margin-top: 12px;
+            font-size: 0.98rem;
+            padding: 12px 18px;
+            border-radius: 50px;
+            background: #edf2f9;
+            display: none;
+        }
+        .quiz-feedback.show {
+            display: block;
+        }
+        .quiz-feedback.correct-feedback {
+            background: #d3f0d3;
+            color: #1e5f1e;
+        }
+        .quiz-feedback.wrong-feedback {
+            background: #ffe0e0;
+            color: #a12b2b;
+        }
+
+        .check-btn, .check-quiz-btn {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 60px;
+            cursor: pointer;
+            margin: 15px 10px 20px 0;
+            box-shadow: 0 6px 0 #0f2b4f;
+            transition: all 0.08s;
+            border: 1px solid #ffc107;
+        }
+        .check-btn:active, .check-quiz-btn:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+
+        .result-box {
+            background: #d0e6ff;
+            border-left: 7px solid #1e3c72;
+            padding: 18px 22px;
+            border-radius: 18px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin: 25px 0 15px;
+            display: none;
+        }
+
+        /* navigation dots */
+        .nav-dots {
+            position: fixed;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+        .nav-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid #1e3c72;
+        }
+        .nav-dot.active {
+            background: #ffb347;
+            transform: scale(1.5);
+            border-color: white;
+        }
+        .nav-dot:hover {
+            background: #ffe69b;
+        }
+
+        /* footer nhỏ */
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            font-weight: 600;
+            color: #4b587c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal phóng to ảnh (giữ cho ảnh lý thuyết) -->
+    <div id="imageModal" class="image-modal" onclick="closeModal()">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <!-- Navigation dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="scrollToPage('#page1')"></div>
+        <div class="nav-dot" onclick="scrollToPage('#page2')"></div>
+    </div>
+
+    <!-- TRANG 1: Lý thuyết áp dụng + ảnh (nếu có) + bài tập 1 (câu 1-10) -->
+    <div id="page1" class="page">
+        <div class="content-container">
+            <h1 class="page-title">📌 (GS11) WORD FORM U9. SOCIAL ISSUES</h1>
+
+            <!-- LÝ THUYẾT ÁP DỤNG – khung riêng -->
+            <div class="theory-card">
+                <h3><i class="fa-regular fa-lightbulb"></i> LÝ THUYẾT ÁP DỤNG</h3>
+                <div class="rule-grid">
+                    <div class="rule-item"><i class="fa-regular fa-hand-point-right"></i> <strong>be + adj</strong> : sau động từ “to be” là tính từ.</div>
+                    <div class="rule-item"><i class="fa-regular fa-hand-point-right"></i> <strong>be + N</strong> : sau “to be” có thể là danh từ/cụm danh từ.</div>
+                    <div class="rule-item"><i class="fa-regular fa-hand-point-right"></i> <strong>V + N</strong> : ngoại động từ cần tân ngữ là danh từ.</div>
+                    <div class="rule-item"><i class="fa-regular fa-hand-point-right"></i> <strong>a/an/the + N</strong> : mạo từ + danh từ.</div>
+                    <div class="rule-item"><i class="fa-regular fa-hand-point-right"></i> <strong>his/her/their… + N</strong> : sở hữu + danh từ.</div>
+                    <div class="rule-item"><i class="fa-regular fa-hand-point-right"></i> <strong>giới từ + V-ing/N</strong> : sau giới từ là danh từ hoặc V-ing.</div>
+                    <div class="rule-item"><i class="fa-regular fa-hand-point-right"></i> <strong>Adj + N</strong> : tính từ bổ nghĩa cho danh từ đứng sau.</div>
+                    <div class="rule-item"><i class="fa-regular fa-hand-point-right"></i> <strong>make + O + adj</strong> : khiến ai/cái gì trở nên...</div>
+                    <div class="rule-item"><i class="fa-regular fa-hand-point-right"></i> <strong>V-ing làm chủ ngữ</strong> : hành động đứng đầu câu.</div>
+                </div>
+            </div>
+
+            <!-- ảnh minh họa (tùy chọn, giữ lại từ file cũ nhưng thay link phù hợp, nhưng vẫn dùng được) -->
+            <img src="https://image2url.com/r2/default/images/1772692988089-8815d0c0-ce49-42be-a26a-cf4586a00175.png" 
+                 class="full-image" onclick="openModal(this.src)" alt="Lý thuyết word form">
+            <p style="text-align:center; margin-bottom: 20px;">📘 Click ảnh để phóng to – lý thuyết bổ trợ</p>
+
+            <!-- BÀI TẬP 1: câu 1 → 10 từ đề bài (awareness, prevention … society) -->
+            <h3 class="section-subtitle">📝 BÀI TẬP ÁP DỤNG (1–10)</h3>
+            <div id="exercise-list-part1" class="exercise-list"></div>
+            <button class="check-btn" onclick="checkPart1()"><i class="fa-regular fa-circle-check"></i> KIỂM TRA BÀI 1-10</button>
+            <div id="result-part1" class="result-box"></div>
+
+            <!-- bài tập 11-15 (bully → depressed) sẽ nằm ở trang 2, nhưng thêm phần chuyển tiếp -->
+        </div>
+    </div>
+
+    <!-- TRANG 2: bài tập 11-15 + phần trắc nghiệm xã hội (BT2 câu 1-40) -->
+    <div id="page2" class="page">
+        <div class="content-container">
+            <h2 class="page-title">📚 BÀI TẬP WORD FORM (tiếp)</h2>
+            
+            <!-- BÀI TẬP 11-15 (từ BULLY -> depressed) -->
+            <h3 class="section-subtitle">📝 BÀI TẬP VẬN DỤNG (11–15)</h3>
+            <div id="exercise-list-part2" class="exercise-list"></div>
+            <button class="check-btn" onclick="checkPart2()"><i class="fa-regular fa-circle-check"></i> KIỂM TRA BÀI 11-15</button>
+            <div id="result-part2" class="result-box"></div>
+
+            <!-- TRẮC NGHIỆM WORD FORM (copy từ file gốc, 40 câu) -->
+            <h3 class="section-subtitle" style="margin-top: 40px;">📝 TRẮC NGHIỆM (40 CÂU)</h3>
+            <div id="quiz-list" class="quiz-list"></div>
+
+            <div class="footer-note">
+                <i class="fa-regular fa-comment"></i> Chọn đáp án – nhận phản hồi tức thì
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ---------- DỮ LIỆU BÀI 1 (câu 1-10) ----------
+        const part1Data = [
+            { base: "1. Public ______ of the problem will make politicians take it seriously.", word: "aware", answer: "awareness" },
+            { base: "2. His research in the field of disease ______ produced unexpected results.", word: "prevent", answer: "prevention" },
+            { base: "3. Mobile phones are not ______ in the examination room.", word: "permit", answer: "permitted" },
+            { base: "4. Fog and ice are making the roads very ______.", word: "danger", answer: "dangerous" },
+            { base: "5. His aggressive attitude makes me less ______ to his plight.", word: "sympathy", answer: "sympathetic" },
+            { base: "6. The illustration shows examples of ______ dress in the late 1840s.", word: "fashion", answer: "fashionable" },
+            { base: "7. ______ activists are hosting a talk on the consequences of offshore oil development.", word: "environment", answer: "Environmental" },
+            { base: "8. These children have grown up to be useful and productive members of ______.", word: "social", answer: "society" },
+            { base: "9. The ______ for a new high-speed railway met with strong opposition.", word: "propose", answer: "proposal" },
+            { base: "10. She suffered from severe ______ after losing her job.", word: "depressed", answer: "depression" }
+        ];
+
+        // phần 2 : câu 11-15
+        const part2Data = [
+            { base: "11. ______ can make people feel unconfident about themselves and their appearance.", word: "BULLY", answer: "Bullying" },
+            { base: "12. It’s important to ______ with those who have been bullied and offer them support.", word: "SYMPATHY", answer: "sympathise" }, // chấp nhận cả -ize
+            { base: "13. It’s essential to raise ______ of the harmful effects of bullying in schools.", word: "AWARE", answer: "awareness" },
+            { base: "14. She didn’t want to tell anyone about the bullying because she was too ______.", word: "EMBARRASS", answer: "embarrassed" },
+            { base: "15. She became ______ after facing bullying from some classmates.", word: "DEPRESSION", answer: "depressed" }
+        ];
+
+        // Để render bài 1 và 2 riêng
+        function renderPart(containerId, dataArray) {
+            const container = document.getElementById(containerId);
+            let html = '';
+            dataArray.forEach((item, idx) => {
+                html += `<li class="exercise-item">`;
+                html += `<div class="exercise-number">${item.base}</div>`;
+                // mỗi câu chỉ có 1 ô nhập
+                const inputId = `input-${containerId}-${idx}`;
+                const fbId = `fb-${containerId}-${idx}`;
+                html += `<div class="word-row">`;
+                html += `<span class="word-label">Từ gốc: ${item.word}</span>`;
+                html += `<input type="text" class="word-input" id="${inputId}" placeholder="nhập dạng đúng..." 
+                         onkeypress="handleEnterPart(event, '${containerId}', ${idx})" 
+                         onblur="checkSinglePart('${containerId}', ${idx}, '${item.answer}')">`;
+                html += `<span class="feedback-badge" id="${fbId}"></span>`;
+                html += `</div>`;
+                html += `</li>`;
+            });
+            container.innerHTML = html;
+        }
+
+        // xử lý enter
+        window.handleEnterPart = function(e, containerId, idx) {
+            if(e.key === 'Enter') {
+                e.preventDefault();
+                const data = (containerId === 'exercise-list-part1') ? part1Data : part2Data;
+                checkSinglePart(containerId, idx, data[idx].answer);
+            }
+        };
+
+        window.checkSinglePart = function(containerId, idx, correctAns) {
+            const input = document.getElementById(`input-${containerId}-${idx}`);
+            const fb = document.getElementById(`fb-${containerId}-${idx}`);
+            if(!input) return;
+            const user = input.value.trim();
+            // chuẩn hóa nhẹ (viết hoa/thường)
+            const correct = (containerId === 'exercise-list-part2' && idx === 1) ? 
+                ['sympathise','sympathize'] : [correctAns];  // câu 12 chấp nhận 2 cách
+            let isCorrect = false;
+            if(Array.isArray(correct)) {
+                isCorrect = correct.includes(user.toLowerCase());
+            } else {
+                isCorrect = (user.toLowerCase() === correctAns.toLowerCase());
+            }
+            // riêng câu 7 environmental viết hoa hay thường đều chấp nhận
+            if(containerId === 'exercise-list-part1' && idx === 6) {
+                isCorrect = (user.toLowerCase() === 'environmental');
+            }
+            if(containerId === 'exercise-list-part2' && idx === 0) isCorrect = (user.toLowerCase() === 'bullying');
+            if(containerId === 'exercise-list-part2' && idx === 3) isCorrect = (user.toLowerCase() === 'embarrassed');
+            if(containerId === 'exercise-list-part2' && idx === 4) isCorrect = (user.toLowerCase() === 'depressed');
+
+            if(isCorrect) {
+                input.classList.add('correct'); input.classList.remove('wrong');
+                fb.innerHTML = '✅ Đúng'; fb.style.color = '#2f9e44';
+            } else {
+                input.classList.add('wrong'); input.classList.remove('correct');
+                fb.innerHTML = `❌ Sai (đáp án: ${correctAns})`; fb.style.color = '#e03131';
+            }
+        };
+
+        window.checkPart1 = function() {
+            let correct=0, total=part1Data.length;
+            part1Data.forEach((item, idx)=> {
+                checkSinglePart('exercise-list-part1', idx, item.answer);
+                const fb = document.getElementById(`fb-exercise-list-part1-${idx}`);
+                if(fb && fb.innerHTML.includes('✅')) correct++;
+            });
+            document.getElementById('result-part1').style.display='block';
+            document.getElementById('result-part1').innerHTML = `✅ Bạn đúng ${correct}/${total} câu (1-10).`;
+        };
+
+        window.checkPart2 = function() {
+            let correct=0, total=part2Data.length;
+            part2Data.forEach((item, idx)=> {
+                checkSinglePart('exercise-list-part2', idx, item.answer);
+                const fb = document.getElementById(`fb-exercise-list-part2-${idx}`);
+                if(fb && fb.innerHTML.includes('✅')) correct++;
+            });
+            document.getElementById('result-part2').style.display='block';
+            document.getElementById('result-part2').innerHTML = `✅ Bạn đúng ${correct}/${total} câu (11-15).`;
+        };
+
+        // ---------- TRẮC NGHIỆM (copy từ file gốc, 40 câu) ----------
+        const quizData = [
+            { question: "Câu 1: Faraday made many ______ in the field of physics and chemistry.", options: ["A. discover", "B. discoveries", "C. discovered", "D. discovering"], correct: 1, explanation: "many + danh từ số nhiều. discoveries" },
+            { question: "Câu 2: Faraday was an ______ in Davy's laboratory.", options: ["A. assistance", "B. assist", "C. assistant", "D. assisted"], correct: 2, explanation: "an + danh từ chỉ người → assistant" },
+            { question: "Câu 3: The generator is one of Faraday's most important ______.", options: ["A. achievements", "B. achievement", "C. achieve", "D. achieving"], correct: 0, explanation: "one of + N số nhiều → achievements" },
+            { question: "Câu 4: We will ______ our English vocabulary if we read English books every day.", options: ["A. rich", "B. richness", "C. enrich", "D. richly"], correct: 2, explanation: "will + V → enrich" },
+            { question: "Câu 5: You study very well. It's ______ that you will fail the exam.", options: ["A. possible", "B. impossible", "C. possibility", "D. impossibility"], correct: 1, explanation: "It's + adj → impossible" },
+            { question: "Câu 6: Lan always shares her ______ with me.", options: ["A. sadness", "B. sad", "C. sadly", "D. unsad"], correct: 0, explanation: "her + N → sadness" },
+            { question: "Câu 7: These children have the ______ to imitate animals' voice.", options: ["A. able", "B. ability", "C. disable", "D. disability"], correct: 1, explanation: "the + N → ability" },
+            { question: "Câu 8: Money doesn't bring ______ to man.", options: ["A. happy", "B. happiness", "C. happily", "D. unhappy"], correct: 1, explanation: "bring + N → happiness" },
+            { question: "Câu 9: Good students aren't ______ intelligent students.", options: ["A. necessary", "B. necessity", "C. necessarily", "D. unnecessary"], correct: 2, explanation: "aren't + adv → necessarily" },
+            { question: "Câu 10: I don't believe what he has just said. It is ______.", options: ["A. reason", "B. unreasonable", "C. reasonably", "D. reasoning"], correct: 1, explanation: "It is + adj → unreasonable" },
+            { question: "Câu 11: The teacher does everything in order to ______ her students.", options: ["A. courage", "B. encourage", "C. encouragement", "D. encouraged"], correct: 1, explanation: "in order to + V → encourage" },
+            { question: "Câu 12: Please decide what you want to do. You must make a ______.", options: ["A. decide", "B. decision", "C. decisive", "D. decisively"], correct: 1, explanation: "make a + N → decision" },
+            { question: "Câu 13: As an ______, Mr. Pike is very worried about the increasing of juvenile delinquency.", options: ["A. educate", "B. education", "C. educator", "D. educative"], correct: 2, explanation: "an + N (người) → educator" },
+            { question: "Câu 14: The Minister appeared on TV last night to ______ his new policy.", options: ["A. public", "B. publicly", "C. publicize", "D. publicizing"], correct: 2, explanation: "to + V → publicize" },
+            { question: "Câu 16: He has very high ______ of his only son.", options: ["A. expect", "B. expectation", "C. expected", "D. expectedly"], correct: 1, explanation: "high + N → expectation" },
+            { question: "Câu 17: Farmers need to ______ crops.", options: ["A. rotation", "B. rotate", "C. rotational", "D. rotationally"], correct: 1, explanation: "need to + V → rotate" },
+            { question: "Câu 18: He doesn't have a job. He is ______.", options: ["A. employed", "B. unemployed", "C. employer", "D. employee"], correct: 1, explanation: "is + adj → unemployed" },
+            { question: "Câu 19: We have to ______ the natural resources of our country.", options: ["A. conservational", "B. conserve", "C. conserved", "D. conservation"], correct: 1, explanation: "have to + V → conserve" },
+            { question: "Câu 20: The industrial ______ will lead to the country's prosperity.", options: ["A. develop", "B. development", "C. developing", "D. developed"], correct: 1, explanation: "industrial + N → development" },
+            { question: "Câu 21: Forests must be managed ______.", options: ["A. careless", "B. careful", "C. carefully", "D. care"], correct: 2, explanation: "managed + adv → carefully" },
+            { question: "Câu 22: The little boy felt very ______ because his parents did not let him go.", options: ["A. disappoint", "B. disappointment", "C. disappointed", "D. disappointing"], correct: 2, explanation: "felt + adj (người) → disappointed" },
+            { question: "Câu 23: Your new dress makes you more ______.", options: ["A. beauty", "B. beautiful", "C. beautifully", "D. beautifully (lỗi)"], correct: 1, explanation: "makes you + adj → beautiful" },
+            { question: "Câu 24: There are a lot of ______ differences in England.", options: ["A. region", "B. regional", "C. regionally", "D. regions"], correct: 1, explanation: "adj + N → regional" },
+            { question: "Câu 25: The surgeons tried their best, but unfortunately the operation was ______.", options: ["A. success", "B. successful", "C. unsuccessful", "D. successfully"], correct: 2, explanation: "was + adj → unsuccessful" },
+            { question: "Câu 26: ______ waste is one of the causes of air pollution.", options: ["A. Industrialization", "B. Industrial", "C. Industry", "D. Industrious"], correct: 1, explanation: "adj + N → Industrial" },
+            { question: "Câu 27: Mount Vesuvious is an ______ volcano.", options: ["A. act", "B. active", "C. action", "D. activity"], correct: 1, explanation: "an + adj → active" },
+            { question: "Câu 28: He has been very interested in doing research on ______ since high school.", options: ["A. biology", "B. biological", "C. biologist", "D. biologically"], correct: 0, explanation: "on + N → biology" },
+            { question: "Câu 29: You are old enough to take ______ for what you have done.", options: ["A. responsible", "B. responsibility", "C. responsibly", "D. irresponsible"], correct: 1, explanation: "take + N → responsibility" },
+            { question: "Câu 30: The interviews showed that the vast majority were ______ of teachers.", options: ["A. support", "B. supportive", "C. supporter", "D. supporting"], correct: 1, explanation: "were + adj → supportive" },
+            { question: "Câu 31: For ______ reasons, passengers are requested not to leave any luggage unattended.", options: ["A. secure", "B. securely", "C. security", "D. securing"], correct: 2, explanation: "security reasons: danh từ security" },
+            { question: "Câu 32: We are impressed by his ______ to help us with the hard mission.", options: ["A. will", "B. willing", "C. willingness", "D. willingly"], correct: 2, explanation: "his + N → willingness" },
+            { question: "Câu 33: The more ______ and positive you look, the better you will feel.", options: ["A. confident", "B. confident (lỗi)", "C. confidently", "D. confidence"], correct: 0, explanation: "more + adj → confident" },
+            { question: "Câu 34: Many Vietnamese people ______ their lives for the revolutionary cause of the nation.", options: ["A. sacrifice", "B. sacrificed", "C. sacrificial", "D. sacrificially"], correct: 1, explanation: "people + V-ed → sacrificed" },
+            { question: "Câu 35: What could be more ______ than a wedding on a tropical island?", options: ["A. romance", "B. romantic", "C. romanticize", "D. romanticism"], correct: 1, explanation: "more + adj → romantic" },
+            { question: "Câu 36: Though their performance was not perfect, the students held the audience's ______ until the end.", options: ["A. attentive", "B. attention", "C. attentively", "D. attentional"], correct: 1, explanation: "audience's + N → attention" },
+            { question: "Câu 37: Both Asian and Western students seem ______ about how to answer the questionnaire.", options: ["A. confusedly", "B. confused", "C. confusing", "D. confusion"], correct: 1, explanation: "seem + adj (người) → confused" },
+            { question: "Câu 38: She was ______ unaware of the embarrassing situation due to her different cultural background.", options: ["A. complete", "B. completed", "C. completing", "D. completely"], correct: 3, explanation: "was + adv + adj → completely" },
+            { question: "Câu 39: What is more important to you, intelligence or ______?", options: ["A. attraction", "B. attractiveness", "C. attractive", "D. attract"], correct: 1, explanation: "or + N → attractiveness" },
+            { question: "Câu 40: Children who are isolated and lonely seem to have poor language and ______.", options: ["A. communicator", "B. communication", "C. communicative", "D. communicate"], correct: 1, explanation: "language and + N → communication" }
+        ];
+
+        function renderQuiz() {
+            const list = document.getElementById('quiz-list');
+            let html = '';
+            quizData.forEach((item, idx) => {
+                html += `<div class="quiz-item" data-qindex="${idx}">`;
+                html += `<div class="quiz-question">${item.question}</div>`;
+                html += `<div class="quiz-options">`;
+                item.options.forEach((opt, optIdx) => {
+                    html += `<div class="quiz-option" onclick="checkQuizImmediately(${idx}, ${optIdx})">${opt}</div>`;
+                });
+                html += `</div>`;
+                html += `<div class="quiz-feedback" id="quiz-fb-${idx}"></div>`;
+                html += `</div>`;
+            });
+            list.innerHTML = html;
+        }
+
+        window.checkQuizImmediately = function(qIndex, optIndex) {
+            const item = quizData[qIndex];
+            const options = document.querySelectorAll(`.quiz-item[data-qindex="${qIndex}"] .quiz-option`);
+            const fb = document.getElementById(`quiz-fb-${qIndex}`);
+            options.forEach(opt => opt.classList.remove('correct-option','wrong-option'));
+            if(optIndex === item.correct) {
+                options[optIndex].classList.add('correct-option');
+                fb.innerHTML = `✅ Đúng! ${item.explanation}`;
+                fb.className = 'quiz-feedback show correct-feedback';
+            } else {
+                options[optIndex].classList.add('wrong-option');
+                options[item.correct].classList.add('correct-option');
+                fb.innerHTML = `❌ Sai. Đáp án: ${item.options[item.correct]}. ${item.explanation}`;
+                fb.className = 'quiz-feedback show wrong-feedback';
+            }
+        };
+
+        // modal functions
+        window.openModal = (src) => { document.getElementById('imageModal').classList.add('active'); document.getElementById('modalImage').src = src; };
+        window.closeModal = () => { document.getElementById('imageModal').classList.remove('active'); };
+
+        // scroll + nav dots
+        window.scrollToPage = (target) => { $('html, body').animate({ scrollTop: $(target).offset().top }, 1000); };
+        function updateActiveDot() {
+            const pages = ['#page1','#page2'];
+            const scrollPos = $(window).scrollTop();
+            pages.forEach((page,i) => {
+                const off = $(page).offset().top;
+                const h = $(page).outerHeight();
+                if(scrollPos >= off-100 && scrollPos < off+h-100) {
+                    $('.nav-dot').eq(i).addClass('active').siblings().removeClass('active');
+                }
+            });
+        }
+
+        $(document).ready(function(){
+            renderPart('exercise-list-part1', part1Data);
+            renderPart('exercise-list-part2', part2Data);
+            renderQuiz();
+            $('.nav-dot').click(function(){ let tgt=['#page1','#page2'][$(this).index()]; scrollToPage(tgt); });
+            $(window).on('scroll', updateActiveDot);
+        });
+    </script>
+</body>
+</html>
