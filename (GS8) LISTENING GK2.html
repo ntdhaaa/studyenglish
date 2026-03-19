@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(GS8) LISTENING MID-TERM SEMESTER 2 - ĐỀ 1,2,3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #0b2f5c, #2b5876, #4a7c9c);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+        .main-header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 60px;
+            max-width: 1100px;
+            margin: 0 auto 30px;
+            box-shadow: 0 12px 0 rgba(0,0,0,0.2);
+            border: 3px solid #f9d56e;
+        }
+        .main-header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #0b2f5c;
+        }
+        .main-header h2 {
+            font-size: 2rem;
+            color: #d48d2b;
+            font-weight: 800;
+        }
+        .exam-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+        .exam-card {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 70px;
+            padding: 35px 30px;
+            box-shadow: 0 20px 0 rgba(0,0,0,0.2);
+            border: 2px solid #f9c74f;
+        }
+        .exam-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: #f9b83c;
+            color: #0b2f5c;
+            display: inline-block;
+            padding: 10px 50px;
+            border-radius: 60px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 0 #b87c1b;
+        }
+        .part {
+            background: #edf2fb;
+            border-radius: 50px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 12px solid #2f4858;
+        }
+        .part h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0b2f5c;
+            margin-bottom: 20px;
+        }
+        .audio-block {
+            background: white;
+            border-radius: 60px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            box-shadow: 0 6px 0 #b0c4de;
+            margin-bottom: 25px;
+        }
+        audio {
+            width: 100%;
+            max-width: 500px;
+            height: 45px;
+        }
+        .question-item {
+            background: white;
+            border-radius: 50px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 0 #cad2db;
+        }
+        .q-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #0b2f5c;
+            margin-bottom: 15px;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .opt-btn {
+            background: #f0f4fa;
+            border: 3px solid #bac8dc;
+            border-radius: 60px;
+            padding: 12px 25px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #8fa3bc;
+            transition: 0.07s;
+            flex: 1 1 auto;
+            min-width: 180px;
+            text-align: left;
+        }
+        .opt-btn.correct {
+            background: #00d26a;
+            border-color: #00994d;
+            color: white;
+            box-shadow: 0 5px 0 #00994d;
+        }
+        .opt-btn.incorrect {
+            background: #ff4757;
+            border-color: #b22222;
+            color: white;
+            box-shadow: 0 5px 0 #b22222;
+        }
+        .opt-btn.locked {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+        .explain-box {
+            display: none;
+            background: #f8faff;
+            border-radius: 40px;
+            padding: 25px;
+            margin-top: 25px;
+            border-left: 8px solid #2f4858;
+            box-shadow: inset 0 0 0 1px #d3e0f0;
+            font-size: 0.95rem;
+        }
+        .explain-box h4 {
+            color: #0b2f5c;
+            font-weight: 900;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        .explain-box table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        .explain-box th {
+            background: #2f4858;
+            color: white;
+            padding: 8px;
+        }
+        .explain-box td {
+            border: 1px solid #aabdd6;
+            padding: 8px;
+        }
+        .distractor-list {
+            list-style: none;
+            padding-left: 10px;
+        }
+        .distractor-list li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+        }
+        .distractor-list li::before {
+            content: "❌";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .transcript-area {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .transcript-btn {
+            background: #f4a261;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 35px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 0 #b96f2e;
+            cursor: pointer;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: 0.1s;
+        }
+        .transcript-btn.enabled {
+            opacity: 1;
+            pointer-events: auto;
+            background: #f4c542;
+        }
+        .transcript-panel {
+            background: #1d2b3f;
+            color: #faf0d7;
+            border-radius: 40px;
+            padding: 25px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #f9d773;
+            display: none;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .submit-exam-btn {
+            background: #2f4858;
+            color: white;
+            border: none;
+            border-radius: 60px;
+            padding: 15px 50px;
+            font-weight: 900;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 0 #173342;
+            cursor: pointer;
+            margin: 20px auto 0;
+            display: block;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 70px;
+            padding: 40px;
+            text-align: center;
+            max-width: 450px;
+        }
+        #confetti-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+
+<div class="main-header">
+    <h1>(GS8) LISTENING MID-TERM SEMESTER 2</h1>
+    <h2>ĐỀ 1 · ĐỀ 2 · ĐỀ 3</h2>
+</div>
+
+<div class="exam-wrapper" id="examWrapper"></div>
+
+<!-- modal kết quả -->
+<div class="modal-overlay" id="resultModal">
+    <div class="modal-content">
+        <h2 id="modalTitle" style="color:#0b2f5c;">Kết quả</h2>
+        <p id="modalScore" style="font-size:3rem; font-weight:900;">0/0</p>
+        <img id="modalGif" src="" width="200" style="border-radius: 30px;">
+        <br><br>
+        <button class="close-btn" onclick="closeModal()" style="background:#f4a261; border:none; border-radius:50px; padding:10px 40px; font-weight:800; cursor:pointer;">Đóng</button>
+    </div>
+</div>
+
+<script>
+    // confetti
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+    function createConfetti() {
+        for (let i = 0; i < 30; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                w: 8, h: 8,
+                color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+                vy: Math.random() * 3 + 2,
+                vx: Math.random() * 2 - 1,
+                rot: Math.random() * 360
+            });
+        }
+    }
+    function drawConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, i) => {
+            p.y += p.vy;
+            p.x += p.vx;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-4, -4, 8, 8);
+            ctx.restore();
+            if (p.y > canvas.height) particles.splice(i, 1);
+        });
+        requestAnimationFrame(drawConfetti);
+    }
+    drawConfetti();
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    // audio effects
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioCtx();
+    function playDing() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(880, audioCtx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(1568, audioCtx.currentTime + 0.15);
+        g.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        o.connect(g);
+        g.connect(audioCtx.destination);
+        o.start();
+        o.stop(audioCtx.currentTime + 0.5);
+    }
+    function playBuzz() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(250, audioCtx.currentTime);
+        o.frequency.setValueAtTime(200, audioCtx.currentTime + 0.15);
+        o.frequency.setValueAtTime(150, audioCtx.currentTime + 0.3);
+        g.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.6);
+        o.connect(g);
+        g.connect(audioCtx.destination);
+        o.start();
+        o.stop(audioCtx.currentTime + 0.6);
+    }
+
+    // ----- DỮ LIỆU ĐẦY ĐỦ 3 ĐỀ -----
+    const exams = [
+        { // ĐỀ 1
+            title: "ĐỀ 1",
+            parts: [
+                {
+                    partName: "I. Nghe về thảm họa (tornado)",
+                    audio: "https://image2url.com/r2/default/audio/1773887471512-d3cdc305-c558-4f60-9f96-3ea6419c8aec.wav",
+                    questions: [
+                        {
+                            q: "1. What was Michael doing when the tornado came?",
+                            opts: ["A. He was cooking", "B. He was sleeping", "C. He was eating"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [
+                                    { q: "was Michael doing", a: "sleeping" },
+                                    { q: "when tornado came", a: "I was sleeping... when tornado suddenly came" }
+                                ],
+                                evidence: "\"I was sleeping in my bedroom when the tornado suddenly came.\"",
+                                distractors: [
+                                    "<strong>A sai</strong>: Michael không hề nói đang nấu ăn.",
+                                    "<strong>C sai</strong>: Michael không hề nói đang ăn."
+                                ],
+                                translation: "Tôi đang ngủ trong phòng ngủ thì lốc xoáy ập đến."
+                            }
+                        },
+                        {
+                            q: "2. Was he warned about the tornado before?",
+                            opts: ["A. Yes, he was.", "B. No, he wasn't.", "C. No information."],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [{ q: "warned before?", a: "No, I wasn't" }],
+                                evidence: "Host: Were you warned? Michael: No, I wasn't.",
+                                distractors: [
+                                    "<strong>A sai</strong>: Michael trả lời thẳng \"No\".",
+                                    "<strong>C sai</strong>: Michael cung cấp thông tin rõ ràng."
+                                ],
+                                translation: "Không, tôi không được báo trước."
+                            }
+                        },
+                        {
+                            q: "3. What did his family do to escape?",
+                            opts: ["A. They ran outside.", "B. They stayed inside.", "C. They did nothing."],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [
+                                    { q: "family do to escape", a: "stay inside, hide, stayed under the bed" }
+                                ],
+                                evidence: "My parents told everyone to stay inside… We stayed under the bed.",
+                                distractors: [
+                                    "<strong>A sai</strong>: Họ ở yên trong nhà, không chạy ra ngoài.",
+                                    "<strong>C sai</strong>: Họ đã hành động: trốn dưới gầm giường."
+                                ],
+                                translation: "Ở trong nhà và trốn dưới gầm giường."
+                            }
+                        },
+                        {
+                            q: "4. Michael felt ______ at that time.",
+                            opts: ["A. unhappy", "B. scared", "C. terrified"],
+                            correct: 2,
+                            explain: {
+                                correctLabel: "C",
+                                keywords: [{ q: "felt", a: "terrifying / very scary / frightening" }],
+                                evidence: "It was a terrifying experience. / Yes it was very scary.",
+                                distractors: [
+                                    "<strong>A</strong>: 'unhappy' quá nhẹ so với ngữ cảnh.",
+                                    "<strong>B</strong>: 'scared' đúng nhưng 'terrified' mạnh hơn, chính xác hơn."
+                                ],
+                                translation: "Kinh hoàng, rất đáng sợ."
+                            }
+                        }
+                    ]
+                },
+                {
+                    partName: "II. Hướng dẫn động đất (True/False)",
+                    audio: "https://image2url.com/r2/default/audio/1773887493468-ca35aed6-764b-40d9-8e92-7888dd8f2b80.wav",
+                    questions: [
+                        {
+                            q: "5. If you are indoors, stay away from windows.",
+                            opts: ["A. True", "B. False"],
+                            correct: 0,
+                            explain: {
+                                correctLabel: "A",
+                                keywords: [{ q: "indoors", a: "stay away from windows" }],
+                                evidence: "If you are indoors, stay away from windows and glass...",
+                                distractors: [],
+                                translation: "Ở trong nhà tránh xa cửa sổ."
+                            }
+                        },
+                        {
+                            q: "6. If you are outdoors, try to run away as far as possible.",
+                            opts: ["A. True", "B. False"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [{ q: "outdoors", a: "Do not run outside" }],
+                                evidence: "Do not run outside during the shaking.",
+                                distractors: ["Hướng dẫn khuyên KHÔNG chạy ra ngoài."],
+                                translation: "Không chạy ra ngoài khi đang rung lắc."
+                            }
+                        },
+                        {
+                            q: "7. If you are driving, get out of the car immediately.",
+                            opts: ["A. True", "B. False"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [{ q: "driving", a: "stay inside the car" }],
+                                evidence: "stop the car... stay inside the car until shaking stops.",
+                                distractors: [],
+                                translation: "Dừng xe và ở yên trong xe."
+                            }
+                        },
+                        {
+                            q: "8. If you are trapped, keep shouting loudly until helpers come.",
+                            opts: ["A. True", "B. False"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [{ q: "trapped", a: "do not shout loudly all the time" }],
+                                evidence: "If you are trapped, do not shout loudly all the time...",
+                                distractors: [],
+                                translation: "Đừng la hét liên tục, hãy gõ nhẹ."
+                            }
+                        }
+                    ]
+                }
+            ],
+            transcriptFull: "🎤 PART 1\nHost: Welcome to our television show. Today we are talking to Michael, who survived a terrible tornado. Michael, can you tell us what happened?\nMichael: Yes, of course. It happened last year. I remember that afternoon very clearly. I was sleeping in my bedroom when the tornado suddenly came.\nHost: Were you warned about the tornado before it happened?\nMichael: No, I wasn't. Everything happened so quickly. Suddenly the wind became very strong and we heard a loud noise outside.\nHost: That must have been frightening. What did your family do?\nMichael: Yes, it was very scary. My parents told everyone to stay inside the house and hide in a safe place. We stayed under the bed.\nHost: Under the bed?\nMichael: Yes. The bed was very strong because it was made of metal, so we thought it would protect us.\n\n🎤 PART 2\nPresenter: Now listen carefully to some safety instructions about what to do during an earthquake.\nIf you are indoors, stay calm and stay away from windows and glass because they may break.\nDo not run outside during the shaking. It is safer to stay inside and hide under a strong table or desk.\nIf you are driving, stop the car in a safe place and stay inside the car until the shaking stops.\nIf you are trapped, do not shout loudly all the time because you may lose energy. Instead, try to tap on something or make small noises so rescuers can find you."
+        },
+        { // ĐỀ 2
+            title: "ĐỀ 2",
+            parts: [
+                {
+                    partName: "I. Five conversations (brother's job)",
+                    audio: "https://image2url.com/r2/default/audio/1773887618095-3acb6b98-903a-4d2d-b4f9-5cc43562662e.wav",
+                    questions: [
+                        {
+                            q: "1. Where does her brother work?",
+                            opts: ["A. on a farm", "B. at the airport", "C. at a school", "D. in a big factory"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [{ q: "where work", a: "airport" }],
+                                evidence: "He works at the airport now.",
+                                distractors: ["<strong>A sai</strong>: Đó là công việc cũ (used to)."],
+                                translation: "Anh ấy làm ở sân bay."
+                            }
+                        },
+                        {
+                            q: "2. How does he go to work?",
+                            opts: ["A. by motorbike", "B. on foot", "C. by bus", "D. by train"],
+                            correct: 2,
+                            explain: {
+                                correctLabel: "C",
+                                keywords: [{ q: "go to work how?", a: "goes by bus" }],
+                                evidence: "now he goes by bus because it’s cheaper.",
+                                distractors: ["<strong>A sai</strong>: Đây là phương tiện trước đây (used to)."],
+                                translation: "Đi xe buýt."
+                            }
+                        },
+                        {
+                            q: "3. When does he start work?",
+                            opts: ["A. 6.30 a.m", "B. 8.30 a.m", "C. 8.00 a.m", "D. 6.30 p.m"],
+                            correct: 2,
+                            explain: {
+                                correctLabel: "C",
+                                keywords: [{ q: "start work", a: "8 o'clock" }],
+                                evidence: "He starts at 8 o'clock in the morning.",
+                                distractors: ["<strong>A sai</strong>: Cô gái hỏi 'half past six?' và chàng trai phủ định."],
+                                translation: "8 giờ sáng."
+                            }
+                        },
+                        {
+                            q: "4. What does he do for lunch?",
+                            opts: ["A. have some sandwiches", "B. come home", "C. eat at restaurant", "D. have some noodles"],
+                            correct: 0,
+                            explain: {
+                                correctLabel: "A",
+                                keywords: [{ q: "for lunch", a: "has some sandwiches at work" }],
+                                evidence: "He usually has some sandwiches at work.",
+                                distractors: ["<strong>B sai</strong>: Anh ấy không về nhà ăn trưa."],
+                                translation: "Ăn sandwich tại chỗ làm."
+                            }
+                        }
+                    ]
+                },
+                {
+                    partName: "II. Betty Barratt (True/False)",
+                    audio: "https://image2url.com/r2/default/audio/1773887648056-d8aa0358-2a32-43f3-bd40-fde6d3309c0b.wav",
+                    questions: [
+                        {
+                            q: "5. Betty Barratt is 10 years old.",
+                            opts: ["A. True", "B. False"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [{ q: "10 years old", a: "12 years old, not 10" }],
+                                evidence: "I am 12 years old, not 10.",
+                                distractors: [],
+                                translation: "12 tuổi."
+                            }
+                        },
+                        {
+                            q: "6. She lives at 15 Randall Street.",
+                            opts: ["A. True", "B. False"],
+                            correct: 0,
+                            explain: {
+                                correctLabel: "A",
+                                keywords: [{ q: "lives at", a: "15 Randall Street" }],
+                                evidence: "I live at 15 Randall Street.",
+                                distractors: [],
+                                translation: "Sống tại 15 Randall Street."
+                            }
+                        },
+                        {
+                            q: "7. Her phone number is 810 334.",
+                            opts: ["A. True", "B. False"],
+                            correct: 0,
+                            explain: {
+                                correctLabel: "A",
+                                keywords: [{ q: "phone number", a: "810 334" }],
+                                evidence: "My phone number is 810 334.",
+                                distractors: [],
+                                translation: "Số điện thoại 810334."
+                            }
+                        },
+                        {
+                            q: "8. She prefers to play every morning.",
+                            opts: ["A. True", "B. False"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [
+                                    { q: "prefers play every morning", a: "don't have time to play then, prefer after homework" }
+                                ],
+                                evidence: "I go to school in the morning, so I don't have time to play then. After that, I prefer to play.",
+                                distractors: [],
+                                translation: "Không có thời gian sáng, thích chơi sau khi học."
+                            }
+                        }
+                    ]
+                }
+            ],
+            transcriptFull: "🎧 PART 1\nGirl: I heard your brother got a new job. Does he still work on a farm?\nBoy: No, not anymore. He works at the airport now.\nGirl: Oh, that's interesting. Does he go to work by motorbike?\nBoy: He used to, but now he goes by bus because it's cheaper.\nGirl: I see. Does he start work at half past six?\nBoy: No, that's too early. He starts at 8 o'clock in the morning.\nGirl: What about lunch? Does he come home to eat?\nBoy: No, he doesn't. He usually has some sandwiches at work.\nGirl: That sounds convenient.\n\n🎧 PART 2\nHello, my name is Betty Barratt. I am 12 years old, not 10. I live at 15 Randall Street with my family.\nMy phone number is 810 334. I use it to call my friends and sometimes to contact my teachers, too.\nEvery day, I go to school in the morning, so I don't have time to play then. In the afternoon, I usually do my homework first. After that, I prefer to play with my friends."
+        },
+        { // ĐỀ 3
+            title: "ĐỀ 3",
+            parts: [
+                {
+                    partName: "I. Public transport",
+                    audio: "https://pdftolink.io/file/r2_dXNlcnMvZ3Vlc3QvYWExZDY2M2ItNTFhZi00NDdjLThlZmQtYTdiY2U0MTUwNzVjLndhdg",
+                    questions: [
+                        {
+                            q: "1. The fare depends on the _____ of the journey.",
+                            opts: ["A. way", "B. distance", "C. time"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [{ q: "fare depends", a: "distance" }],
+                                evidence: "First, the fare usually depends on the distance of your journey.",
+                                distractors: ["<strong>A, C sai</strong>: Người nói chỉ đề cập đến 'distance'."],
+                                translation: "Giá vé phụ thuộc vào quãng đường."
+                            }
+                        },
+                        {
+                            q: "2. Children under five don't have to _____ when they use public transport.",
+                            opts: ["A. give", "B. pay", "C. buy"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [{ q: "don't have to", a: "pay" }],
+                                evidence: "children under five don't have to pay when they use public transport...",
+                                distractors: ["<strong>A, C sai</strong>: Từ chính xác là 'pay' (trả tiền)."],
+                                translation: "Trẻ em dưới 5 tuổi không phải trả tiền."
+                            }
+                        },
+                        {
+                            q: "3. You should buy bus tickets from the_____ but on some buses you pay the driver.",
+                            opts: ["A. machine", "B. driver", "C. conductor"],
+                            correct: 0,
+                            explain: {
+                                correctLabel: "A",
+                                keywords: [{ q: "buy bus tickets from", a: "machine" }],
+                                evidence: "you should buy your ticket from the machine at the bus stop.",
+                                distractors: [
+                                    "<strong>B, C sai</strong>: Mặc dù có thể trả tiền cho tài xế, nhưng lời khuyên chung là mua từ máy."
+                                ],
+                                translation: "Nên mua vé từ máy bán vé."
+                            }
+                        },
+                        {
+                            q: "4. Not all trains from one _____ go to the same place, so watch the signs.",
+                            opts: ["A. station", "B. railway", "C. platform"],
+                            correct: 2,
+                            explain: {
+                                correctLabel: "C",
+                                keywords: [{ q: "trains from one", a: "same platform" }],
+                                evidence: "Not all trains from the same platform go to the same place.",
+                                distractors: [
+                                    "<strong>A, B sai</strong>: Thông tin cụ thể là 'from the same platform'."
+                                ],
+                                translation: "Không phải tất cả tàu từ cùng một sân ga đều đi cùng một nơi."
+                            }
+                        }
+                    ]
+                },
+                {
+                    partName: "II. Mario & Tamara (True/False)",
+                    audio: "https://pdftolink.io/file/r2_dXNlcnMvZ3Vlc3QvNmNlMzQwMzMtYTZjMy00OGI2LWI4MmUtYmIxMGM1ZWZiNWY1Lndhdg",
+                    questions: [
+                        {
+                            q: "5. There are two 2D action films.",
+                            opts: ["A. True", "B. False"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [{ q: "two 2D action", a: "two action films, one 3D one 2D" }],
+                                evidence: "Umm… there are two action films. One is in 3D and the other is in 2D.",
+                                distractors: [],
+                                translation: "Có hai phim hành động, nhưng chỉ một phim 2D."
+                            }
+                        },
+                        {
+                            q: "6. Mario doesn't want to see an action film.",
+                            opts: ["A. True", "B. False"],
+                            correct: 0,
+                            explain: {
+                                correctLabel: "A",
+                                keywords: [{ q: "doesn't want action", a: "not really into action films" }],
+                                evidence: "I'm not really into action films, to be honest.",
+                                distractors: [],
+                                translation: "Mario không thích phim hành động."
+                            }
+                        },
+                        {
+                            q: "7. Tamara hasn't seen Robot 2075 before.",
+                            opts: ["A. True", "B. False"],
+                            correct: 0,
+                            explain: {
+                                correctLabel: "A",
+                                keywords: [{ q: "hasn't seen", a: "No, not yet" }],
+                                evidence: "No, not yet. I've just seen the trailer.",
+                                distractors: [],
+                                translation: "Tamara chưa xem phim này."
+                            }
+                        },
+                        {
+                            q: "8. Mario likes films about vampires.",
+                            opts: ["A. True", "B. False"],
+                            correct: 1,
+                            explain: {
+                                correctLabel: "B",
+                                keywords: [{ q: "likes vampires", a: "prefer science fiction or something funny" }],
+                                evidence: "Not anymore. I prefer science fiction or something funny.",
+                                distractors: [],
+                                translation: "Mario không thích phim ma cà rồng nữa."
+                            }
+                        }
+                    ]
+                }
+            ],
+            transcriptFull: "🎧 PART 1\nHi everyone, today I'll give you some simple information about using public transport.\nFirst, the fare usually depends on the distance of your journey. So, if you travel further, you will have to pay more.\nAlso, children under five don't have to pay when they use public transport, which is good for families with young kids.\nWhen you take a bus, you should buy your ticket from the machine at the bus stop. But on some buses, you can just pay the driver.\nAnd one more thing—when you travel by train, be careful. Not all trains from the same platform go to the same place, so always check the signs before you get on.\n\n🎧 PART 2\nTamara: Hey Mario, are you free tonight?\nMario: Yeah, I think so. Why?\nTamara: Do you want to go to the cinema?\nMario: Sure, sounds good. What's on?\nTamara: Umm… there are two action films. One is in 3D and the other is in 2D.\nMario: Oh… I'm not really into action films, to be honest.\nTamara: Really? I thought you liked them.\nMario: Not anymore. I prefer science fiction or something funny.\nTamara: Okay… what about Robot 2075? It's a science fiction film.\nMario: Oh, that sounds better. Have you seen it?\nTamara: No, not yet. I've just seen the trailer.\nMario: Alright then, let's watch that one.\nTamara: Great, I'll book the tickets!"
+        }
+    ];
+
+    // render
+    const wrapper = document.getElementById('examWrapper');
+    function renderAll() {
+        let html = '';
+        exams.forEach((exam, idxExam) => {
+            html += `<div class="exam-card" id="exam${idxExam}" data-exam-index="${idxExam}">`;
+            html += `<div class="exam-title">${exam.title}</div>`;
+
+            exam.parts.forEach((part, pIdx) => {
+                html += `<div class="part"><h3>${part.partName}</h3>`;
+                html += `<div class="audio-block"><span>🎵 Audio:</span><audio controls src="${part.audio}"></audio></div>`;
+
+                part.questions.forEach((q, qIdx) => {
+                    html += `<div class="question-item" id="q_${idxExam}_${pIdx}_${qIdx}">`;
+                    html += `<div class="q-text">${q.q}</div>`;
+                    html += `<div class="options">`;
+                    q.opts.forEach((opt, optIdx) => {
+                        html += `<button class="opt-btn" data-ex="${idxExam}" data-part="${pIdx}" data-q="${qIdx}" data-opt="${optIdx}">${opt}</button>`;
+                    });
+                    html += `</div>`;
+
+                    // explanation box
+                    html += `<div class="explain-box" id="exp_${idxExam}_${pIdx}_${qIdx}">`;
+                    html += `<h4>✅ Đáp án đúng: ${String.fromCharCode(65 + q.correct)} (${q.opts[q.correct]})</h4>`;
+                    html += `<h5>📌 Keyword & paraphrase:</h5><table><tr><th>Key question</th><th>Key audio</th></tr>`;
+                    if (q.explain.keywords) {
+                        q.explain.keywords.forEach(k => html += `<tr><td>${k.q}</td><td>${k.a}</td></tr>`);
+                    }
+                    html += `</table><h5>📝 Evidence:</h5><p>${q.explain.evidence || ''}</p>`;
+                    if (q.explain.distractors && q.explain.distractors.length) {
+                        html += `<h5>⚠️ Distractors:</h5><ul class="distractor-list">`;
+                        q.explain.distractors.forEach(d => html += `<li>${d}</li>`);
+                        html += `</ul>`;
+                    }
+                    html += `<h5>🌎 Dịch:</h5><p>${q.explain.translation || ''}</p>`;
+                    html += `</div></div>`;
+                });
+                html += `</div>`;
+            });
+
+            // transcript
+            html += `<div class="transcript-area" id="transWrap_${idxExam}">`;
+            html += `<button class="transcript-btn" id="transBtn_${idxExam}" data-ex="${idxExam}">📄 Xem Transcript đề ${idxExam + 1}</button>`;
+            html += `<div class="transcript-panel" id="transPanel_${idxExam}">${exam.transcriptFull}</div>`;
+            html += `</div>`;
+
+            html += `<button class="submit-exam-btn" data-submit-ex="${idxExam}">📬 Nộp bài đề ${idxExam + 1}</button>`;
+            html += `</div>`;
+        });
+        wrapper.innerHTML = html;
+
+        // attach events
+        document.querySelectorAll('.opt-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                if (this.classList.contains('locked')) return;
+                const ex = this.dataset.ex;
+                const part = this.dataset.part;
+                const qIdx = this.dataset.q;
+                const optChosen = parseInt(this.dataset.opt);
+                const questionObj = exams[ex].parts[part].questions[qIdx];
+                const correctIdx = questionObj.correct;
+                const parentDiv = this.closest('.question-item');
+                const allOpts = parentDiv.querySelectorAll('.opt-btn');
+                allOpts.forEach(b => b.classList.add('locked'));
+
+                if (optChosen === correctIdx) {
+                    this.classList.add('correct');
+                    playDing();
+                    createConfetti();
+                } else {
+                    this.classList.add('incorrect');
+                    playBuzz();
+                    allOpts.forEach(b => {
+                        if (parseInt(b.dataset.opt) === correctIdx) b.classList.add('correct');
+                    });
+                }
+                const expDiv = parentDiv.querySelector('.explain-box');
+                if (expDiv) expDiv.style.display = 'block';
+
+                // check if all answered
+                const examDiv = document.getElementById(`exam${ex}`);
+                const totalOptBtns = examDiv.querySelectorAll('.opt-btn').length;
+                const lockedBtns = examDiv.querySelectorAll('.opt-btn.locked').length;
+                if (totalOptBtns === lockedBtns) {
+                    const transBtn = document.getElementById(`transBtn_${ex}`);
+                    if (transBtn) transBtn.classList.add('enabled');
+                }
+            });
+        });
+
+        // transcript toggle
+        exams.forEach((_, idx) => {
+            document.getElementById(`transBtn_${idx}`).addEventListener('click', function () {
+                const panel = document.getElementById(`transPanel_${idx}`);
+                panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+            });
+        });
+
+        // submit exam
+        document.querySelectorAll('[data-submit-ex]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const exIdx = this.dataset.submitEx;
+                const examDiv = document.getElementById(`exam${exIdx}`);
+                const totalQs = examDiv.querySelectorAll('.question-item').length;
+                const locked = examDiv.querySelectorAll('.opt-btn.locked').length;
+                const expected = examDiv.querySelectorAll('.opt-btn').length;
+                if (locked < expected) {
+                    alert('Bạn chưa trả lời hết câu hỏi!');
+                    return;
+                }
+
+                let score = 0;
+                const qItems = examDiv.querySelectorAll('.question-item');
+                qItems.forEach((item, idx) => {
+                    const correctAns = exams[exIdx].parts.flatMap(p => p.questions)[idx].correct;
+                    const chosen = item.querySelector('.opt-btn.correct:not(.incorrect)');
+                    if (chosen && parseInt(chosen.dataset.opt) === correctAns) score++;
+                });
+                const total = qItems.length;
+                const percent = (score / total) * 100;
+                let gif, title;
+                if (percent === 100) {
+                    gif = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif";
+                    title = "Xuất sắc!";
+                } else if (percent >= 60) {
+                    gif = "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif";
+                    title = "Tốt!";
+                } else {
+                    gif = "https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif";
+                    title = "Cố gắng hơn!";
+                }
+                document.getElementById('modalTitle').innerText = `Đề ${+exIdx + 1} - ${title}`;
+                document.getElementById('modalScore').innerText = `${score}/${total}`;
+                document.getElementById('modalGif').src = gif;
+                document.getElementById('resultModal').style.display = 'flex';
+            });
+        });
+    }
+    function closeModal() {
+        document.getElementById('resultModal').style.display = 'none';
+    }
+    window.onload = renderAll;
+</script>
+</body>
+</html>
