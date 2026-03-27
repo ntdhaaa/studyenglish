@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIẾT LẠI CÂU VỚI TỪ CHO SẴN - ÔN TẬP NGỮ PHÁP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8854C0;
+            --secondary: #00C9A7;
+            --correct: #00D26A;
+            --wrong: #FF4757;
+            --background: #f0f3f5;
+            --card-bg: #ffffff;
+            --text-main: #2f3542;
+            --text-light: #57606f;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--background);
+            background-image: radial-gradient(#dcdde1 15%, transparent 16%), radial-gradient(#dcdde1 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            color: var(--text-light);
+            font-weight: 600;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+            border: 2px solid #eee;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #f1f2f6;
+            padding-bottom: 10px;
+        }
+
+        .q-tag {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .constraint-word {
+            display: inline-block;
+            background: #ffeaa7;
+            color: #e1701a;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #fdcb6e;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1rem;
+            border: 2px solid #e1e4e8;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 5px 0 #d1d8e0;
+            transition: all 0.1s;
+        }
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 5px 0 #00a187;
+        }
+        .answer-input.error {
+            border-color: var(--wrong);
+            box-shadow: 0 5px 0 #b22234;
+            background-color: #fff0f0;
+            animation: shake 0.3s;
+        }
+        .answer-input.correct {
+            border-color: var(--correct);
+            box-shadow: 0 5px 0 #008f47;
+            background-color: #f0fff0;
+        }
+        .answer-input.wrong {
+            border-color: var(--wrong);
+            box-shadow: 0 5px 0 #b22234;
+            background-color: #fff0f0;
+        }
+
+        .hint-container {
+            margin: 10px 0 15px;
+        }
+        .hint-btn {
+            background: #f0f4fa;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 0 #b1a0d0;
+        }
+        .hint-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .hint-content {
+            display: none;
+            background: #f8f0fc;
+            border-left: 5px solid var(--primary);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #2c3e50;
+            animation: slideDown 0.3s ease;
+            white-space: pre-wrap;
+        }
+
+        .check-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .check-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            box-shadow: 0 5px 0 #5f2a9e;
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: inline-block;
+        }
+        .check-btn:active {
+            box-shadow: 0 2px 0 #5f2a9e;
+            transform: translateY(3px);
+        }
+        .check-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: 0 5px 0 #5f2a9e;
+        }
+        .feedback-message {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 30px;
+            background: #f0f0f0;
+        }
+        .feedback-message.correct-feedback {
+            color: #008f47;
+            background: #e0ffe0;
+        }
+        .feedback-message.wrong-feedback {
+            color: #b22234;
+            background: #ffe0e0;
+        }
+
+        .explanation-box {
+            display: none;
+            margin-top: 20px;
+            background-color: #f8f0fc;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            animation: slideDown 0.5s ease;
+        }
+        .explanation-header {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .explanation-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #4b4b4b;
+            white-space: pre-wrap;
+        }
+
+        .footer-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #5f2a9e;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .submit-btn:active {
+            box-shadow: 0 3px 0 #5f2a9e;
+            transform: translateY(3px);
+        }
+        .score-display {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-5deg); }
+            75% { transform: translateX(5px) rotate(5deg); }
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            animation: popIn 0.5s;
+            border: 5px solid var(--secondary);
+        }
+        .final-score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+        .feedback-text {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+        u {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-thickness: 2px;
+            text-decoration-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="header-container">
+    <h1>✍️ VIẾT LẠI CÂU - TỪ CHO SẴN</h1>
+    <h3>📝 Nhập câu viết lại → Bấm "KIỂM TRA" → Xem giải thích & đáp án đúng (nhiều cách)</h3>
+</div>
+
+<div class="quiz-container" id="quiz-area"></div>
+
+<div class="footer-controls">
+    <div class="score-display">📌 Đã kiểm tra: <span id="progress-text">0</span>/<span id="total-text">0</span></div>
+    <button class="submit-btn" onclick="finishQuiz()">🏆 XEM TỔNG KẾT</button>
+</div>
+
+<div class="modal-overlay" id="result-modal">
+    <div class="modal-content">
+        <h2 style="color: var(--secondary); font-weight: 800;">TỔNG KẾT BÀI LÀM</h2>
+        <div class="final-score" id="final-score-display">0/0</div>
+        <p class="feedback-text" id="feedback-msg"></p>
+        <button class="submit-btn" onclick="location.reload()">LÀM LẠI</button>
+    </div>
+</div>
+
+<script>
+    // ======================= DỮ LIỆU 10 CÂU (mỗi câu có nhiều đáp án đúng) =======================
+    const quizData = [
+        { // 1
+            original: "Although we faced many difficulties, we successfully ran an anti-bullying campaign.",
+            word: "SPITE",
+            hint: "Dùng 'in spite of' + danh từ / cụm danh từ (không + mệnh đề). Nghĩa: mặc dù, bất chấp.",
+            correctAnswers: [
+                "we successfully ran an anti-bullying campaign in spite of facing many difficulties",
+                "in spite of facing many difficulties, we successfully ran an anti-bullying campaign",
+                "we successfully ran an anti-bullying campaign in spite of the many difficulties we faced"
+            ],
+            explanation: "💡 Giải thích: 'in spite of' + V-ing / danh từ. \n📖 Dịch nghĩa: Bất chấp việc phải đối mặt với nhiều khó khăn, chúng tôi đã tổ chức thành công chiến dịch chống bắt nạt."
+        },
+        { // 2
+            original: "As bullying is a pressing issue at school, it needs immediate action.",
+            word: "BECAUSE OF",
+            hint: "'because of' + danh từ/cụm danh từ (không + S+V). Diễn tả nguyên nhân.",
+            correctAnswers: [
+                "bullying needs immediate action because of being a pressing issue at school",
+                "because of being a pressing issue at school, bullying needs immediate action",
+                "bullying needs immediate action because of its pressing nature at school"
+            ],
+            explanation: "📖 Dịch: Bởi vì là một vấn đề cấp bách ở trường học, nạn bắt nạt cần được hành động ngay lập tức.\n✅ Lưu ý: 'because of' + cụm danh từ / V-ing."
+        },
+        { // 3
+            original: "Minh asked Hung to skip class to go to the park but Hung did not agree.",
+            word: "HOWEVER",
+            hint: "'however' = tuy nhiên, nối hai câu riêng biệt, thường có dấu phẩy sau. Có thể đặt giữa câu.",
+            correctAnswers: [
+                "minh asked hung to skip class to go to the park. however, hung did not agree",
+                "minh asked hung to skip class to go to the park. hung, however, did not agree"
+            ],
+            explanation: "✍️ Cấu trúc: Câu 1. However, + câu 2. hoặc S, however, V. \n📖 Dịch: Minh rủ Hùng trốn học đi công viên. Tuy nhiên, Hùng không đồng ý."
+        },
+        { // 4
+            original: "Body shaming not only creates a negative environment for students but also affects their self-confidence.",
+            word: "BESIDES",
+            hint: "'besides' = ngoài ra, bên cạnh đó. Thường bổ sung thông tin, đứng đầu câu hoặc giữa.",
+            correctAnswers: [
+                "body shaming creates a negative environment for students. besides, it affects their self-confidence",
+                "body shaming creates a negative environment for students and, besides, affects their self-confidence"
+            ],
+            explanation: "📖 Dịch: Body shaming tạo ra môi trường tiêu cực cho học sinh. Bên cạnh đó, nó còn ảnh hưởng đến sự tự tin của họ."
+        },
+        { // 5
+            original: "Hien suffered from depression because she was a victim of bullying.",
+            word: "SINCE",
+            hint: "'since' = bởi vì (dùng chỉ nguyên nhân). Có thể đứng đầu câu hoặc giữa.",
+            correctAnswers: [
+                "hien suffered from depression since she was a victim of bullying",
+                "since she was a victim of bullying, hien suffered from depression"
+            ],
+            explanation: "📖 Dịch: Hiền bị trầm cảm vì cô ấy là nạn nhân của nạn bắt nạt.\n✅ 'since' + mệnh đề (S+V)."
+        },
+        { // 6
+            original: "Verbal bullying is a common issue at school but many students are not aware of it.",
+            word: "HOWEVER",
+            hint: "Thể hiện sự tương phản, nối 2 câu riêng biệt.",
+            correctAnswers: [
+                "verbal bullying is a common issue at school. however, many students are not aware of it",
+                "verbal bullying is a common issue at school. many students, however, are not aware of it"
+            ],
+            explanation: "📖 Dịch: Bắt nạt bằng lời nói là vấn đề phổ biến ở trường. Tuy nhiên, nhiều học sinh không nhận thức được điều đó."
+        },
+        { // 7
+            original: "Cyberbullying can negatively impact students' academic performance and it can cause depression as well.",
+            word: "MOREOVER",
+            hint: "'moreover' = hơn nữa, bổ sung thông tin nhấn mạnh.",
+            correctAnswers: [
+                "cyberbullying can negatively impact students' academic performance. moreover, it can cause depression",
+                "cyberbullying can negatively impact students' academic performance and, moreover, cause depression"
+            ],
+            explanation: "📖 Dịch: Bắt nạt qua mạng có thể ảnh hưởng tiêu cực đến kết quả học tập. Hơn nữa, nó còn có thể gây trầm cảm."
+        },
+        { // 8
+            original: "Students often want to be liked by their peers so they may sometimes do things they normally don't.",
+            word: "AS A RESULT",
+            hint: "'as a result' = kết quả là, chỉ hậu quả hoặc kết quả của sự việc trước.",
+            correctAnswers: [
+                "students often want to be liked by their peers. as a result, they may sometimes do things they normally don't",
+                "students often want to be liked by their peers and, as a result, may sometimes do things they normally don't"
+            ],
+            explanation: "📖 Dịch: Học sinh thường muốn được bạn bè yêu quý. Kết quả là, đôi khi chúng làm những điều bình thường không làm."
+        },
+        { // 9
+            original: "Bullying at school can have serious effects on the victims so it's essential to prevent bullying.",
+            word: "THEREFORE",
+            hint: "'therefore' = vì vậy, do đó (kết luận logic).",
+            correctAnswers: [
+                "bullying at school can have serious effects on the victims. therefore, it's essential to prevent bullying",
+                "bullying at school can have serious effects on the victims; therefore, it's essential to prevent bullying"
+            ],
+            explanation: "📖 Dịch: Nạn bắt nạt ở trường có thể gây ảnh hưởng nghiêm trọng đến nạn nhân. Vì vậy, việc ngăn chặn bắt nạt là vô cùng cần thiết."
+        },
+        { // 10
+            original: "While some students stand up to bullying, others remain silent for the fear of the consequences.",
+            word: "BY CONTRAST",
+            hint: "'by contrast' = ngược lại, chỉ sự tương phản rõ rệt.",
+            correctAnswers: [
+                "some students stand up to bullying. by contrast, others remain silent for the fear of the consequences",
+                "some students stand up to bullying. others, by contrast, remain silent for the fear of the consequences"
+            ],
+            explanation: "📖 Dịch: Một số học sinh dũng cảm đứng lên chống lại nạn bắt nạt. Ngược lại, những người khác giữ im lặng vì sợ hậu quả."
+        }
+    ];
+
+    // ========== STATE ==========
+    let answers = new Array(quizData.length).fill('');
+    let checkedCount = 0;
+    let correctCountPerCard = new Array(quizData.length).fill(false);  // true nếu đã check và ĐÚNG
+    const totalQuestions = quizData.length;
+
+    // Hàm chuẩn hóa so sánh: bỏ dấu cách thừa, chữ hoa/thường, dấu câu cuối
+    function normalizeCompare(str) {
+        return str.toLowerCase().trim().replace(/[.!?;]$/, '').replace(/\s+/g, ' ').trim();
+    }
+
+    // Kiểm tra đáp án có nằm trong danh sách đúng hay không (nhiều cách viết)
+    function isAnswerCorrect(userAns, correctList) {
+        const normUser = normalizeCompare(userAns);
+        for (let correct of correctList) {
+            if (normalizeCompare(correct) === normUser) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Hiệu ứng âm thanh (ngắn gọn)
+    function playSound(type) {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        if (type === 'correct') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.5);
+        } else {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+    }
+
+    // Xây dựng giao diện
+    function initQuiz() {
+        const quizArea = document.getElementById('quiz-area');
+        document.getElementById('total-text').innerText = totalQuestions;
+
+        quizData.forEach((item, idx) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${idx}`;
+
+            const correctAnswersList = item.correctAnswers.map(ans => `“${ans}”`).join(' ; ');
+            const wordUpper = item.word.toUpperCase();
+
+            card.innerHTML = `
+                <div class="question-header">
+                    <span class="q-tag">CÂU ${idx+1} - TỪ: ${wordUpper}</span>
+                </div>
+                <div class="question-text">📌 ${idx+1}. ${item.original}</div>
+                <div class="constraint-word">✏️ Viết lại câu sử dụng từ: <strong style="color:#d63031;">${item.word}</strong> (không thay đổi dạng từ)</div>
+                <input type="text" class="answer-input" id="input-${idx}" placeholder="Nhập câu viết lại hoàn chỉnh..." value="${answers[idx]}" oninput="updateAnswer(${idx}, this.value)">
+                <div class="hint-container">
+                    <div class="hint-btn" onclick="toggleHint(${idx})">
+                        <span>💡</span> Gợi ý & nghĩa từ
+                    </div>
+                    <div class="hint-content" id="hint-${idx}">📖 ${item.hint}<br><br>✍️ Cấu trúc gợi ý: Hãy viết lại thành câu mới, bắt đầu hoặc chèn từ ${item.word} đúng cách. Có thể tách thành 2 câu nếu cần.</div>
+                </div>
+                <div class="check-wrapper">
+                    <button class="check-btn" id="check-${idx}" onclick="checkAnswer(${idx})">🔍 KIỂM TRA</button>
+                    <span id="feedback-${idx}" class="feedback-message"></span>
+                </div>
+                <div class="explanation-box" id="explain-${idx}">
+                    <div class="explanation-header">
+                        <span style="font-size: 1.5rem;">📘</span> GIẢI THÍCH & ĐÁP ÁN ĐÚNG:
+                    </div>
+                    <div class="explanation-content">
+                        <strong>✅ Các cách viết đúng:</strong><br>${correctAnswersList}<br><br>
+                        <strong>🔎 ${item.explanation}</strong>
+                    </div>
+                </div>
+            `;
+            quizArea.appendChild(card);
+        });
+    }
+
+    window.updateAnswer = function(index, value) {
+        answers[index] = value;
+    };
+
+    window.toggleHint = function(index) {
+        const hintDiv = document.getElementById(`hint-${index}`);
+        hintDiv.style.display = hintDiv.style.display === 'block' ? 'none' : 'block';
+    };
+
+    window.checkAnswer = function(index) {
+        const input = document.getElementById(`input-${index}`);
+        const checkBtn = document.getElementById(`check-${index}`);
+        const explanationDiv = document.getElementById(`explain-${index}`);
+        const feedbackSpan = document.getElementById(`feedback-${index}`);
+        const userAnswer = answers[index]?.trim() || '';
+
+        // Kiểm tra nếu chưa nhập
+        if (!userAnswer) {
+            input.classList.add('error');
+            input.focus();
+            setTimeout(() => input.classList.remove('error'), 1000);
+            feedbackSpan.innerHTML = '⚠️ Vui lòng nhập câu trả lời!';
+            feedbackSpan.className = 'feedback-message wrong-feedback';
+            return;
+        }
+
+        // Lấy danh sách đáp án đúng từ data
+        const correctList = quizData[index].correctAnswers;
+
+        // Kiểm tra
+        const isCorrect = isAnswerCorrect(userAnswer, correctList);
+        
+        // Xóa class lỗi
+        input.classList.remove('error');
+
+        if (isCorrect) {
+            input.classList.add('correct');
+            input.classList.remove('wrong');
+            feedbackSpan.innerHTML = '✅ Đúng! Câu viết lại chính xác.';
+            feedbackSpan.className = 'feedback-message correct-feedback';
+            playSound('correct');
+            correctCountPerCard[index] = true;
+        } else {
+            input.classList.add('wrong');
+            input.classList.remove('correct');
+            // Hiển thị một vài đáp án mẫu để học sinh tham khảo
+            const sampleCorrect = correctList.slice(0, 2).map(ans => `“${ans}”`).join(' hoặc ');
+            feedbackSpan.innerHTML = `❌ Sai! Hãy xem phần giải thích để biết đáp án đúng (ví dụ: ${sampleCorrect})`;
+            feedbackSpan.className = 'feedback-message wrong-feedback';
+            playSound('wrong');
+            correctCountPerCard[index] = false;
+        }
+
+        // Hiển thị phần giải thích luôn
+        explanationDiv.style.display = 'block';
+
+        // Nếu câu này chưa được tính vào checkedCount thì tăng
+        if (!input.dataset.checked) {
+            input.dataset.checked = 'true';
+            checkedCount++;
+            document.getElementById('progress-text').innerText = checkedCount;
+        }
+
+        // Vô hiệu hóa nút và input để tránh sửa sau khi kiểm tra (giữ trải nghiệm như file gốc)
+        input.disabled = true;
+        checkBtn.disabled = true;
+    };
+
+    // Tổng kết: đếm số câu đã check và đúng
+    window.finishQuiz = function() {
+        if (checkedCount < totalQuestions) {
+            if (!confirm(`Bạn mới kiểm tra ${checkedCount}/${totalQuestions} câu. Bạn có chắc muốn xem tổng kết không?`)) return;
+        }
+
+        let correctTotal = 0;
+        for (let i = 0; i < totalQuestions; i++) {
+            const input = document.getElementById(`input-${i}`);
+            // Nếu input bị disabled và có class correct => câu đúng
+            if (input && input.disabled && input.classList.contains('correct')) {
+                correctTotal++;
+            }
+            // Trường hợp học sinh chưa check nhưng đã làm đúng? Ở đây chỉ tính nếu đã bấm kiểm tra và đúng.
+            // Để an toàn, dùng correctCountPerCard (sau khi check)
+            // nhưng nếu chưa check mà có class correct thì cũng không có (chỉ khi check mới gán)
+            if (!input?.disabled && correctCountPerCard[i]) correctTotal = correctTotal; // không tính chưa check
+            if (input?.disabled && input.classList.contains('correct')) correctTotal = correctTotal;
+        }
+        // Đảm bảo dùng mảng ghi nhận chính xác: correctCountPerCard chỉ true khi check đúng
+        let accurateCorrect = 0;
+        for (let i = 0; i < totalQuestions; i++) {
+            const inp = document.getElementById(`input-${i}`);
+            if (inp && inp.disabled && inp.classList.contains('correct')) accurateCorrect++;
+        }
+
+        const finalCorrect = accurateCorrect;
+        const modal = document.getElementById('result-modal');
+        document.getElementById('final-score-display').innerText = `${finalCorrect}/${totalQuestions}`;
+        const percentage = (finalCorrect / totalQuestions) * 100;
+        const feedbackEl = document.getElementById('feedback-msg');
+        if (percentage === 100) {
+            feedbackEl.innerText = "🎉 Xuất sắc! Bạn đã nắm vững cấu trúc viết lại câu! 🌟";
+            triggerConfetti();
+        } else if (percentage >= 80) {
+            feedbackEl.innerText = "👍 Rất tốt! Hãy xem lại các câu sai để hoàn hảo hơn nhé! 📚";
+        } else if (percentage >= 50) {
+            feedbackEl.innerText = "💪 Khá ổn, cố gắng ôn lại phần giải thích chi tiết để cải thiện!";
+        } else {
+            feedbackEl.innerText = "✨ Đừng nản, hãy xem kỹ giải thích và làm lại để tiến bộ! 🚀";
+        }
+        modal.style.display = 'flex';
+    };
+
+    // Confetti vui nhộn
+    let currentAnimationId = null;
+    function triggerConfetti() {
+        if (currentAnimationId) cancelAnimationFrame(currentAnimationId);
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const particles = [];
+        const colors = ['#8854C0', '#00C9A7', '#FF4757', '#FFD700', '#00D26A'];
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                vx: Math.random() * 4 - 2,
+                vy: Math.random() * 5 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                size: Math.random() * 8 + 4
+            });
+        }
+        let startTime = performance.now();
+        function animate(now) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let active = false;
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.y < canvas.height) active = true;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+            });
+            if (active && (now - startTime) < 2000) {
+                currentAnimationId = requestAnimationFrame(animate);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                currentAnimationId = null;
+            }
+        }
+        currentAnimationId = requestAnimationFrame(animate);
+    }
+
+    window.onload = initQuiz;
+</script>
+</body>
+</html>
