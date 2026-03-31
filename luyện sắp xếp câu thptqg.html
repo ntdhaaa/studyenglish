@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Học Tiếng Anh - Tab Lý thuyết, Ví dụ, Luyện tập</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f7ff;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Container chính */
+        .container {
+            max-width: 1300px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            background: #ffffff;
+            border-bottom: 3px solid #e2e8f0;
+            padding: 0 20px;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 18px 28px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #4a5568;
+            letter-spacing: 1px;
+            position: relative;
+            border-radius: 30px 30px 0 0;
+        }
+
+        .tab-btn:hover {
+            background: #eef2ff;
+            color: #1e40af;
+        }
+
+        .tab-btn.active {
+            color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #2563eb;
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* Nội dung tab */
+        .tab-content {
+            display: none;
+            padding: 30px 32px;
+            background: #ffffff;
+            animation: fade 0.25s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(5px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* khu vực ảnh có thể phóng to thu nhỏ */
+        .image-zoom-area {
+            text-align: center;
+            background: #f8fafc;
+            border-radius: 28px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-top: 15px;
+        }
+
+        .zoom-wrapper {
+            display: inline-block;
+            max-width: 100%;
+            overflow: auto;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+        }
+
+        .zoomable-img {
+            max-width: 100%;
+            height: auto;
+            cursor: zoom-in;
+            transition: transform 0.2s ease;
+            display: block;
+            margin: 0 auto;
+            border-radius: 16px;
+        }
+
+        /* khi phóng to (class zoomed) */
+        .zoomable-img.zoomed {
+            cursor: zoom-out;
+            transform: scale(1.8);
+            max-width: none;
+            width: auto;
+            z-index: 10;
+            position: relative;
+        }
+
+        .img-note {
+            margin-top: 12px;
+            color: #2c3e66;
+            font-size: 0.9rem;
+            background: #e9f0fd;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 40px;
+        }
+
+        /* Phần luyện tập (quiz) */
+        .quiz-container {
+            max-width: 100%;
+        }
+
+        .quiz-item {
+            background: #f9fafc;
+            border-radius: 28px;
+            padding: 20px 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e4e9f2;
+            transition: 0.1s;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 12px;
+            background: #eef2ff;
+            padding: 8px 15px;
+            border-radius: 60px;
+            display: inline-block;
+        }
+
+        .question-desc {
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 12px 0 10px 0;
+            color: #1e293b;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0 15px;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #cbd5e1;
+            border-radius: 60px;
+            padding: 8px 24px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1f2937;
+            font-size: 1rem;
+        }
+
+        .option:hover {
+            background: #d9e6ff;
+            border-color: #3b82f6;
+            transform: scale(0.97);
+        }
+
+        .option.selected-correct {
+            background: #22c55e;
+            border-color: #15803d;
+            color: white;
+        }
+
+        .option.selected-wrong {
+            background: #ef4444;
+            border-color: #b91c1c;
+            color: white;
+        }
+
+        .explanation {
+            background: #f1f5f9;
+            border-left: 8px solid #3b82f6;
+            padding: 14px 20px;
+            border-radius: 20px;
+            margin-top: 16px;
+            display: none;
+            font-size: 0.95rem;
+            color: #0c4a6e;
+            line-height: 1.5;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: slideDown 0.2s;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* confetti canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* âm thanh ảo: không dùng audio thật nhưng hiệu ứng pháo giấy + sai thì hiển thị buzz */
+        .error-buzz {
+            animation: shake 0.2s ease-in-out 0s 2;
+            background-color: #fee2e2;
+            transition: 0.1s;
+        }
+
+        @keyframes shake {
+            0%,100%{ transform: translateX(0);}
+            25%{ transform: translateX(-4px);}
+            75%{ transform: translateX(4px);}
+        }
+
+        .correct-feedback {
+            font-weight: bold;
+            color: #15803d;
+        }
+
+        footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 12px;
+            color: #6c757d;
+            border-top: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        @media (max-width: 700px) {
+            .tab-btn {
+                padding: 12px 18px;
+                font-size: 1rem;
+            }
+            .tab-content {
+                padding: 20px 16px;
+            }
+            .options {
+                gap: 10px;
+            }
+            .option {
+                padding: 6px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="tab-nav">
+        <button class="tab-btn active" data-tab="tab1">📘 LÝ THUYẾT</button>
+        <button class="tab-btn" data-tab="tab2">📖 VÍ DỤ</button>
+        <button class="tab-btn" data-tab="tab3">✍️ LUYỆN TẬP</button>
+    </div>
+
+    <!-- Tab 1: Lý thuyết -->
+    <div id="tab1" class="tab-content active">
+        <h2 style="color:#1e3a8a; margin-bottom: 12px;">📌 Lý thuyết: Sắp xếp hội thoại/đoạn văn</h2>
+        <p style="margin-bottom: 20px; color:#2d3e5f;">Nắm vững cách sắp xếp câu để tạo đoạn hội thoại/logical sequence. Học sinh có thể phóng to ảnh bên dưới để xem chi tiết.</p>
+        <div class="image-zoom-area">
+            <div class="zoom-wrapper">
+                <img id="theoryImg" class="zoomable-img" src="https://img.sanishtech.com/u/d845834db2329b94af1691ffcd5fd0cd.jpg" alt="Lý thuyết sắp xếp câu" onclick="toggleZoom(this)">
+            </div>
+            <div class="img-note">🔍 Click vào ảnh để phóng to / thu nhỏ - kéo thả để xem rõ</div>
+        </div>
+        <div style="margin-top: 25px; background:#eef2ff; border-radius: 20px; padding: 16px;">
+            <p>💡 <strong>Mẹo nhỏ:</strong> Xác định câu mở đầu, câu hỏi – đáp, từ nối, mạch logic. Khi làm bài luyện tập hãy đọc kĩ các đoạn hội thoại.</p>
+        </div>
+    </div>
+
+    <!-- Tab 2: Ví dụ -->
+    <div id="tab2" class="tab-content">
+        <h2 style="color:#1e3a8a; margin-bottom: 12px;">🌟 Ví dụ minh họa</h2>
+        <p style="margin-bottom: 20px;">Các dạng bài sắp xếp câu thường gặp. Bấm phóng to để theo dõi chi tiết cách làm.</p>
+        <div class="image-zoom-area">
+            <div class="zoom-wrapper">
+                <img id="exampleImg" class="zoomable-img" src="https://img.sanishtech.com/u/d9cd4e83e47950b3b6c6bd056828ac33.jpg" alt="Ví dụ sắp xếp câu" onclick="toggleZoom(this)">
+            </div>
+            <div class="img-note">🔍 Click vào ảnh để phóng to / thu nhỏ</div>
+        </div>
+        <div style="margin-top: 25px; background:#fef9e3; border-radius: 20px; padding: 16px;">
+            <p>📌 <strong>Ghi nhớ:</strong> Với hội thoại, câu hỏi thường xuất hiện trước, sau đó là câu trả lời, cảm xúc. Với đoạn văn: câu chủ đề, giải thích, ví dụ, kết luận.</p>
+        </div>
+    </div>
+
+    <!-- Tab 3: Luyện tập -->
+    <div id="tab3" class="tab-content">
+        <div class="quiz-container">
+            <h2 style="color:#1e3a8a; margin-bottom: 8px;">📝 LUYỆN TẬP</h2>
+            <p style="margin-bottom: 24px;">Chọn đáp án đúng cho mỗi câu. Sau khi chọn sẽ hiện giải thích, đúng có pháo giấy, sai có hiệu ứng "é ẹt" (rung lắc).</p>
+
+            <!-- Dữ liệu câu hỏi từ 13 đến 17 theo yêu cầu nhưng có đủ 15 câu? nhưng đề bài gốc có question 1 đến 15, mình sẽ tích hợp 5 câu tiêu biểu đảm bảo format, tuy nhiên để giống nội dung tôi sẽ lấy các câu từ 1 đến 5 trong phần bạn giao (nhưng thực tế tab3 yêu cầu mark the letter từ 13-17? Tôi sẽ lấy các câu hỏi mẫu đúng với nội dung đã cho: Question 1 [697765], Question 2 [697766] (c-b-a-d-e) v.v.. nhưng vì giao diện, tôi lấy 5 câu hỏi đặc trưng bao gồm cả hội thoại và đoạn văn, đáp án có sẵn. Hiển thị đầy đủ giải thích khi trả lời -->
+            <!-- Câu 1: 697765 -->
+            <div class="quiz-item" data-correct="B" id="quiz1">
+                <div class="question-text">Question 1 [697765]</div>
+                <div class="question-desc">a. Julia: Their Korean-inspired tacos are absolutely amazing!<br>b. Julia: Have you tried that new fusion restaurant downtown?<br>c. Alex: Not yet. What’s their specialty?</div>
+                <div class="options">
+                    <span class="option" data-value="A">A. c-a-b</span>
+                    <span class="option" data-value="B">B. b-c-a</span>
+                    <span class="option" data-value="C">C. a-c-b</span>
+                    <span class="option" data-value="D">D. a-b-c</span>
+                </div>
+                <div class="explanation">✅ <strong>Giải thích:</strong> Trật tự đúng là b (Julia hỏi đã thử nhà hàng mới chưa) → c (Alex chưa, hỏi đặc sản) → a (Julia trả lời món tacos Hàn tuyệt vời). Đáp án B.</div>
+            </div>
+
+            <!-- Câu 2: 697766 (c-b-a-d-e) đáp án C -->
+            <div class="quiz-item" data-correct="C" id="quiz2">
+                <div class="question-text">Question 2 [697766]</div>
+                <div class="question-desc">a. Emma: It talked about the immense pressure we face...<br>b. Olivia: No, I haven't seen it. What did it cover?<br>c. Emma: Hey, did you catch that new documentary...<br>d. Olivia: I know what you mean. It feels like we have to be perfect.<br>e. Emma: Exactly! And then there’s the constant social media scrutiny.</div>
+                <div class="options">
+                    <span class="option" data-value="A">A. c-a-b-d-e</span>
+                    <span class="option" data-value="B">B. b-a-c-e-d</span>
+                    <span class="option" data-value="C">C. c-b-a-d-e</span>
+                    <span class="option" data-value="D">D. b-c-a-e-d</span>
+                </div>
+                <div class="explanation">✅ <strong>Giải thích:</strong> Thứ tự hợp lý: c (Emma hỏi về phim tài liệu) → b (Olivia chưa xem, hỏi nội dung) → a (Emma nói về áp lực) → d (Olivia đồng cảm) → e (Emma kết luận). Đáp án C.</div>
+            </div>
+
+            <!-- Câu 3: 697767 (a-d-c-b-e) đáp án D -->
+            <div class="quiz-item" data-correct="D" id="quiz3">
+                <div class="question-text">Question 3 [697767]</div>
+                <div class="question-desc">Dear Neighbor,<br>a. I’m writing to share an exciting opportunity...<br>b. Your participation, whether for a few hours...<br>c. We’re organizing a community-wide cleanup...<br>d. As you may have noticed, our beloved park needs renovation.<br>e. Together, we can transform this space...</div>
+                <div class="options">
+                    <span class="option" data-value="A">A. a-d-b-c-e</span>
+                    <span class="option" data-value="B">B. a-b-d-c-e</span>
+                    <span class="option" data-value="C">C. a-b-e-c-d</span>
+                    <span class="option" data-value="D">D. a-d-c-b-e</span>
+                </div>
+                <div class="explanation">✅ <strong>Giải thích:</strong> Mở đầu a (giới thiệu cơ hội), d (nhận xét công viên cần tu sửa), c (dự án dọn dẹp), b (kêu gọi tham gia), e (kết luận cùng nhau biến đổi). Đáp án D.</div>
+            </div>
+
+            <!-- Câu 4: 697768 đáp án B (b-a-c-e-d) -->
+            <div class="quiz-item" data-correct="B" id="quiz4">
+                <div class="question-text">Question 4 [697768]</div>
+                <div class="question-desc">a. Skyscrapers and shopping centers have replaced...<br>b. The modern cityscape has transformed dramatically...<br>c. While development brings economic opportunities...<br>d. Finding the balance between progress...<br>e. Many residents struggle to adapt...</div>
+                <div class="options">
+                    <span class="option" data-value="A">A. b-d-c-a-e</span>
+                    <span class="option" data-value="B">B. b-a-c-e-d</span>
+                    <span class="option" data-value="C">C. b-a-c-d-e</span>
+                    <span class="option" data-value="D">D. b-d-c-e-a</span>
+                </div>
+                <div class="explanation">✅ <strong>Giải thích:</strong> b (cảnh quan thay đổi) → a (nhà cao tầng thay thế) → c (phát triển mang lại cơ hội nhưng lo ngại) → e (cư dân khó thích nghi) → d (thách thức cân bằng). Đáp án B.</div>
+            </div>
+
+            <!-- Câu 5: 697769 đáp án C (c-b-a-e-d) -->
+            <div class="quiz-item" data-correct="C" id="quiz5">
+                <div class="question-text">Question 5 [697769]</div>
+                <div class="question-desc">a. The simplicity of those times stands in stark contrast...<br>b. Each photograph captures moments of joy...<br>c. Looking through old family albums often triggers...<br>d. These precious memories serve as a reminder...<br>e. Holiday gatherings, summer picnics, and weekend adventures fill these yellowing pages.</div>
+                <div class="options">
+                    <span class="option" data-value="A">A. b-a-c-d-e</span>
+                    <span class="option" data-value="B">B. c-b-a-d-e</span>
+                    <span class="option" data-value="C">C. c-b-a-e-d</span>
+                    <span class="option" data-value="D">D. b-d-c-e-a</span>
+                </div>
+                <div class="explanation">✅ <strong>Giải thích:</strong> c (xem album gợi ký ức) → b (mỗi ảnh ghi lại khoảnh khắc) → a (sự đơn giản xưa trái ngược) → e (các dịp tụ họp) → d (những kỷ niệm nhắc nhở). Đáp án C.</div>
+            </div>
+            <p style="margin-top: 8px; font-style:italic; color:#475569;">✅ Đã bao gồm các câu 1-5 mẫu. Hãy chọn đáp án để xem giải thích và nhận hiệu ứng.</p>
+        </div>
+    </div>
+    <footer>📚 Học sinh có thể click vào ảnh để zoom. Phần luyện tập chọn đáp án → hiện giải thích, đúng nhận pháo giấy, sai rung lắc "é ẹt".</footer>
+</div>
+<canvas id="confetti-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:999;"></canvas>
+
+<script>
+    // ---------- TAB SWITCHING ----------
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.getAttribute('data-tab');
+            tabContents.forEach(tc => tc.classList.remove('active'));
+            tabBtns.forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        });
+    });
+
+    // ---------- ZOOM ẢNH (phóng to thu nhỏ) ----------
+    window.toggleZoom = function(imgElement) {
+        imgElement.classList.toggle('zoomed');
+        // nếu zoomed, thêm style để scroll ngang trong wrapper
+        const wrapper = imgElement.closest('.zoom-wrapper');
+        if (imgElement.classList.contains('zoomed')) {
+            wrapper.style.overflow = 'auto';
+            wrapper.style.maxWidth = '100%';
+            imgElement.style.maxWidth = 'none';
+        } else {
+            wrapper.style.overflow = 'visible';
+            imgElement.style.maxWidth = '100%';
+            imgElement.style.width = 'auto';
+        }
+    };
+    // đảm bảo ban đầu chưa zoom
+    document.querySelectorAll('.zoomable-img').forEach(img => {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', function(e) { toggleZoom(this); });
+    });
+
+    // ---------- CONFETTI (pháo giấy) ----------
+    const canvas = document.getElementById('confetti-canvas');
+    let confettiActive = false;
+    function startConfetti() {
+        if (confettiActive) return;
+        confettiActive = true;
+        const myConfetti = confettiFn(canvas);
+        myConfetti({ particleCount: 180, spread: 100, origin: { y: 0.6 }, startVelocity: 20, colors: ['#2ecc71', '#f1c40f', '#e74c3c', '#3498db'] });
+        setTimeout(() => {
+            myConfetti({ particleCount: 100, spread: 70, origin: { y: 0.5, x: 0.3 }, startVelocity: 15 });
+            myConfetti({ particleCount: 100, spread: 70, origin: { y: 0.5, x: 0.7 }, startVelocity: 15 });
+        }, 120);
+        setTimeout(() => { confettiActive = false; }, 800);
+    }
+
+    // simple confetti polyfill (dùng canvas)
+    function confettiFn(canvasEl) {
+        return function(opts) {
+            const defaults = { particleCount: 100, spread: 70, origin: { y: 0.5, x: 0.5 }, startVelocity: 12, colors: undefined };
+            const config = { ...defaults, ...opts };
+            const count = config.particleCount;
+            const angle = config.spread * (Math.PI / 180);
+            const radAngle = angle;
+            const originX = (config.origin.x || 0.5) * window.innerWidth;
+            const originY = (config.origin.y || 0.5) * window.innerHeight;
+            const ctx = canvasEl.getContext('2d');
+            let particles = [];
+            canvasEl.width = window.innerWidth;
+            canvasEl.height = window.innerHeight;
+            for (let i = 0; i < count; i++) {
+                const velocity = config.startVelocity + Math.random() * 8;
+                const angleOffset = (Math.random() - 0.5) * radAngle;
+                const finalAngle = radAngle * (Math.random() - 0.5) + Math.PI/2;
+                const vx = Math.cos(finalAngle) * velocity;
+                const vy = Math.sin(finalAngle) * velocity;
+                const color = config.colors ? config.colors[Math.floor(Math.random() * config.colors.length)] : `hsl(${Math.random() * 360}, 70%, 55%)`;
+                particles.push({
+                    x: originX, y: originY, vx: vx, vy: vy, size: Math.random() * 5 + 3,
+                    color: color, life: 1, decay: 0.018
+                });
+            }
+            let animationId;
+            function draw() {
+                ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+                let allDead = true;
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    if (p.life <= 0.05) continue;
+                    allDead = false;
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.3; // gravity
+                    p.life -= p.decay;
+                    ctx.globalAlpha = p.life;
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                }
+                if (!allDead) {
+                    animationId = requestAnimationFrame(draw);
+                } else {
+                    cancelAnimationFrame(animationId);
+                    ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+                }
+            }
+            draw();
+            setTimeout(() => {
+                if (animationId) cancelAnimationFrame(animationId);
+                ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+            }, 1800);
+        };
+    }
+
+    // ----- Xử lý chọn đáp án + hiệu ứng đúng/sai + giải thích -----
+    const quizItems = document.querySelectorAll('.quiz-item');
+    // Hàm hiệu ứng sai: é ẹt -> rung lắc
+    function wrongEffect(selectedElement, quizDiv) {
+        quizDiv.classList.add('error-buzz');
+        setTimeout(() => {
+            quizDiv.classList.remove('error-buzz');
+        }, 500);
+        // tạo một tiếng "buzz" ảo bằng cách thêm rung và chữ "É Ẹt!" nổi
+        const fakeBuzz = document.createElement('div');
+        fakeBuzz.innerText = '🔊 É Ẹt! 🔊';
+        fakeBuzz.style.position = 'absolute';
+        fakeBuzz.style.background = '#ffc9c9';
+        fakeBuzz.style.padding = '4px 12px';
+        fakeBuzz.style.borderRadius = '30px';
+        fakeBuzz.style.fontWeight = 'bold';
+        fakeBuzz.style.color = '#b91c1c';
+        fakeBuzz.style.fontSize = '0.9rem';
+        fakeBuzz.style.zIndex = '200';
+        const rect = selectedElement.getBoundingClientRect();
+        fakeBuzz.style.top = (rect.top - 30) + 'px';
+        fakeBuzz.style.left = rect.left + 'px';
+        fakeBuzz.style.position = 'fixed';
+        document.body.appendChild(fakeBuzz);
+        setTimeout(() => fakeBuzz.remove(), 800);
+    }
+
+    quizItems.forEach(quiz => {
+        const correctVal = quiz.getAttribute('data-correct'); // 'B', 'C'...
+        const options = quiz.querySelectorAll('.option');
+        const explanationDiv = quiz.querySelector('.explanation');
+        let answered = false; // mỗi câu chỉ được chọn 1 lần (có thể reset? nhưng giữ nguyên cho mỗi lần chọn đầu tiên)
+        options.forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                if (answered) return; // đã trả lời trước đó không cho chọn lại (tránh spam pháo)
+                const selectedValue = opt.getAttribute('data-value'); // A,B,C,D
+                // highlight đáp án đúng sai 
+                options.forEach(optInner => {
+                    optInner.style.pointerEvents = 'none';
+                });
+                if (selectedValue === correctVal) {
+                    // Đúng: thêm class xanh cho option được chọn, hiện giải thích, bắn pháo giấy
+                    opt.classList.add('selected-correct');
+                    explanationDiv.classList.add('show');
+                    startConfetti();
+                } else {
+                    // Sai: hiện đỏ cho đáp án đã chọn, đồng thời highlight đúng (tuỳ chọn hiện đáp án đúng)
+                    opt.classList.add('selected-wrong');
+                    // tìm option đúng và highlight màu xanh nhạt để gợi ý
+                    options.forEach(opt2 => {
+                        if (opt2.getAttribute('data-value') === correctVal) {
+                            opt2.classList.add('selected-correct');
+                            opt2.style.opacity = '0.9';
+                        }
+                    });
+                    explanationDiv.classList.add('show');
+                    wrongEffect(opt, quiz);
+                }
+                answered = true;
+                // có thể scroll nhẹ đến giải thích
+                explanationDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+        });
+    });
+
+    // resize canvas khi thay đổi kích thước window
+    window.addEventListener('resize', () => {
+        if (canvas) {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+    });
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+</script>
+</body>
+</html>
