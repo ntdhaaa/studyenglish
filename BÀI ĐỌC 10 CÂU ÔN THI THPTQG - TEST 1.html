@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BÀI ĐỌC 10 CÂU ÔN THI THPTQG - TEST 1</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1e2a3e;
+            line-height: 1.55;
+            padding: 24px 20px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .test-header {
+            background: linear-gradient(135deg, #0b2b40 0%, #1a4a5f 100%);
+            border-radius: 28px;
+            padding: 18px 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        .title-box h1 {
+            color: white;
+            font-size: 1.7rem;
+            letter-spacing: -0.2px;
+            font-weight: 700;
+        }
+        .title-box p {
+            color: #d4eaf5;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        .timer-card {
+            background: #f9c74f;
+            border-radius: 60px;
+            padding: 10px 24px;
+            text-align: center;
+            box-shadow: 0 6px 0 #b4621a;
+        }
+        .timer-label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #3d2b1a;
+        }
+        .timer-digits {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: monospace;
+            line-height: 1;
+            color: #1e2a3e;
+        }
+        .reset-exam-btn {
+            background-color: #ffb347;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+            color: #2c2c2c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .reset-exam-btn:hover {
+            background-color: #ff9f1c;
+            transform: scale(0.97);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .passage-card {
+            background: white;
+            border-radius: 28px;
+            padding: 28px 30px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-left: 7px solid #1f7a5a;
+            padding-left: 18px;
+            margin-bottom: 20px;
+            color: #0f2c3b;
+        }
+        .passage-text {
+            font-size: 1rem;
+            text-align: justify;
+            line-height: 1.65;
+        }
+        .passage-text p {
+            margin-bottom: 1.2rem;
+        }
+        .bold-underline {
+            font-weight: 700;
+            text-decoration: underline;
+            background-color: #fff3bf;
+            padding: 0 2px;
+        }
+        .glossary {
+            margin-top: 28px;
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 18px 20px;
+            border: 1px solid #e2edf2;
+        }
+        .glossary h4 {
+            font-size: 1rem;
+            color: #1f6e8c;
+            margin-bottom: 12px;
+        }
+        .glossary-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            font-size: 0.85rem;
+        }
+        .glossary-item {
+            background: white;
+            padding: 4px 12px;
+            border-radius: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .questions-area {
+            background: white;
+            border-radius: 28px;
+            padding: 28px 30px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+        }
+        .question-item {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e4eaef;
+        }
+        .q-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .q-num {
+            background: #2c6e5c;
+            color: white;
+            font-weight: 800;
+            width: 34px;
+            height: 34px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .q-text {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #0a2f44;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-left: 46px;
+            margin-bottom: 12px;
+        }
+        .opt {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 10px 16px;
+            border: 2px solid #e0e7ed;
+            border-radius: 40px;
+            background: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .opt:hover:not(.disabled-opt) {
+            background-color: #f1f9fe;
+            border-color: #4791af;
+        }
+        .opt.disabled-opt {
+            cursor: default;
+            opacity: 0.95;
+        }
+        .opt.correct-answer {
+            background-color: #d1fae5;
+            border-color: #10b981;
+        }
+        .opt.wrong-answer {
+            background-color: #ffe4e2;
+            border-color: #e11d48;
+        }
+        .opt-letter {
+            font-weight: 800;
+            background: #eef2f8;
+            width: 28px;
+            height: 28px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .explanation-area {
+            margin-left: 46px;
+            margin-top: 12px;
+            display: none;
+            background: #f9f9fc;
+            border-radius: 20px;
+            padding: 14px 20px;
+            border-left: 5px solid #2b7a62;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+        .explanation-area.show {
+            display: block;
+        }
+        .ref-buttons {
+            display: flex;
+            gap: 12px;
+            margin-left: 46px;
+            margin-top: 8px;
+        }
+        .ref-btn {
+            background: none;
+            border: none;
+            font-size: 0.75rem;
+            color: #2c6e5c;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 4px 12px;
+            border-radius: 30px;
+            background: #eef2fa;
+        }
+        .exam-footer {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .submit-final {
+            background: #1e6f5c;
+            border: none;
+            padding: 14px 38px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .submit-final:hover {
+            background: #0f5a49;
+            transform: translateY(-2px);
+        }
+        .results-panel {
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        .score-badge {
+            font-size: 3rem;
+            font-weight: 800;
+            background: #f2e8cf;
+            display: inline-block;
+            padding: 10px 35px;
+            border-radius: 80px;
+        }
+        .highlight-passage {
+            background-color: #fde68a;
+            border-radius: 8px;
+            padding: 0 2px;
+        }
+        @media (max-width: 700px) {
+            .options, .explanation-area, .ref-buttons { margin-left: 0; }
+            .test-header { flex-direction: column; align-items: stretch; }
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.75rem;
+            color: #5b6f82;
+        }
+    </style>
+</head>
+<body>
+<div class="test-header">
+    <div class="title-box">
+        <h1>📖 BÀI ĐỌC 10 CÂU ÔN THI THPTQG - TEST 1</h1>
+        <p>Greenhushing & corporate sustainability • Đọc hiểu – 20 phút</p>
+    </div>
+    <div class="timer-card">
+        <div class="timer-label">⏱️ THỜI GIAN CÒN LẠI</div>
+        <div class="timer-digits" id="timerDisplay">20:00</div>
+    </div>
+    <button class="reset-exam-btn" id="resetFullExamBtn">⟳ LÀM LẠI BÀI</button>
+</div>
+
+<div class="container">
+    <div class="passage-card">
+        <div class="section-title">📌 READING PASSAGE</div>
+        <div class="passage-text" id="passageRoot">
+            <p>A conspicuous shift is underway in corporate sustainability: not so much in deeds as in declarations. This decade’s surveys suggest that while 87% of firms sustain or expand ESG spending, nearly a third speak less about it; likewise, the “Financial Times” notes 71% of America’s fifty largest companies keep climate goals yet scrub “ESG” from public pages, Alphabet included. [I] That ambivalence is often glossed as this quiet confidence – a poise born of action without anthem – though detractors call it opacity masquerading as prudence.</p>
+            <p>So what is greenhushing? It is the deliberate soft-pedalling – or outright avoidance – of outward claims about sustainability work. Unlike greenwashing, which over-claims impact, greenhushing understates it even when progress is real. [II] On the surface, such restraint looks like a detox from performative messaging. In practice, it signals a sector wrestling with authenticity under scrutiny: companies fear mischaracterising complex, provisional data while stakeholders, increasingly exacting, expect plain, durable truth over sloganised triumphalism.</p>
+            <p>Why the surge? In some markets, ESG has been <span class="bold-underline">politicised</span>; public-affairs crossfire and litigation risks nudge executives toward silence. Meanwhile, rules are tightening: the EU’s CSRD, California’s SB 253, and Australia’s nascent sustainability standards elevate disclosure stakes and auditability. [III] <span class="bold-underline">Companies treat silence as risk management, yet that tactic incubates other, subtler risks.</span> Internally, shaky emissions baselines, outdated dashboards, and misaligned teams make communicators unsure what can be shared without later retraction or technical caveats.</p>
+            <p>Going quiet carries costs: trust erodes when achievements stay invisible; momentum stalls when teams’ toil goes unrecognised; opportunities with investors and partners slip by; and collective learning slows because methods aren’t shared. [IV] Thoughtful transparency, by contrast, is data-backed, plainspoken, candid about obstacles, focused on progress, consistent in cadence, and cross-functional so external words match internal work. The counsel is simple: don’t await perfection – state where you are and how you are moving, then evidence the movement over time.</p>
+            <p><em>(Adapted from https://www.zevero.earth/blog/what-is-greenhushing)</em></p>
+        </div>
+        <div class="glossary">
+            <h4>📚 GLOSSARY (từ khóa B2-C1)</h4>
+            <div class="glossary-grid">
+                <span class="glossary-item">greenhushing: cố ý giảm nhẹ truyền thông bền vững</span>
+                <span class="glossary-item">greenwashing: tuyên bố quá mức tác động môi trường</span>
+                <span class="glossary-item">ESG: Môi trường, Xã hội, Quản trị</span>
+                <span class="glossary-item">scrutiny: sự giám sát chặt chẽ</span>
+                <span class="glossary-item">auditability: khả năng kiểm toán</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="questions-area" id="questionsArea">
+        <div class="section-title">❓ CÂU HỎI (31–40)</div>
+        <div id="questionsList"></div>
+        <div class="exam-footer">
+            <button class="submit-final" id="submitExamBtn">📋 NỘP BÀI & XEM KẾT QUẢ</button>
+        </div>
+        <div id="resultsPanel" class="results-panel"></div>
+    </div>
+</div>
+<footer>© Luyện đề THPTQG | Đọc hiểu - Greenhushing | 20 phút hoàn thành</footer>
+
+<script>
+    // --------------------------------------------------------------
+    // DỮ LIỆU CÂU HỎI + GIẢI THÍCH NGUYÊN SI (đầy đủ như yêu cầu)
+    // --------------------------------------------------------------
+    const questionsData = [
+        { id:31, text:"According to paragraph 1, companies are investing in ESG but ______.", 
+          options:["A. they increasingly overstate outcomes to secure awards and favourable press coverage","B. they increasingly avoid saying “ESG” to sidestep politicised, distracting controversies","C. they increasingly outsource disclosures to consultants to evade direct accountability","D. they increasingly bundle climate targets with marketing campaigns for wider reach"], 
+          correct:1, 
+          explanation:`✓ Đáp án đúng: B<br><br><strong>Giải thích:</strong> Căn cứ vào đoạn 1: "while 87% of firms sustain or expand ESG spending, nearly a third speak less about it; likewise, the 'Financial Times' notes 71% of America's fifty largest companies keep climate goals yet scrub 'ESG' from public pages" (trong khi 87% công ty duy trì hoặc mở rộng chi tiêu ESG, gần một phần ba nói ít hơn về nó; tương tự, 'Financial Times' lưu ý 71% trong số năm mươi công ty lớn nhất của Mỹ giữ mục tiêu khí hậu nhưng xóa 'ESG' khỏi các trang công khai). Nguyên nhân được ám chỉ ở đoạn 3: "In some markets, ESG has been politicised" (Ở một số thị trường, ESG đã bị chính trị hóa).<br><br>A. SAI – Đoạn văn không đề cập đến việc phóng đại kết quả để giành giải thưởng.<br>B. ĐÚNG – Đoạn 1 cho thấy công ty đầu tư ESG nhưng "scrub 'ESG' from public pages" (xóa 'ESG' khỏi trang công khai) và "speak less about it" (nói ít hơn về nó), phù hợp với việc tránh nói "ESG" để tránh tranh cãi chính trị hóa được đề cập ở đoạn 3.<br>C. SAI – Đoạn văn không đề cập đến việc thuê ngoài công bố.<br>D. SAI – Đoạn văn không đề cập đến việc gộp mục tiêu khí hậu với chiến dịch tiếp thị.` },
+        
+        { id:32, text:"The word \"politicised\" in paragraph 3 mostly means ______.", 
+          options:["A. highly partisan","B. loosely technical","C. mildly administrative","D. vaguely ceremonial"], 
+          correct:0, 
+          explanation:`✓ Đáp án đúng: A. highly partisan<br><br><strong>Giải thích:</strong> Từ "politicised" /pəˈlɪtɪsaɪzd/ (tính từ): bị chính trị hóa (trở thành chủ đề của tranh luận chính trị). Ngữ cảnh: "In some markets, ESG has been politicised; public-affairs crossfire and litigation risks nudge executives toward silence" (Ở một số thị trường, ESG đã bị chính trị hóa; sự đấu khẩu công khai và rủi ro kiện tụng đẩy các giám đốc điều hành về phía im lặng), "politicised" chỉ việc ESG trở thành chủ đề tranh luận chính trị, gây chia rẽ.<br>A. ĐÚNG – "highly partisan" (mang tính đảng phái cao) phản ánh đúng nghĩa của "politicised" là bị cuốn vào tranh luận chính trị, chia rẽ theo phe phái.<br>B. SAI – "loosely technical" (hơi kỹ thuật) không liên quan đến chính trị.<br>C. SAI – "mildly administrative" (hơi hành chính) không phản ánh tính tranh luận chính trị.<br>D. SAI – "vaguely ceremonial" (mơ hồ mang tính nghi lễ) không liên quan đến chính trị hóa.` },
+        
+        { id:33, text:"Which of the following best summarises paragraph 2?", 
+          options:["A. Greenhushing mostly occurs in small firms lacking communication teams and rarely affects multinational corporations that rely on sophisticated communications infrastructure.","B. Greenhushing and greenwashing are identical practices; both distort impact and should be censured by regulators across international jurisdictions immediately.","C. Greenhushing, unlike greenwashing, understates progress; restraint can look virtuous but often reflects confusion under scrutiny and fear of misrepresenting complex data.","D. Greenhushing is primarily a consumer-level problem, arising from misinterpretation of eco-labels and insufficient environmental literacy among retail audiences worldwide."], 
+          correct:2, 
+          explanation:`✓ Đáp án đúng: C<br><br><strong>Giải thích:</strong> Căn cứ vào nội dung đoạn 2: "It is the deliberate soft-pedalling – or outright avoidance – of outward claims about sustainability work. Unlike greenwashing, which over-claims impact, greenhushing understates it even when progress is real...In practice, it signals a sector wrestling with authenticity under scrutiny: companies fear mischaracterising complex, provisional data while stakeholders, increasingly exacting, expect plain, durable truth over sloganised triumphalism" (Đó là việc cố ý giảm nhẹ – hoặc tránh hoàn toàn – các tuyên bố bên ngoài về công việc bền vững. Không giống greenwashing, cái mà tuyên bố quá mức tác động, greenhushing nói giảm nó ngay cả khi tiến bộ là thực...Trong thực tế, nó báo hiệu một ngành đang vật lộn với tính xác thực dưới sự giám sát: các công ty sợ trình bày sai dữ liệu phức tạp, tạm thời...)<br>A. SAI – Đoạn văn không đề cập đến quy mô công ty.<br>B. SAI – Đoạn văn rõ ràng nói greenhushing và greenwashing khác nhau, không giống hệt nhau.<br>C. ĐÚNG – Tóm tắt chính xác: phân biệt greenhushing với greenwashing (nói giảm vs tuyên bố quá mức), và giải thích nguyên nhân (sợ trình bày sai dữ liệu phức tạp dưới sự giám sát).<br>D. SAI – Đoạn văn nói về hành vi của công ty, không phải vấn đề của người tiêu dùng.` },
+        
+        { id:34, text:"What does the passage say thoughtful transparency should prioritise?", 
+          options:["A. Evidence-based updates, candid hurdle-mapping, steady cadence, and alignment between external promises and internal execution.","B. Annual press conferences, maximalist claims, polished slogans, and emphasising awards from industry associations.","C. Outsourcing analytics, generic dashboards, legalese-heavy disclosures, and temporary campaigns during climate summits.","D. Selective case studies, upbeat anecdotes, influencer partnerships, and embargoed metrics until audits conclude."], 
+          correct:0, 
+          explanation:`✓ Đáp án đúng: A<br><br><strong>Giải thích:</strong> Căn cứ vào đoạn 4: "Thoughtful transparency, by contrast, is data-backed, plainspoken, candid about obstacles, focused on progress, consistent in cadence, and cross-functional so external words match internal work" (Tính minh bạch chu đáo, ngược lại, được hỗ trợ bởi dữ liệu, nói thẳng, thẳng thắn về chướng ngại vật, tập trung vào tiến độ, nhất quán về nhịp độ và liên chức năng để lời nói bên ngoài khớp với công việc nội bộ).<br>A. ĐÚNG – "data-backed" = evidence-based updates; "candid about obstacles" = candid hurdle-mapping; "consistent in cadence" = steady cadence; "external words match internal work" = alignment.<br>B. SAI – Đoạn văn không đề cập đến họp báo hàng năm, tuyên bố tối đa.<br>C. SAI – Đoạn văn không đề cập đến thuê ngoài hoặc ngôn ngữ pháp lý.<br>D. SAI – Không đề cập đến nghiên cứu có chọn lọc.` },
+        
+        { id:35, text:"What is greenhushing?", 
+          options:["A. Overclaiming environmental gains","B. Downplaying bona fide progress","C. Pausing all sustainability work","D. Rebranding emissions as offsets"], 
+          correct:1, 
+          explanation:`✓ Đáp án đúng: B. Downplaying bona fide progress<br><br><strong>Giải thích:</strong> Căn cứ vào đoạn 2: "It is the deliberate soft-pedalling – or outright avoidance – of outward claims about sustainability work. Unlike greenwashing, which over-claims impact, greenhushing understates it even when progress is real" (Đó là việc cố ý giảm nhẹ – hoặc tránh hoàn toàn – các tuyên bố bên ngoài về công việc bền vững. Không giống greenwashing, cái mà tuyên bố quá mức tác động, greenhushing nói giảm nó ngay cả khi tiến bộ là thực).<br>A. SAI – Đây là định nghĩa của greenwashing.<br>B. ĐÚNG – "understates it even when progress is real" = downplaying bona fide progress.<br>C. SAI – Greenhushing là giảm nhẹ tuyên bố, không phải tạm dừng công việc.<br>D. SAI – Đoạn văn không đề cập đến việc đổi thương hiệu phát thải.` },
+        
+        { id:36, text:"The phrase \"this quiet confidence\" in paragraph 1 refers to ______.", 
+          options:["A. scientific certainty","B. market dominance","C. executive hubris","D. muted messaging"], 
+          correct:3, 
+          explanation:`✓ Đáp án đúng: D. muted messaging<br><br><strong>Giải thích:</strong> Căn cứ vào ngữ cảnh đoạn 1: "nearly a third speak less about it...scrub 'ESG' from public pages...That ambivalence is often glossed as this quiet confidence – a poise born of action without anthem" (gần một phần ba nói ít hơn về nó...xóa 'ESG' khỏi các trang công khai...Sự lưỡng lự đó thường được che đậy là sự tự tin im lặng này – một sự điềm tĩnh sinh ra từ hành động không có lời ca ngợi). "This quiet confidence" chỉ cách giải thích cho việc nói ít hơn về ESG, tức là giảm nhẹ thông điệp.<br>A. SAI – Không đề cập đến sự chắc chắn khoa học.<br>B. SAI – Không đề cập đến sự thống trị thị trường.<br>C. SAI – "quiet confidence" không chỉ sự kiêu ngạo.<br>D. ĐÚNG – "speak less about it" và "action without anthem" = muted messaging.` },
+        
+        { id:37, text:"Which of the following best paraphrases the underlined sentence in paragraph 3? ('Companies treat silence as risk management, yet that tactic incubates other, subtler risks.')", 
+          options:["A. Withholding communications appears protective yet paradoxically cultivates latent vulnerabilities, eroding institutional memory and constraining future strategic maneuverability for the organization.","B. Strategic reticence successfully insulates organizations from scrutiny while fortifying legitimacy, as markets interpret restraint as operational maturity and disciplined governance.","C. Muted disclosure strategies generate volatility initially but consistently outperform transparency by preserving leverage and enabling adaptive narrative recalibration over time.","D. Comprehensive communications blackouts allow regulators latitude to overlook deficiencies, neutralizing compliance risks while affording discretionary timelines for metric refinement."], 
+          correct:0, 
+          explanation:`✓ Đáp án đúng: A<br><br><strong>Giải thích:</strong> Câu gốc: "treat silence as risk management" (coi im lặng là quản lý rủi ro) = appears protective; "yet that tactic incubates other, subtler risks" = paradoxically cultivates latent vulnerabilities. Đoạn 4 liệt kê các rủi ro: trust erodes, momentum stalls, opportunities slip by...<br>A. ĐÚNG – Diễn đạt chính xác ý nghịch lý: giữ lại thông tin có vẻ bảo vệ nhưng nuôi dưỡng lỗ hổng tiềm ẩn, phù hợp với nội dung đoạn 4.<br>B. SAI – Nói im lặng "successfully insulates", trái ngược với ý "incubates risks".<br>C. SAI – Nói im lặng "outperform transparency", trái với thông điệp bài.<br>D. SAI – Thêm yếu tố không có trong câu gốc.` },
+        
+        { id:38, text:"Which of the following can be inferred from the passage?", 
+          options:["A. Firms that build transparent habits early will adapt more smoothly as auditing standards harden, reducing disruption when disclosure becomes mandatory across jurisdictions.","B. Investor appetite for ESG is waning rapidly, so greenhushing primarily reflects shrinking capital markets rather than strategic communication trade-offs by management.","C. Regulators now discourage data transparency because messy, imperfect baselines cause confusion among consumers and heighten litigation against global enterprises.","D. The passage implies that robust sustainability metrics are unnecessary provided companies keep communications consistent, plainspoken, and limited to quarterly updates."], 
+          correct:0, 
+          explanation:`✓ Đáp án đúng: A<br><br><strong>Giải thích:</strong> Căn cứ vào đoạn 3: "rules are tightening: the EU's CSRD, California's SB 253, and Australia's nascent sustainability standards elevate disclosure stakes and auditability" và đoạn 4 khuyến khích minh bạch dữ liệu. Suy ra: các công ty xây dựng thói quen minh bạch sớm sẽ thích ứng dễ dàng hơn khi tiêu chuẩn thắt chặt.<br>A. ĐÚNG – Suy luận hợp lý.<br>B. SAI – Đoạn 1 nói "87% of firms sustain or expand ESG spending".<br>C. SAI – Các cơ quan quản lý đang thắt chặt, không khuyến khích im lặng.<br>D. SAI – Bài nhấn mạnh "data-backed", cần chỉ số mạnh mẽ.` },
+        
+        { id:39, text:"Where in the passage does the following sentence best fit? 'Some executives therefore postpone external statements until metrics are refreshed and internal sign-offs converge.'", 
+          options:["A. [I]","B. [II]","C. [III]","D. [IV]"], 
+          correct:2, 
+          explanation:`✓ Đáp án đúng: C. [III]<br><br><strong>Giải thích:</strong> Câu này giải thích hành vi hoãn tuyên bố do dữ liệu nội bộ chưa hoàn thiện. Vị trí [III] nằm sau câu "Companies treat silence as risk management, yet that tactic incubates other, subtler risks" và trước câu "Internally, shaky emissions baselines, outdated dashboards, and misaligned teams make communicators unsure what can be shared" → liên kết logic hoàn hảo.<br>A. SAI – [I] chưa giải thích nguyên nhân im lặng.<br>B. SAI – [II] chưa cụ thể về vấn đề nội bộ.<br>C. ĐÚNG – Phù hợp nhất.<br>D. SAI – [IV] đã qua phần giải thích nguyên nhân.` },
+        
+        { id:40, text:"Which of the following best summarises the passage?", 
+          options:["A. Greenhushing reflects a communication shift driven by scrutiny, regulation, and data doubts; silence carries costs, while consistent, honest, evidence-based transparency builds durable credibility.","B. Greenhushing shows companies abandoning sustainability; communications have no strategic role because investors now discount ESG claims across major markets.","C. Greenhushing proves marketing is obsolete; only legal teams should manage disclosures as climate reporting becomes purely compliance-driven in every jurisdiction.","D. Greenhushing validates secrecy as the safest course; organisations should under-report until perfect data emerges and external expectations finally stabilise."], 
+          correct:0, 
+          explanation:`✓ Đáp án đúng: A<br><br><strong>Giải thích:</strong> Toàn bộ đoạn văn: greenhushing là gì (đoạn 2), nguyên nhân do giám sát, quy định, nghi ngờ dữ liệu (đoạn 3), chi phí của im lặng (đoạn 4), và giải pháp minh bạch dựa trên bằng chứng, trung thực, nhất quán.<br>A. ĐÚNG – Tóm tắt chính xác và đầy đủ.<br>B. SAI – Bài nói 87% công ty duy trì ESG, không từ bỏ.<br>C. SAI – Không nói tiếp thị lỗi thời.<br>D. SAI – Bài khuyên "don't await perfection", không cổ vũ bí mật.` }
+    ];
+
+    let userAnswers = new Array(10).fill(null);
+    let questionLocked = new Array(10).fill(false);
+    let examSubmitted = false;
+    let timeSeconds = 20 * 60;
+    let timerInterval = null;
+
+    const questionsContainer = document.getElementById('questionsList');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const resetBtn = document.getElementById('resetFullExamBtn');
+    const submitBtn = document.getElementById('submitExamBtn');
+    const resultsPanel = document.getElementById('resultsPanel');
+
+    function formatTime(sec) { let m = Math.floor(sec/60); let s = sec%60; return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
+    function updateTimerUI() { timerDisplay.innerText = formatTime(timeSeconds); if(timeSeconds<=0 && !examSubmitted) autoSubmit(); }
+    function startTimer() { if(timerInterval) clearInterval(timerInterval); timerInterval = setInterval(() => { if(!examSubmitted && timeSeconds>0) { timeSeconds--; updateTimerUI(); if(timeSeconds===0) autoSubmit(); } else if(examSubmitted) clearInterval(timerInterval); }, 1000); }
+    function autoSubmit() { if(examSubmitted) return; examSubmitted=true; if(timerInterval) clearInterval(timerInterval); evaluateAndShowResults(true); }
+
+    function handleOptionClick(qIdx, optIdx, allOpts) {
+        if(examSubmitted || questionLocked[qIdx]) return;
+        userAnswers[qIdx] = optIdx;
+        questionLocked[qIdx] = true;
+        const isCorrect = (optIdx === questionsData[qIdx].correct);
+        allOpts.forEach((opt, idx) => {
+            opt.classList.add('disabled-opt');
+            if(idx === questionsData[qIdx].correct) opt.classList.add('correct-answer');
+            if(idx === optIdx && idx !== questionsData[qIdx].correct) opt.classList.add('wrong-answer');
+            if(idx === optIdx && idx === questionsData[qIdx].correct) opt.classList.add('correct-answer');
+        });
+        const expDiv = document.getElementById(`exp-${questionsData[qIdx].id}`);
+        if(expDiv) expDiv.classList.add('show');
+    }
+
+    function renderQuestions() {
+        questionsContainer.innerHTML = '';
+        questionsData.forEach((q, idx) => {
+            const qDiv = document.createElement('div'); qDiv.className='question-item'; qDiv.id=`qItem-${q.id}`;
+            const header = document.createElement('div'); header.className='q-header';
+            header.innerHTML = `<div class="q-num">${q.id}</div><div class="q-text">${q.text}</div>`;
+            qDiv.appendChild(header);
+            const optionsDiv = document.createElement('div'); optionsDiv.className='options';
+            const optElements = [];
+            q.options.forEach((optText, optIdx) => {
+                const opt = document.createElement('div'); opt.className='opt';
+                opt.innerHTML = `<span class="opt-letter">${String.fromCharCode(65+optIdx)}</span><span>${optText.substring(3)}</span>`;
+                opt.addEventListener('click', (e) => { e.stopPropagation(); handleOptionClick(idx, optIdx, Array.from(optionsDiv.children)); });
+                optionsDiv.appendChild(opt);
+                optElements.push(opt);
+            });
+            qDiv.appendChild(optionsDiv);
+            const refDiv = document.createElement('div'); refDiv.className='ref-buttons';
+            refDiv.innerHTML = `<button class="ref-btn" data-qid="${q.id}" data-type="ref">📍 Vị trí trong bài</button><button class="ref-btn" data-qid="${q.id}" data-type="exp">📝 Giải thích đáp án</button>`;
+            qDiv.appendChild(refDiv);
+            const expDiv = document.createElement('div'); expDiv.className='explanation-area'; expDiv.id=`exp-${q.id}`;
+            expDiv.innerHTML = q.explanation;
+            qDiv.appendChild(expDiv);
+            questionsContainer.appendChild(qDiv);
+        });
+        document.querySelectorAll('.ref-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const qid = parseInt(btn.dataset.qid);
+                const type = btn.dataset.type;
+                const expDiv = document.getElementById(`exp-${qid}`);
+                if(type==='exp') expDiv.classList.toggle('show');
+                else if(type==='ref') { expDiv.classList.add('show'); highlightSentenceByQid(qid); }
+            });
+        });
+    }
+
+    function highlightSentenceByQid(qid) { /* giữ tiện ích nhưng không ảnh hưởng chính */ alert(`📍 Xem vị trí trong bài: Câu ${qid} (có thể tìm từ khóa trong passage).`); }
+
+    function evaluateAndShowResults(isTimeout) {
+        if(examSubmitted) return;
+        examSubmitted=true; if(timerInterval) clearInterval(timerInterval);
+        let correctCount=0;
+        for(let i=0;i<questionsData.length;i++){
+            const selected=userAnswers[i];
+            if(selected!==null && selected===questionsData[i].correct) correctCount++;
+            if(isTimeout && !questionLocked[i]){
+                const qDiv=document.getElementById(`qItem-${questionsData[i].id}`);
+                if(qDiv){ const opts=qDiv.querySelectorAll('.opt'); opts.forEach((opt,idx)=>{ opt.classList.add('disabled-opt'); if(idx===questionsData[i].correct) opt.classList.add('correct-answer'); }); const expDiv=document.getElementById(`exp-${questionsData[i].id}`); if(expDiv) expDiv.classList.add('show'); questionLocked[i]=true; }
+            }
+        }
+        resultsPanel.style.display='block';
+        resultsPanel.innerHTML=`<div class="score-badge">${correctCount}/${questionsData.length}</div><p style="margin-top:12px; font-weight:bold;">📊 KẾT QUẢ BÀI LÀM</p><p>✅ Đúng: ${correctCount} &nbsp;|&nbsp; ❌ Sai: ${questionsData.length-correctCount}</p><button id="resetAfterSubmitBtn" style="margin-top:18px; background:#2c6e5c; border:none; padding:10px 28px; border-radius:40px; color:white; font-weight:bold; cursor:pointer;">⟳ LÀM LẠI TOÀN BỘ</button>`;
+        document.getElementById('resetAfterSubmitBtn')?.addEventListener('click',()=>fullReset());
+        document.getElementById('submitExamBtn').style.display='none';
+    }
+
+    function fullReset() {
+        if(timerInterval) clearInterval(timerInterval);
+        examSubmitted=false; userAnswers=new Array(10).fill(null); questionLocked=new Array(10).fill(false); timeSeconds=20*60;
+        updateTimerUI(); startTimer();
+        renderQuestions();
+        resultsPanel.style.display='none';
+        document.getElementById('submitExamBtn').style.display='flex';
+    }
+
+    renderQuestions(); startTimer();
+    submitBtn.addEventListener('click',()=>{ if(!examSubmitted) evaluateAndShowResults(false); });
+    resetBtn.addEventListener('click',()=>fullReset());
+</script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BÀI ĐỌC 8 CÂU ÔN THI THPTQG - TEST 1</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            color: #1f2937;
+            line-height: 1.75;
+            padding: 25px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 4px solid #4ade80;
+        }
+        
+        .main-title {
+            color: #166534;
+            font-size: 31px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        
+        .sub-title {
+            color: #166534;
+            font-size: 19px;
+            font-weight: 600;
+        }
+
+        .passage-section, .question-section {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.09);
+            margin-bottom: 35px;
+        }
+        
+        .section-title {
+            color: #166534;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #86efac;
+        }
+        
+        .passage-content {
+            font-size: 17px;
+            line-height: 1.9;
+            text-align: justify;
+        }
+        
+        .passage-content p {
+            margin-bottom: 20px;
+        }
+        
+        .highlighted {
+            background: linear-gradient(90deg, #fef08c, #fde047);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .question {
+            margin-bottom: 42px;
+            padding-bottom: 32px;
+            border-bottom: 2px dashed #a3e635;
+        }
+        
+        .question:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+        
+        .question-header {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 16px;
+        }
+        
+        .question-number {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 21px;
+            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+        }
+        
+        .question-text {
+            font-weight: 600;
+            font-size: 17.5px;
+            color: #1f2937;
+            flex: 1;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px 18px;
+            border: 2px solid #86efac;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+        
+        .option:hover {
+            border-color: #22c55e;
+            background: #f0fdf4;
+            transform: translateX(8px);
+        }
+        
+        /* Trạng thái đã chọn và hiển thị kết quả */
+        .option.selected-correct {
+            border-color: #22c55e;
+            background: #e8f5e9;
+            box-shadow: 0 0 0 2px #22c55e;
+        }
+        
+        .option.selected-incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+            box-shadow: 0 0 0 2px #ef4444;
+        }
+        
+        .option.correct-highlight {
+            border-color: #22c55e;
+            background: #d1fae5;
+            box-shadow: 0 0 0 2px #22c55e;
+        }
+        
+        .option-letter {
+            width: 34px;
+            height: 34px;
+            background: #4ade80;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 16px;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+        
+        .option.selected-incorrect .option-letter {
+            background: #ef4444;
+        }
+        
+        .option.selected-correct .option-letter {
+            background: #16a34a;
+        }
+        
+        .option.correct-highlight .option-letter {
+            background: #16a34a;
+        }
+        
+        .explanation-btn {
+            display: none; /* Ẩn nút vì đã tự động hiện */
+        }
+        
+        .explanation-content {
+            display: none;
+            margin-top: 20px;
+            padding: 24px;
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border-left: 6px solid #4ade80;
+            border-radius: 14px;
+            font-size: 15.6px;
+            line-height: 1.75;
+        }
+        
+        .explanation-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .explanation-content h4 {
+            color: #166534;
+            margin-bottom: 14px;
+            font-size: 17px;
+        }
+        
+        .explanation-content p {
+            margin-bottom: 12px;
+        }
+        
+        .explanation-content strong {
+            color: #166534;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 70px;
+            color: #64748b;
+            font-size: 15px;
+        }
+        
+        .result-badge {
+            display: inline-block;
+            margin-left: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .result-correct {
+            background: #22c55e;
+            color: white;
+        }
+        .result-incorrect {
+            background: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="main-title">BÀI ĐỌC 8 CÂU ÔN THI THPTQG - TEST 1</h1>
+        <p class="sub-title">Carbon Offsetting</p>
+    </div>
+
+    <div class="passage-section">
+        <h2 class="section-title">📖 Reading Passage:</h2>
+        <div class="passage-content">
+            <p>Carbon offsetting, broadly construed, enables firms to meet ambitious climate pledges while it <span class="highlighted">galvanizes</span> further abatement by attaching an explicit price to emissions. By purchasing independently verified carbon credits to counterbalance unavoidable releases, companies channel finance into projects that would otherwise struggle to be viable. In this way, offsetting does not trivialize decarbonization; rather, it creates near-term leverage that accelerates the global pivot toward a low-carbon economy and complements internal reductions already under way.</p>
+            
+            <p>Operationally, offsetting sits within a continuous cycle: measure the organizational footprint, design a decarbonization pathway, and compensate residual emissions. <span class="highlighted">While offsets cannot single-handedly resolve climate change, they enable immediate action today even as deeper structural cuts are pursued over time.</span> Used judiciously, the mechanism buys time for technology diffusion and behavioral change without displacing hard choices. Companies that embed offsets in strategy signal accountability now, while sequencing investments that deliver absolute reductions later.</p>
+            
+            <p>Each carbon credit typically equals one tonne of CO₂-equivalent avoided or removed and is validated to international standards. A <span class="highlighted">stringent</span> regime of third-party audit checks that credits are real, measurable, additional, permanent, verified, and unique. <span class="highlighted">They</span> are listed transparently and retired to prevent double counting. Beyond climate metrics, many programs deliver ancillary gains – cleaner air, enhanced livelihoods, or richer biodiversity – aligning with multiple UN Sustainable Development Goals and strengthening local resilience.</p>
+            
+            <p>Project types range from forest protection and land restoration to renewable energy and clean-cooking initiatives, with performance tracked against a baseline and issued as credits in tCO₂e once verified. For organizations, the practical sequence is clear: define and quantify emissions, set reduction targets, cut what can be cut internally, procure high-quality credits under recognized standards, document the retired tonnage, communicate progress to stakeholders, and continue driving down operational and value-chain emissions year on year.</p>
+            
+            <p style="text-align:right; color:#64748b; font-style:italic; margin-top:25px;">(Adapted from Climate Impact Partners)</p>
+        </div>
+    </div>
+
+    <div class="question-section">
+        <h2 class="section-title">❓ Questions (23-30):</h2>
+        
+        <!-- Câu 23 -->
+        <div class="question" id="q23">
+            <div class="question-header">
+                <div class="question-number">23</div>
+                <div class="question-text">Which of the following is NOT mentioned in paragraph 1 as a function of carbon offsetting?</div>
+            </div>
+            <div class="options">
+                <div class="option" data-correct="false" data-opt="A" onclick="handleOptionClick(this,23)"><span class="option-letter">A</span><span class="option-text">Meeting ambitious corporate climate commitments.</span></div>
+                <div class="option" data-correct="false" data-opt="B" onclick="handleOptionClick(this,23)"><span class="option-letter">B</span><span class="option-text">Putting a price on carbon to drive action.</span></div>
+                <div class="option" data-correct="false" data-opt="C" onclick="handleOptionClick(this,23)"><span class="option-letter">C</span><span class="option-text">Directing finance into otherwise unviable projects.</span></div>
+                <div class="option" data-correct="true" data-opt="D" onclick="handleOptionClick(this,23)"><span class="option-letter">D</span><span class="option-text">Eliminating the need for internal decarbonization.</span></div>
+            </div>
+            <div class="explanation-content" id="explanation23">
+                <h4>✓ Đáp án đúng: D</h4>
+                <p><strong>Giải thích chi tiết:</strong> Căn cứ vào đoạn 1: "Carbon offsetting...enables firms to meet ambitious climate pledges" → A được đề cập. "attaching an explicit price to emissions" → B được đề cập. "channel finance into projects that would otherwise struggle to be viable" → C được đề cập. "complements internal reductions already under way" (bổ sung cho việc giảm nội bộ) → chứng tỏ offsetting KHÔNG loại bỏ nhu cầu phi carbon hóa nội bộ mà bổ sung cho nó. Vậy D không được đề cập, thậm chí bị phủ định.</p>
+                <p><strong>Phân tích từng đáp án:</strong><br>
+                A (Sai – được đề cập): "enables firms to meet ambitious climate pledges".<br>
+                B (Sai – được đề cập): "attaching an explicit price to emissions".<br>
+                C (Sai – được đề cập): "channel finance into projects that would otherwise struggle to be viable".<br>
+                D (Đúng – không được đề cập): Đoạn văn nhấn mạnh "complements internal reductions" (bổ sung, không thay thế).</p>
+            </div>
+        </div>
+
+        <!-- Câu 24 -->
+        <div class="question" id="q24">
+            <div class="question-header">
+                <div class="question-number">24</div>
+                <div class="question-text">The word galvanizes in paragraph 1 can be best replaced by ______?</div>
+            </div>
+            <div class="options">
+                <div class="option" data-correct="true" data-opt="A" onclick="handleOptionClick(this,24)"><span class="option-letter">A</span><span class="option-text">stimulates</span></div>
+                <div class="option" data-correct="false" data-opt="B" onclick="handleOptionClick(this,24)"><span class="option-letter">B</span><span class="option-text">pacifies</span></div>
+                <div class="option" data-correct="false" data-opt="C" onclick="handleOptionClick(this,24)"><span class="option-letter">C</span><span class="option-text">disorganizes</span></div>
+                <div class="option" data-correct="false" data-opt="D" onclick="handleOptionClick(this,24)"><span class="option-letter">D</span><span class="option-text">isolates</span></div>
+            </div>
+            <div class="explanation-content" id="explanation24">
+                <h4>✓ Đáp án đúng: A</h4>
+                <p><strong>Giải thích:</strong> "galvanizes" /ˈɡælvənaɪzɪz/ = thúc đẩy mạnh mẽ, kích thích. Ngữ cảnh: "it galvanizes further abatement by attaching an explicit price to emissions" → thúc đẩy hành động giảm phát thải.</p>
+                <p>A. stimulates (kích thích, thúc đẩy) → đồng nghĩa chính xác.<br>
+                B. pacifies (xoa dịu) → trái nghĩa, không phù hợp.<br>
+                C. disorganizes (gây rối loạn) → nghĩa tiêu cực, sai.<br>
+                D. isolates (cô lập) → không liên quan.</p>
+            </div>
+        </div>
+
+        <!-- Câu 25 -->
+        <div class="question" id="q25">
+            <div class="question-header">
+                <div class="question-number">25</div>
+                <div class="question-text">The word stringent in paragraph 3 is OPPOSITE in meaning to ______.</div>
+            </div>
+            <div class="options">
+                <div class="option" data-correct="true" data-opt="A" onclick="handleOptionClick(this,25)"><span class="option-letter">A</span><span class="option-text">lax</span></div>
+                <div class="option" data-correct="false" data-opt="B" onclick="handleOptionClick(this,25)"><span class="option-letter">B</span><span class="option-text">exacting</span></div>
+                <div class="option" data-correct="false" data-opt="C" onclick="handleOptionClick(this,25)"><span class="option-letter">C</span><span class="option-text">rigorous</span></div>
+                <div class="option" data-correct="false" data-opt="D" onclick="handleOptionClick(this,25)"><span class="option-letter">D</span><span class="option-text">demanding</span></div>
+            </div>
+            <div class="explanation-content" id="explanation25">
+                <h4>✓ Đáp án đúng: A</h4>
+                <p><strong>Giải thích:</strong> "stringent" = nghiêm ngặt, chặt chẽ. Trái nghĩa là lỏng lẻo, không chặt chẽ.</p>
+                <p>A. lax (lỏng lẻo) → trái nghĩa ĐÚNG.<br>
+                B. exacting (khắt khe) → đồng nghĩa, không phải trái nghĩa.<br>
+                C. rigorous (nghiêm ngặt) → đồng nghĩa.<br>
+                D. demanding (đòi hỏi cao) → đồng nghĩa.</p>
+            </div>
+        </div>
+
+        <!-- Câu 26 -->
+        <div class="question" id="q26">
+            <div class="question-header">
+                <div class="question-number">26</div>
+                <div class="question-text">The word They in paragraph 3 refers to ______.</div>
+            </div>
+            <div class="options">
+                <div class="option" data-correct="false" data-opt="A" onclick="handleOptionClick(this,26)"><span class="option-letter">A</span><span class="option-text">international standards</span></div>
+                <div class="option" data-correct="false" data-opt="B" onclick="handleOptionClick(this,26)"><span class="option-letter">B</span><span class="option-text">project auditors</span></div>
+                <div class="option" data-correct="true" data-opt="C" onclick="handleOptionClick(this,26)"><span class="option-letter">C</span><span class="option-text">carbon credits</span></div>
+                <div class="option" data-correct="false" data-opt="D" onclick="handleOptionClick(this,26)"><span class="option-letter">D</span><span class="option-text">emissions inventories</span></div>
+            </div>
+            <div class="explanation-content" id="explanation26">
+                <h4>✓ Đáp án đúng: C</h4>
+                <p><strong>Giải thích:</strong> Ngữ cảnh: "Each carbon credit... A stringent regime... checks that credits are real... They are listed transparently and retired". "They" thay thế cho danh từ số nhiều "carbon credits" (các tín chỉ carbon) ngay trước đó.</p>
+                <p>A. international standards (tiêu chuẩn quốc tế) → không phải chủ ngữ phù hợp.<br>
+                B. project auditors → không được nhắc tới.<br>
+                C. carbon credits → ĐÚNG, các tín chỉ được liệt kê và hủy bỏ.<br>
+                D. emissions inventories → không xuất hiện trong đoạn 3.</p>
+            </div>
+        </div>
+
+        <!-- Câu 27 -->
+        <div class="question" id="q27">
+            <div class="question-header">
+                <div class="question-number">27</div>
+                <div class="question-text">Which of the following best paraphrases the underlined sentence in paragraph 2?</div>
+            </div>
+            <div class="options">
+                <div class="option" data-correct="false" data-opt="A" onclick="handleOptionClick(this,27)"><span class="option-letter">A</span><span class="option-text">Offsets provide immediate climate benefits that complement, rather than substitute for, gradual systemic decarbonization efforts.</span></div>
+                <div class="option" data-correct="true" data-opt="B" onclick="handleOptionClick(this,27)"><span class="option-letter">B</span><span class="option-text">Although offsets are not a total remedy, they permit near-term mitigation while longer-term reductions are developed.</span></div>
+                <div class="option" data-correct="false" data-opt="C" onclick="handleOptionClick(this,27)"><span class="option-letter">C</span><span class="option-text">While offsets offer transitional solutions, their effectiveness depends on concurrent progress toward permanent emission reductions.</span></div>
+                <div class="option" data-correct="false" data-opt="D" onclick="handleOptionClick(this,27)"><span class="option-letter">D</span><span class="option-text">Offsets facilitate current action without displacing the necessity for comprehensive structural transformation over time.</span></div>
+            </div>
+            <div class="explanation-content" id="explanation27">
+                <h4>✓ Đáp án đúng: B</h4>
+                <p><strong>Giải thích:</strong> Câu gốc: "While offsets cannot single-handedly resolve climate change, they enable immediate action today even as deeper structural cuts are pursued over time."</p>
+                <p>Ý chính: (1) không phải giải pháp duy nhất / toàn bộ → "not a total remedy", (2) cho phép hành động ngay lập tức → "permit near-term mitigation", (3) các biện pháp cắt giảm cơ cấu sâu hơn được theo đuổi lâu dài → "longer-term reductions are developed".</p>
+                <p>B diễn giải chính xác, đầy đủ và súc tích. Các phương án khác hoặc thêm ý không có hoặc diễn đạt chưa sát trọng tâm.</p>
+            </div>
+        </div>
+
+        <!-- Câu 28 -->
+        <div class="question" id="q28">
+            <div class="question-header">
+                <div class="question-number">28</div>
+                <div class="question-text">Which of the following is TRUE according to paragraph 4?</div>
+            </div>
+            <div class="options">
+                <div class="option" data-correct="false" data-opt="A" onclick="handleOptionClick(this,28)"><span class="option-letter">A</span><span class="option-text">After buying credits, organizations should pause further measures until next year's reporting cycle begins.</span></div>
+                <div class="option" data-correct="false" data-opt="B" onclick="handleOptionClick(this,28)"><span class="option-letter">B</span><span class="option-text">Verified projects receive credits before establishing baselines to accelerate early-stage financing.</span></div>
+                <div class="option" data-correct="true" data-opt="C" onclick="handleOptionClick(this,28)"><span class="option-letter">C</span><span class="option-text">Firms are expected to keep cutting internal emissions while reporting retired credits to stakeholders.</span></div>
+                <div class="option" data-correct="false" data-opt="D" onclick="handleOptionClick(this,28)"><span class="option-letter">D</span><span class="option-text">Communicating progress is discouraged because credit retirement records are confidential by default.</span></div>
+            </div>
+            <div class="explanation-content" id="explanation28">
+                <h4>✓ Đáp án đúng: C</h4>
+                <p><strong>Giải thích:</strong> Đoạn 4 nêu rõ: "...cut what can be cut internally, procure high-quality credits..., document the retired tonnage, communicate progress to stakeholders, and continue driving down operational and value-chain emissions year on year". → Các công ty vừa báo cáo tín chỉ đã hủy vừa tiếp tục cắt giảm phát thải nội bộ.</p>
+                <p>A sai vì không tạm dừng biện pháp nào.<br>
+                B sai vì phải thiết lập đường cơ sở trước khi nhận tín chỉ ("tracked against a baseline and issued as credits once verified").<br>
+                C đúng hoàn toàn.<br>
+                D sai vì "communicate progress" được khuyến khích, không bị cản trở.</p>
+            </div>
+        </div>
+
+        <!-- Câu 29 -->
+        <div class="question" id="q29">
+            <div class="question-header">
+                <div class="question-number">29</div>
+                <div class="question-text">Which paragraph mentions co-benefits for communities and biodiversity alongside climate outcomes?</div>
+            </div>
+            <div class="options">
+                <div class="option" data-correct="false" data-opt="A" onclick="handleOptionClick(this,29)"><span class="option-letter">A</span><span class="option-text">Paragraph 1</span></div>
+                <div class="option" data-correct="false" data-opt="B" onclick="handleOptionClick(this,29)"><span class="option-letter">B</span><span class="option-text">Paragraph 2</span></div>
+                <div class="option" data-correct="true" data-opt="C" onclick="handleOptionClick(this,29)"><span class="option-letter">C</span><span class="option-text">Paragraph 3</span></div>
+                <div class="option" data-correct="false" data-opt="D" onclick="handleOptionClick(this,29)"><span class="option-letter">D</span><span class="option-text">Paragraph 4</span></div>
+            </div>
+            <div class="explanation-content" id="explanation29">
+                <h4>✓ Đáp án đúng: C</h4>
+                <p><strong>Giải thích:</strong> Đoạn 3: "Beyond climate metrics, many programs deliver ancillary gains – cleaner air, enhanced livelihoods, or richer biodiversity – aligning with multiple UN Sustainable Development Goals and strengthening local resilience." → Rõ ràng đề cập lợi ích phụ cho cộng đồng (sinh kế, không khí sạch) và đa dạng sinh học.</p>
+                <p>Đoạn 1,2,4 không có nội dung này.</p>
+            </div>
+        </div>
+
+        <!-- Câu 30 -->
+        <div class="question" id="q30">
+            <div class="question-header">
+                <div class="question-number">30</div>
+                <div class="question-text">Which paragraph mentions practical steps an organization follows to offset its footprint?</div>
+            </div>
+            <div class="options">
+                <div class="option" data-correct="false" data-opt="A" onclick="handleOptionClick(this,30)"><span class="option-letter">A</span><span class="option-text">Paragraph 1</span></div>
+                <div class="option" data-correct="false" data-opt="B" onclick="handleOptionClick(this,30)"><span class="option-letter">B</span><span class="option-text">Paragraph 2</span></div>
+                <div class="option" data-correct="false" data-opt="C" onclick="handleOptionClick(this,30)"><span class="option-letter">C</span><span class="option-text">Paragraph 3</span></div>
+                <div class="option" data-correct="true" data-opt="D" onclick="handleOptionClick(this,30)"><span class="option-letter">D</span><span class="option-text">Paragraph 4</span></div>
+            </div>
+            <div class="explanation-content" id="explanation30">
+                <h4>✓ Đáp án đúng: D</h4>
+                <p><strong>Giải thích:</strong> Đoạn 4 liệt kê trình tự thực tế cho tổ chức: "define and quantify emissions, set reduction targets, cut what can be cut internally, procure high-quality credits..., document the retired tonnage, communicate progress to stakeholders, and continue driving down emissions year on year". Đây là các bước thực hành cụ thể (practical sequence).</p>
+                <p>Đoạn 1,2,3 không cung cấp danh sách các bước chi tiết cho tổ chức.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <p>© Reading Comprehension Exercise | Ôn thi THPT Quốc gia - Test 1</p>
+    </div>
+
+    <script>
+        function handleOptionClick(option, qNum) {
+            const qDiv = document.getElementById('q' + qNum);
+            const allOptions = qDiv.querySelectorAll('.option');
+            const isCorrect = option.getAttribute('data-correct') === 'true';
+            
+            // Xóa tất cả class trạng thái hiện tại trong câu
+            allOptions.forEach(opt => {
+                opt.classList.remove('selected-correct', 'selected-incorrect', 'correct-highlight');
+            });
+            
+            // Thêm class dựa trên đúng/sai cho lựa chọn vừa click
+            if (isCorrect) {
+                option.classList.add('selected-correct');
+            } else {
+                option.classList.add('selected-incorrect');
+                // Tự động highlight đáp án đúng để học sinh biết đáp án nào đúng
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct-highlight');
+                    }
+                });
+            }
+            
+            // Tự động hiển thị phần giải thích chi tiết (không cần bấm nút)
+            const explanationDiv = document.getElementById('explanation' + qNum);
+            if (explanationDiv) {
+                // Ẩn tất cả các explanation khác để tránh rối, nhưng vẫn giữ cho câu hiện tại
+                document.querySelectorAll('.explanation-content').forEach(el => {
+                    if (el.id !== 'explanation' + qNum) {
+                        el.classList.remove('active');
+                    }
+                });
+                explanationDiv.classList.add('active');
+                // Cuộn nhẹ đến phần giải thích để học sinh dễ theo dõi
+                explanationDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+    </script>
+</body>
+</html>
