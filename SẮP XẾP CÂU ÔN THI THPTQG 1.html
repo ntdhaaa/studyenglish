@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÔN THI THPTQG - SẮP XẾP CÂU / ĐOẠN HỘI THOẠI</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            color: #1f2937;
+            line-height: 1.7;
+            padding: 20px;
+        }
+        .container { max-width: 1280px; margin: 0 auto; }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 700;
+            background: #e0f2fe;
+            color: #166534;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+        }
+
+        .tab-content { display: none; background: white; border-radius: 16px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .tab-content.active { display: block; }
+
+        .theory-box, .example-box {
+            background: #fefce8;
+            border-left: 8px solid #4ade80;
+            padding: 20px 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+        .theory-box h3, .example-box h3 { color: #166534; margin-bottom: 15px; font-size: 22px; }
+        .theory-box ul, .example-box ul { margin-left: 25px; margin-bottom: 15px; }
+        .theory-box li, .example-box li { margin: 10px 0; }
+        .highlight { background: #fde047; padding: 2px 8px; border-radius: 12px; font-weight: bold; }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: white; }
+        td, th { border: 1px solid #a3e635; padding: 12px; vertical-align: top; }
+        th { background: #4ade80; color: white; }
+
+        .question {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 2px dashed #a3e635;
+        }
+        .question:last-child { border-bottom: none; }
+        
+        .question-header { display: flex; gap: 16px; margin-bottom: 14px; }
+        .question-number {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .question-text { font-weight: 600; font-size: 16.5px; flex: 1; line-height: 1.6; }
+
+        .options { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+        .option {
+            padding: 12px 18px;
+            border: 2px solid #86efac;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8fafc;
+            font-weight: 500;
+        }
+        .option:hover { border-color: #22c55e; background: #f0fdf4; transform: translateX(6px); }
+        .option.selected { border-color: #eab308; background: #fefce8; }
+        .option.correct { border-color: #22c55e; background: #dcfce7; box-shadow: 0 0 0 2px #22c55e; }
+        .option.incorrect { border-color: #ef4444; background: #fee2e2; box-shadow: 0 0 0 2px #ef4444; }
+
+        .explanation-btn {
+            margin-top: 14px;
+            padding: 8px 22px;
+            background: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .explanation-btn:hover { background: #166534; }
+
+        .explanation-content {
+            display: none;
+            margin-top: 18px;
+            padding: 22px;
+            background: #f0fdf4;
+            border-left: 6px solid #4ade80;
+            border-radius: 12px;
+            font-size: 15px;
+            line-height: 1.75;
+        }
+        .explanation-content.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .footer { text-align: center; margin-top: 60px; color: #64748b; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align:center; color:#166534; margin-bottom:30px;">📚 ÔN THI THPTQG - SẮP XẾP CÂU / ĐOẠN HỘI THOẠI</h1>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab(1)">📘 Lý Thuyết</button>
+            <button class="tab-btn" onclick="openTab(2)">📝 Ví Dụ Minh Họa</button>
+            <button class="tab-btn" onclick="openTab(3)">✍️ Bài Tập Thực Hành (20 câu)</button>
+        </div>
+
+        <!-- TAB 1: LÝ THUYẾT -->
+        <div id="tab1" class="tab-content active">
+            <div class="theory-box">
+                <h3>🎯 CÁC CẤU TRÚC CƠ BẢN CẦN NHỚ KHI LÀM BÀI SẮP XẾP CÂU</h3>
+                
+                <h4 style="color:#166534; margin-top:15px;">1. Dạng viết thư (Letter)</h4>
+                <ul>
+                    <li>✉️ Sau <span class="highlight">Dear</span>, bao giờ cũng là câu: <em>"Tôi viết để phản hồi lại", "Tôi rất vui khi nhận được thư", "I hope this letter finds you…"</em></li>
+                    <li>✉️ Trước khi ký tên kết thúc thường là câu: hẹn gặp mặt, mong nhận được phản hồi, háo hức: <em>"look forward to your response / to hear from you"</em>.</li>
+                </ul>
+
+                <h4 style="color:#166534; margin-top:15px;">2. Dạng đoạn văn (thì động từ theo thứ tự: QKĐ → HTHT → HTĐ/HTTD → TL)</h4>
+                <ul>
+                    <li>🔹 Câu 1 là câu giới thiệu chung, không đi vào cụ thể.</li>
+                    <li>🔹 Câu 2 sẽ lần lượt dẫn giải, mở rộng ý.</li>
+                    <li>🔹 Câu có <span class="highlight">"also", "too", "this", "that", "these", "those"</span> phải đứng thứ 3 trở đi vì cần câu trước làm nền.</li>
+                    <li>🔹 Câu có <span class="highlight">"however", "nevertheless", "but"</span> cũng đứng thứ 3 trở đi (ý tương phản, xác định tích cực/tiêu cực).</li>
+                    <li>🔹 Câu bắt đầu bằng <span class="highlight">"in addition to", "additionally", "besides"</span> đứng thứ 3 trở đi (bổ sung cùng chiều).</li>
+                    <li>🔹 Câu bắt đầu bằng <span class="highlight">"in conclusion", "to sum up", "overall", "in short"</span> → xếp cuối đoạn (tổng kết).</li>
+                </ul>
+
+                <h4 style="color:#166534; margin-top:15px;">3. Dạng đoạn văn diễn xuôi về 1 chủ đề</h4>
+                <ul>
+                    <li>📌 Câu 1: Giới thiệu chủ đề.</li>
+                    <li>📌 Câu 2: Giải thích nó là gì, bối cảnh.</li>
+                    <li>📌 Câu 3: Nêu dẫn chứng minh họa cụ thể.</li>
+                    <li>📌 Câu 4: Đưa ra quan điểm hoặc kết luận.</li>
+                </ul>
+                <p><strong>💡 Mẹo nhớ:</strong> "Mở bài – Thân bài – Kết bài", từ nối chỉ bổ sung/tương phản không thể đứng đầu đoạn.</p>
+            </div>
+        </div>
+
+        <!-- TAB 2: VÍ DỤ MINH HỌA -->
+        <div id="tab2" class="tab-content">
+            <div class="example-box">
+                <h3>🌟 VÍ DỤ: Sắp xếp câu về kỷ niệm gia đình</h3>
+                <p><strong>Các câu:</strong></p>
+                <ul>
+                    <li>a. The simplicity of those times stands in stark contrast to today’s fast-paced world.</li>
+                    <li>b. Each photograph captures moments of joy, celebration, and sometimes bittersweet goodbye.</li>
+                    <li>c. Looking through old family albums often triggers a flood of childhood memories.</li>
+                    <li>d. These precious memories serve as a reminder of how far we’ve come and what truly matters.</li>
+                    <li>e. Holiday gatherings, summer picnics, and weekend adventures fill these yellowing pages.</li>
+                </ul>
+                <p><strong>Phân tích:</strong><br>
+                - Câu <span class="highlight">c</span> giới thiệu chủ đề → câu mở đầu.<br>
+                - Câu <span class="highlight">b</span> nói về ảnh → giải thích tiếp.<br>
+                - Câu <span class="highlight">e</span> liệt kê sự kiện → cụ thể hóa.<br>
+                - Câu <span class="highlight">a</span> có "those times" → cần câu e làm rõ.<br>
+                - Câu <span class="highlight">d</span> kết luận.<br>
+                → <strong>Trật tự đúng: c – b – e – a – d</strong></p>
+                <table>
+                    <tr><th>Phương án</th><th>Thứ tự</th><th>Đúng/Sai</th></tr>
+                    <tr><td style="background:#dcfce7;">D</td><td style="background:#dcfce7;">c-b-e-a-d</td><td style="background:#dcfce7;">✅ Đúng</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 3: BÀI TẬP THỰC HÀNH (20 câu đầy đủ) -->
+        <div id="tab3" class="tab-content">
+            <h2 style="color:#166534; margin-bottom:20px;">✍️ BÀI TẬP THỰC HÀNH (20 câu)</h2>
+            <p style="margin-bottom:25px; color:#166534;">Chọn đáp án đúng. Hệ thống sẽ tự động hiển thị đúng (xanh) / sai (đỏ) và mở giải thích chi tiết.</p>
+
+            <!-- Câu 1 -->
+            <div class="question" id="q1"><div class="question-header"><div class="question-number">1</div><div class="question-text">a. Sarah: Hey, Ben! Do you have any plans for the summer?<br>b. Ben: Hi, Sarah. Yes, I’m planning a beach trip next month. I could really use some relaxation.<br>c. Sarah: That sounds amazing! I hope you have a fantastic time there.<br>A. c – b – a B. b – a – c C. b – c – a D. a – b – c</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,1)">A</div><div class="option" data-correct="false" onclick="handleClick(this,1)">B</div><div class="option" data-correct="false" onclick="handleClick(this,1)">C</div><div class="option" data-correct="true" onclick="handleClick(this,1)">D</div></div><button class="explanation-btn" onclick="showExp(1)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp1"><h4>✓ Đáp án đúng: D. a – b – c</h4><p>Giải thích: Đây là một đoạn hội thoại ngắn giữa Sarah và Ben.<br>a: Sarah chủ động hỏi Ben về kế hoạch mùa hè → mở đầu cuộc trò chuyện.<br>b: Ben đáp lại lời chào và trả lời câu hỏi → phản hồi tự nhiên.<br>c: Sarah bày tỏ cảm xúc về kế hoạch của Ben → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>a. Sarah: Này Ben! Cậu có kế hoạch gì cho mùa hè không?<br>b. Ben: Chào Sarah. Ừ, tớ đang định đi biển vào tháng tới. Tớ thực sự cần thư giãn một chút.<br>c. Sarah: Nghe tuyệt quá! Tớ hy vọng cậu có khoảng thời gian thật vui ở đó.</p></div></div>
+
+            <!-- Câu 2 -->
+            <div class="question" id="q2"><div class="question-header"><div class="question-number">2</div><div class="question-text">Hi Mia,<br>a. I appreciate the photography tutorials you sent me last week.<br>b. Also, the software you recommended is fantastic - it’s so much easier than my old one.<br>c. But I really enjoyed trying out a few tips from the videos.<br>d. We should go on a photo walk together sometime. What do you think?<br>e. Learning new techniques is exciting, but I’m focusing on editing skills for now since my schedule is packed.<br>Talk soon, Leo<br>A. e – b – a – c – d B. b – e – c – a – d C. a – e – c – b – d D. d – e – a – b – c</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,2)">A</div><div class="option" data-correct="false" onclick="handleClick(this,2)">B</div><div class="option" data-correct="true" onclick="handleClick(this,2)">C</div><div class="option" data-correct="false" onclick="handleClick(this,2)">D</div></div><button class="explanation-btn" onclick="showExp(2)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp2"><h4>✓ Đáp án đúng: C. a – e – c – b – d</h4><p>Giải thích: Đây là một bức thư của Leo gửi Mia.<br>a: Cảm ơn về các hướng dẫn chụp ảnh → mở đầu thư.<br>e: Nói về việc học kỹ thuật mới nhưng đang bận → chuyển ý.<br>c: "But" nối tiếp ý e.<br>b: "Also" bổ sung về phần mềm.<br>d: Đề nghị đi chụp ảnh cùng → kết thúc thư.</p><p><strong>Dịch nghĩa:</strong><br>a. Cảm ơn bạn về những hướng dẫn chụp ảnh bạn gửi tuần trước.<br>e. Học các kỹ thuật mới rất thú vị, nhưng tôi đang tập trung vào kỹ năng chỉnh sửa vì lịch trình của tôi khá bận.<br>c. Nhưng tôi thực sự thích thử một vài mẹo từ các video.<br>b. Ngoài ra, phần mềm bạn giới thiệu thật tuyệt - nó dễ dùng hơn nhiều so với cái cũ của tôi.<br>d. Chúng ta nên cùng nhau đi chụp ảnh vào dịp nào đó. Bạn nghĩ sao?</p></div></div>
+
+            <!-- Câu 3 -->
+            <div class="question" id="q3"><div class="question-header"><div class="question-number">3</div><div class="question-text">a. However, despite these benefits, the area now faces environmental challenges, with increased waste and pollution threatening the natural beauty of these beaches.<br>b. This development has also boosted the local economy significantly, creating job opportunities and attracting investors to the area.<br>c. Tourism has experienced substantial growth along the coastal regions over the past ten years.<br>d. This economic boom has led to a noticeable population increase as more people move closer to the coast for work in the tourism industry.<br>e. Once secluded beaches have transformed into bustling tourist destinations, with hotels, cafes, and resorts lining the shorelines.<br>A. c – d – a – b – e B. c – e – b – d – a C. c – b – a – e – d D. c – a – d – e – b</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,3)">A</div><div class="option" data-correct="true" onclick="handleClick(this,3)">B</div><div class="option" data-correct="false" onclick="handleClick(this,3)">C</div><div class="option" data-correct="false" onclick="handleClick(this,3)">D</div></div><button class="explanation-btn" onclick="showExp(3)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp3"><h4>✓ Đáp án đúng: B. c – e – b – d – a</h4><p>Giải thích: Đây là đoạn văn về sự phát triển du lịch ven biển.<br>c: Câu mở đầu, giới thiệu chủ đề chính: du lịch phát triển ở vùng ven biển.<br>e: Mô tả chi tiết sự chuyển đổi của các bãi biển → phát triển ý từ c.<br>b: "This development has also..." → bổ sung lợi ích kinh tế.<br>d: "This economic boom has led to..." → hệ quả tiếp theo từ b.<br>a: "However" → chuyển sang mặt trái, vấn đề môi trường → kết luận.</p><p><strong>Dịch nghĩa:</strong><br>c. Du lịch đã tăng trưởng đáng kể dọc các vùng ven biển trong mười năm qua.<br>e. Những bãi biển từng hẻo lánh đã biến thành điểm đến du lịch nhộn nhịp, với khách sạn, quán cà phê và khu nghỉ dưỡng dọc bờ biển.<br>b. Sự phát triển này cũng thúc đẩy nền kinh tế địa phương đáng kể, tạo việc làm và thu hút nhà đầu tư.<br>d. Sự bùng nổ kinh tế này dẫn đến gia tăng dân số đáng kể khi nhiều người đến gần bờ biển hơn để làm việc trong ngành du lịch.<br>a. Tuy nhiên, bất chấp những lợi ích này, khu vực này đang đối mặt với thách thức môi trường, với rác thải và ô nhiễm đe dọa vẻ đẹp tự nhiên của các bãi biển.</p></div></div>
+
+            <!-- Câu 4 -->
+            <div class="question" id="q4"><div class="question-header"><div class="question-number">4</div><div class="question-text">a. This economic growth has also led to a 20% population increase in these regions, as workers move closer to job opportunities in renewable energy projects.<br>b. In many regions, fossil-fuel plants have been replaced by solar and wind farms, marking a shift toward sustainable energy solutions.<br>c. Renewable energy sources have become increasingly prominent over the past decade.<br>d. However, despite this expansion, some areas still face infrastructure challenges, such as limited access to healthcare and schools.<br>e. This transition has attracted substantial investment, creating jobs and supporting local economies, especially in rural areas.<br>A. c – d – b – e – a B. c – e – b – a – d C. c – a – d – b – e D. c – b – e – a – d</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,4)">A</div><div class="option" data-correct="false" onclick="handleClick(this,4)">B</div><div class="option" data-correct="false" onclick="handleClick(this,4)">C</div><div class="option" data-correct="true" onclick="handleClick(this,4)">D</div></div><button class="explanation-btn" onclick="showExp(4)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp4"><h4>✓ Đáp án đúng: D. c – b – e – a – d</h4><p>Giải thích: Đoạn văn về năng lượng tái tạo.<br>c: Câu chủ đề: Năng lượng tái tạo ngày càng nổi bật.<br>b: Giải thích cụ thể: các nhà máy nhiên liệu hóa thạch được thay thế.<br>e: "This transition has..." → hệ quả: thu hút đầu tư, tạo việc làm.<br>a: "This economic growth has also led to..." → hệ quả tiếp theo: gia tăng dân số.<br>d: "However" → mặt trái: thách thức về cơ sở hạ tầng.</p><p><strong>Dịch nghĩa:</strong><br>c. Năng lượng tái tạo đã trở nên nổi bật hơn trong thập kỷ qua.<br>b. Ở nhiều vùng, nhà máy nhiên liệu hóa thạch được thay thế bằng trang trại điện mặt trời và điện gió, đánh dấu sự chuyển dịch sang giải pháp năng lượng bền vững.<br>e. Sự chuyển dịch này đã thu hút đầu tư đáng kể, tạo việc làm và hỗ trợ kinh tế địa phương, đặc biệt ở vùng nông thôn.<br>a. Tăng trưởng kinh tế này cũng dẫn đến gia tăng dân số 20% ở các vùng này khi người lao động đến gần cơ hội việc làm hơn.<br>d. Tuy nhiên, bất chấp sự mở rộng này, một số vùng vẫn đối mặt với thách thức về cơ sở hạ tầng, như hạn chế tiếp cận y tế và trường học.</p></div></div>
+
+            <!-- Câu 5 -->
+            <div class="question" id="q5"><div class="question-header"><div class="question-number">5</div><div class="question-text">a. Mia: What movie did you watch last night, Zoe?<br>b. Mia: Sounds interesting! I’ll definitely have to check it out soon.<br>c. Zoe: I watched Galactic Journey. It was incredible - great storyline and effects!<br>A. a – c – b B. c – b – a C. b – c – a D. c – a – b</div></div><div class="options"><div class="option" data-correct="true" onclick="handleClick(this,5)">A</div><div class="option" data-correct="false" onclick="handleClick(this,5)">B</div><div class="option" data-correct="false" onclick="handleClick(this,5)">C</div><div class="option" data-correct="false" onclick="handleClick(this,5)">D</div></div><button class="explanation-btn" onclick="showExp(5)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp5"><h4>✓ Đáp án đúng: A. a – c – b</h4><p>Giải thích: Hội thoại giữa Mia và Zoe về bộ phim.<br>a: Mia hỏi Zoe đã xem phim gì → mở đầu.<br>c: Zoe trả lời và nhận xét về phim → phản hồi.<br>b: Mia phản ứng lại lời giới thiệu → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>a. Mia: Tối qua cậu xem phim gì thế Zoe?<br>c. Zoe: Tớ xem Galactic Journey. Phim hay lắm - cốt truyện và hiệu ứng đều tuyệt!<br>b. Mia: Nghe thú vị đấy! Tớ chắc chắn sẽ xem nó sớm.</p></div></div>
+
+            <!-- Câu 6 -->
+            <div class="question" id="q6"><div class="question-header"><div class="question-number">6</div><div class="question-text">a. Rachel: It helps with flexibility and reduces stress.<br>b. Rachel: I’m going to start doing yoga.<br>c. Dan: Why yoga?<br>d. Dan: How are you going to stay fit?<br>e. Dan: I think yoga takes too long to show results. I prefer something more intense.<br>A. e – a – d – b – c B. d – b – c – a – e C. e – b – c – a – d D. d – b – e – a – c</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,6)">A</div><div class="option" data-correct="true" onclick="handleClick(this,6)">B</div><div class="option" data-correct="false" onclick="handleClick(this,6)">C</div><div class="option" data-correct="false" onclick="handleClick(this,6)">D</div></div><button class="explanation-btn" onclick="showExp(6)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp6"><h4>✓ Đáp án đúng: B. d – b – c – a – e</h4><p>Giải thích: Hội thoại giữa Rachel và Dan về việc tập yoga.<br>d: Dan hỏi Rachel định giữ dáng bằng cách nào → mở đầu.<br>b: Rachel trả lời sẽ tập yoga → phản hồi.<br>c: Dan hỏi lý do tại sao chọn yoga → câu hỏi tiếp nối.<br>a: Rachel giải thích lợi ích của yoga → trả lời câu c.<br>e: Dan đưa ra ý kiến trái chiều → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>d. Dan: Cậu định giữ dáng bằng cách nào thế?<br>b. Rachel: Tớ sẽ bắt đầu tập yoga.<br>c. Dan: Sao lại là yoga?<br>a. Rachel: Nó giúp dẻo dai và giảm căng thẳng.<br>e. Dan: Tớ nghĩ yoga mất nhiều thời gian mới thấy kết quả. Tớ thích gì đó mạnh mẽ hơn.</p></div></div>
+
+            <!-- Câu 7 -->
+            <div class="question" id="q7"><div class="question-header"><div class="question-number">7</div><div class="question-text">a. Educational institutions have increasingly embraced technology to enhance learning experiences.<br>b. This shift has driven significant investment in educational technology, creating demand for tech support roles and educational software developers.<br>c. However, despite this progress, some schools still lack sufficient resources to provide devices for all students, leading to inequalities in access.<br>d. Traditional textbooks have been replaced by digital resources in many schools, making information more accessible to students.<br>e. This growth in tech-focused education jobs has also led to more students pursuing careers in educational technology, resulting in a highly specialised workforce.<br>A. a – b – d – c – e B. a – d – b – e – c C. a – d – e – b – c D. a – c – e – d – b</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,7)">A</div><div class="option" data-correct="true" onclick="handleClick(this,7)">B</div><div class="option" data-correct="false" onclick="handleClick(this,7)">C</div><div class="option" data-correct="false" onclick="handleClick(this,7)">D</div></div><button class="explanation-btn" onclick="showExp(7)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp7"><h4>✓ Đáp án đúng: B. a – d – b – e – c</h4><p>Giải thích: Đoạn văn về công nghệ trong giáo dục.<br>a: Câu chủ đề: Các cơ sở giáo dục ngày càng áp dụng công nghệ.<br>d: "Traditional textbooks have been replaced..." → ví dụ cụ thể.<br>b: "This shift has driven..." → hệ quả: đầu tư vào edtech, tạo việc làm.<br>e: "This growth in tech-focused education jobs has also led to..." → hệ quả tiếp theo.<br>c: "However" → mặt trái: bất bình đẳng trong tiếp cận.</p><p><strong>Dịch nghĩa:</strong><br>a. Các cơ sở giáo dục ngày càng áp dụng công nghệ để nâng cao trải nghiệm học tập.<br>d. Sách giáo khoa truyền thống đã được thay thế bằng tài nguyên số ở nhiều trường, giúp học sinh tiếp cận thông tin dễ dàng hơn.<br>b. Sự thay đổi này đã thúc đẩy đầu tư đáng kể vào công nghệ giáo dục, tạo nhu cầu cho vai trò hỗ trợ kỹ thuật và nhà phát triển phần mềm giáo dục.<br>e. Sự tăng trưởng trong việc làm công nghệ giáo dục này cũng khiến nhiều học sinh theo đuổi sự nghiệp trong lĩnh vực này, tạo ra lực lượng lao động chuyên môn cao.<br>c. Tuy nhiên, bất chấp sự tiến bộ này, một số trường vẫn thiếu đủ nguồn lực để cung cấp thiết bị cho mọi học sinh, dẫn đến bất bình đẳng trong tiếp cận.</p></div></div>
+
+            <!-- Câu 8 -->
+            <div class="question" id="q8"><div class="question-header"><div class="question-number">8</div><div class="question-text">a. The kitchen environment is fast-paced and challenging, which makes this role exciting every day.<br>b. In the end, I’m incredibly happy in this career, as it perfectly blends my passion for food and my creative talents.<br>c. I’ve been working as a chef in a popular restaurant, crafting unique dishes and experimenting with flavours.<br>d. My love for food and creativity led me to pursue a career in the culinary arts.<br>e. Although the work hours are long, the joy of seeing customers enjoy my creations makes this job fulfilling.<br>A. a – c – d – e – b B. e – a – d – c – b C. c – e – d – a – b D. d – c – a – e – b</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,8)">A</div><div class="option" data-correct="false" onclick="handleClick(this,8)">B</div><div class="option" data-correct="false" onclick="handleClick(this,8)">C</div><div class="option" data-correct="true" onclick="handleClick(this,8)">D</div></div><button class="explanation-btn" onclick="showExp(8)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp8"><h4>✓ Đáp án đúng: D. d – c – a – e – b</h4><p>Giải thích: Đoạn văn tự sự về nghề đầu bếp.<br>d: Lý do dẫn đến nghề nghiệp (tình yêu ẩm thực và sáng tạo) → mở đầu hợp lý.<br>c: Giới thiệu công việc hiện tại → phát triển ý.<br>a: Mô tả môi trường làm việc → bổ sung chi tiết.<br>e: "Although" → nói về khó khăn nhưng sự hài lòng.<br>b: "In the end" → kết luận chung.</p><p><strong>Dịch nghĩa:</strong><br>d. Tình yêu ẩm thực và sự sáng tạo đã dẫn tôi đến với nghệ thuật ẩm thực.<br>c. Tôi đang làm đầu bếp tại một nhà hàng nổi tiếng, sáng tạo món ăn độc đáo và thử nghiệm hương vị.<br>a. Môi trường bếp núc nhanh nhịp và đầy thử thách, điều khiến công việc này thú vị mỗi ngày.<br>e. Dù giờ làm việc dài, niềm vui khi thấy thực khách thưởng thức sáng tạo của tôi khiến công việc này đáng giá.<br>b. Cuối cùng, tôi vô cùng hạnh phúc với nghề này, vì nó kết hợp hoàn hảo giữa đam mê ẩm thực và tài năng sáng tạo của tôi.</p></div></div>
+
+            <!-- Câu 9 -->
+            <div class="question" id="q9"><div class="question-header"><div class="question-number">9</div><div class="question-text">a. Learning new techniques is exciting, but I’m concentrating on my current project for now as I have limited time.<br>b. But I tried one of the shading techniques, and it turned out great!<br>c. Let’s paint together one day. What do you think?<br>d. Thanks so much for the painting tutorials you sent me last week.<br>e. Also, the art website you recommended has so many useful resources - it’s much better than the ones I’ve used before.<br>A. c – a – b – d B. c – e – a – b – d C. d – a – b – e – c D. a – c – d – b – e</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,9)">A</div><div class="option" data-correct="false" onclick="handleClick(this,9)">B</div><div class="option" data-correct="true" onclick="handleClick(this,9)">C</div><div class="option" data-correct="false" onclick="handleClick(this,9)">D</div></div><button class="explanation-btn" onclick="showExp(9)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp9"><h4>✓ Đáp án đúng: C. d – a – b – e – c</h4><p>Giải thích: Thư của Max gửi Emma về các hướng dẫn vẽ.<br>d: Cảm ơn về các hướng dẫn → mở đầu thư.<br>a: Nói về việc học kỹ thuật mới nhưng đang bận → chuyển ý.<br>b: "But" → nối tiếp a, nói rằng đã thử một kỹ thuật và thành công.<br>e: "Also" → bổ sung về trang web được giới thiệu.<br>c: Đề nghị vẽ cùng nhau → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>d. Cảm ơn rất nhiều vì những hướng dẫn vẽ bạn gửi tuần trước.<br>a. Học kỹ thuật mới rất thú vị, nhưng tôi đang tập trung vào dự án hiện tại vì có ít thời gian.<br>b. Nhưng tôi đã thử một kỹ thuật tạo bóng và nó trông rất tuyệt!<br>e. Ngoài ra, trang web nghệ thuật bạn giới thiệu có rất nhiều tài nguyên hữu ích - nó tốt hơn nhiều so với những trang tôi từng dùng.<br>c. Một ngày nào đó chúng ta hãy cùng vẽ tranh nhé. Cậu nghĩ sao?</p></div></div>
+
+            <!-- Câu 10 -->
+            <div class="question" id="q10"><div class="question-header"><div class="question-number">10</div><div class="question-text">a. Anna: I’m glad to hear that. It sounds like all your hard work paid off.<br>b. Maria: Hi, Anna. It went well, thanks! We put in a lot of effort to make sure everything was perfect.<br>c. Anna: Hi, Maria! How did your science project go?<br>A. c – b – a B. a – b – c C. b – a – c D. a – c – b</div></div><div class="options"><div class="option" data-correct="true" onclick="handleClick(this,10)">A</div><div class="option" data-correct="false" onclick="handleClick(this,10)">B</div><div class="option" data-correct="false" onclick="handleClick(this,10)">C</div><div class="option" data-correct="false" onclick="handleClick(this,10)">D</div></div><button class="explanation-btn" onclick="showExp(10)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp10"><h4>✓ Đáp án đúng: A. c – b – a</h4><p>Giải thích: Hội thoại giữa Anna và Maria về dự án khoa học.<br>c: Anna chào và hỏi về dự án → mở đầu.<br>b: Maria đáp lại và kể về dự án → phản hồi.<br>a: Anna bày tỏ niềm vui và khen ngợi → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>c. Anna: Chào Maria! Dự án khoa học của cậu thế nào rồi?<br>b. Maria: Chào Anna. Tốt lắm, cảm ơn cậu! Bọn mình đã nỗ lực rất nhiều để mọi thứ được hoàn hảo.<br>a. Anna: Mình mừng khi nghe điều đó. Nghe có vẻ như mọi nỗ lực của cậu đã được đền đáp.</p></div></div>
+
+            <!-- Câu 11 -->
+            <div class="question" id="q11"><div class="question-header"><div class="question-number">11</div><div class="question-text">a. Although grading assignments and managing paperwork can be time-consuming, the positive impact on students makes it worthwhile.<br>b. For the past two years, I have enjoyed this position as a high school English teacher, where I design lesson plans and guide students through literature.<br>c. My love for sharing knowledge and helping others naturally drew me to a career in teaching.<br>d. Overall, I am deeply fulfilled by this career, as it aligns perfectly with my passion and skills.<br>e. Working with young minds allows me to be creative and think on my feet, which keeps this job exciting.<br>A. c – b – e – a – d B. b – a – c – e – d C. e – b – c – a – d D. a – e – c – b – d</div></div><div class="options"><div class="option" data-correct="true" onclick="handleClick(this,11)">A</div><div class="option" data-correct="false" onclick="handleClick(this,11)">B</div><div class="option" data-correct="false" onclick="handleClick(this,11)">C</div><div class="option" data-correct="false" onclick="handleClick(this,11)">D</div></div><button class="explanation-btn" onclick="showExp(11)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp11"><h4>✓ Đáp án đúng: A. c – b – e – a – d</h4><p>Giải thích: Đoạn văn tự sự về nghề giáo viên.<br>c: Lý do dẫn đến nghề nghiệp (tình yêu chia sẻ kiến thức) → mở đầu.<br>b: Giới thiệu công việc hiện tại → phát triển ý.<br>e: Mô tả khía cạnh thú vị của công việc → bổ sung.<br>a: "Although" → nói về khó khăn nhưng sự hài lòng.<br>d: "Overall" → kết luận chung.</p><p><strong>Dịch nghĩa:</strong><br>c. Tình yêu chia sẻ kiến thức và giúp đỡ người khác đã dẫn tôi đến sự nghiệp giảng dạy.<br>b. Hai năm qua, tôi yêu thích vị trí giáo viên tiếng Anh cấp ba này, nơi tôi thiết kế bài giảng và hướng dẫn học sinh qua tác phẩm văn học.<br>e. Làm việc với những tâm hồn trẻ cho phép tôi sáng tạo và ứng biến linh hoạt, điều khiến công việc này luôn thú vị.<br>a. Dù chấm bài và xử lý giấy tờ tốn thời gian, tác động tích cực đến học sinh khiến nó đáng giá.<br>d. Nhìn chung, tôi vô cùng hài lòng với sự nghiệp này, vì nó phù hợp hoàn hảo với đam mê và kỹ năng của tôi.</p></div></div>
+
+            <!-- Câu 12 -->
+            <div class="question" id="q12"><div class="question-header"><div class="question-number">12</div><div class="question-text">a. This change has encouraged a more collaborative learning environment, improving student engagement and participation.<br>b. However, despite these positive outcomes, some schools still lack access to advanced technology, hindering further progress.<br>c. Education in the district has undergone major reform in recent years.<br>d. These educational reforms have also resulted in a 15% improvement in test scores and reduced dropout rates.<br>e. Traditional classrooms with rows of desks have been replaced by interactive spaces designed to promote group work and hands-on learning.<br>A. c – e – a – d – b B. c – d – a – b – e C. c – a – b – d – e D. c – b – a – e – d</div></div><div class="options"><div class="option" data-correct="true" onclick="handleClick(this,12)">A</div><div class="option" data-correct="false" onclick="handleClick(this,12)">B</div><div class="option" data-correct="false" onclick="handleClick(this,12)">C</div><div class="option" data-correct="false" onclick="handleClick(this,12)">D</div></div><button class="explanation-btn" onclick="showExp(12)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp12"><h4>✓ Đáp án đúng: A. c – e – a – d – b</h4><p>Giải thích: Đoạn văn về cải cách giáo dục trong một quận.<br>c: Câu chủ đề: Giáo dục trong quận đã trải qua cải cách lớn.<br>e: Mô tả cụ thể sự thay đổi từ lớp học truyền thống → phát triển ý.<br>a: "This change has encouraged..." → kết quả tích cực.<br>d: "These educational reforms have also resulted in..." → kết quả tiếp theo.<br>b: "However" → mặt trái: thiếu công nghệ tiên tiến.</p><p><strong>Dịch nghĩa:</strong><br>c. Giáo dục trong quận đã trải qua cải cách lớn trong những năm gần đây.<br>e. Lớp học truyền thống với bàn ghế xếp hàng đã được thay thế bằng không gian tương tác được thiết kế để thúc đẩy làm việc nhóm và học tập thực hành.<br>a. Sự thay đổi này đã khuyến khích môi trường học tập hợp tác hơn, cải thiện sự tham gia và gắn kết của học sinh.<br>d. Những cải cách giáo dục này cũng dẫn đến cải thiện 15% điểm kiểm tra và giảm tỷ lệ bỏ học.<br>b. Tuy nhiên, bất chấp những kết quả tích cực này, một số trường vẫn thiếu công nghệ tiên tiến, cản trở tiến trình tiếp theo.</p></div></div>
+
+            <!-- Câu 13 -->
+            <div class="question" id="q13"><div class="question-header"><div class="question-number">13</div><div class="question-text">a. Also, the app you suggested is very user-friendly - it’s so much better than the one I was using.<br>b. Thanks for the list of French podcasts you recommended last week.<br>c. But it was fun to listen to the first few episodes.<br>d. Maybe we can have a conversation in French together soon. How does that sound?<br>e. Learning French is exciting, but I’m a bit overwhelmed with work, so I’ll stick to basic vocabulary for now.<br>A. b – e – c – a – d B. d – b – a – c – e C. e – a – b – c – d D. a – b – d – e – c</div></div><div class="options"><div class="option" data-correct="true" onclick="handleClick(this,13)">A</div><div class="option" data-correct="false" onclick="handleClick(this,13)">B</div><div class="option" data-correct="false" onclick="handleClick(this,13)">C</div><div class="option" data-correct="false" onclick="handleClick(this,13)">D</div></div><button class="explanation-btn" onclick="showExp(13)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp13"><h4>✓ Đáp án đúng: A. b – e – c – a – d</h4><p>Giải thích: Thư của Jamie gửi Alex về việc học tiếng Pháp.<br>b: Cảm ơn về danh sách podcast → mở đầu thư.<br>e: Nói về việc học tiếng Pháp nhưng đang bận → chuyển ý.<br>c: "But" → nối tiếp e, nói rằng đã nghe thử vài tập.<br>a: "Also" → bổ sung về ứng dụng được giới thiệu.<br>d: Đề nghị nói chuyện bằng tiếng Pháp cùng nhau → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>b. Cảm ơn bạn vì danh sách podcast tiếng Pháp đã giới thiệu tuần trước.<br>e. Học tiếng Pháp rất thú vị, nhưng tôi hơi quá tải với công việc, nên tôi sẽ chỉ học từ vựng cơ bản thôi.<br>c. Nhưng tôi đã rất vui khi nghe vài tập đầu tiên.<br>a. Ngoài ra, ứng dụng bạn gợi ý rất thân thiện với người dùng - nó tốt hơn nhiều so với cái tôi đang dùng.<br>d. Có lẽ chúng ta có thể nói chuyện bằng tiếng Pháp cùng nhau sớm nhé. Cậu thấy thế nào?</p></div></div>
+
+            <!-- Câu 14 -->
+            <div class="question" id="q14"><div class="question-header"><div class="question-number">14</div><div class="question-text">a. Mark: I think plant-based diets are too restrictive. I’m not sure it’s for me.<br>b. Lisa: It’s good for my health and has a low environmental impact.<br>c. Mark: Why a plant-based diet?<br>d. Mark: How are you planning to eat healthier?<br>e. Lisa: I’m thinking of trying a plant-based diet.<br>A. a – e – c – b – d B. d – e – c – b – a C. a – b – d – e – c D. d – b – a – e – c</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,14)">A</div><div class="option" data-correct="true" onclick="handleClick(this,14)">B</div><div class="option" data-correct="false" onclick="handleClick(this,14)">C</div><div class="option" data-correct="false" onclick="handleClick(this,14)">D</div></div><button class="explanation-btn" onclick="showExp(14)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp14"><h4>✓ Đáp án đúng: B. d – e – c – b – a</h4><p>Giải thích: Hội thoại giữa Mark và Lisa về chế độ ăn dựa trên thực vật.<br>d: Mark hỏi Lisa định ăn uống lành mạnh hơn bằng cách nào → mở đầu.<br>e: Lisa trả lời sẽ thử chế độ ăn dựa trên thực vật → phản hồi.<br>c: Mark hỏi lý do tại sao → câu hỏi tiếp nối.<br>b: Lisa giải thích lợi ích → trả lời câu c.<br>a: Mark đưa ra ý kiến trái chiều → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>d. Mark: Cậu định ăn uống lành mạnh hơn bằng cách nào thế?<br>e. Lisa: Tớ đang nghĩ đến việc thử chế độ ăn dựa trên thực vật.<br>c. Mark: Sao lại là chế độ ăn dựa trên thực vật?<br>b. Lisa: Nó tốt cho sức khỏe của tớ và ít tác động đến môi trường.<br>a. Mark: Tớ nghĩ chế độ ăn dựa trên thực vật quá hạn chế. Tớ không chắc nó phù hợp với tớ.</p></div></div>
+
+            <!-- Câu 15 -->
+            <div class="question" id="q15"><div class="question-header"><div class="question-number">15</div><div class="question-text">a. Emma: How are you planning to start your career?<br>b. Emma: Freelancing seems unpredictable. I’m not sure I’d do that.<br>c. John: I’m considering working as a freelancer.<br>d. John: It offers flexibility, and I can choose my own projects.<br>e. Emma: Why freelancing?<br>A. a – d – b – c – e B. a – c – e – d – b C. b – d – e – c – a D. b – c – e – d – a</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,15)">A</div><div class="option" data-correct="true" onclick="handleClick(this,15)">B</div><div class="option" data-correct="false" onclick="handleClick(this,15)">C</div><div class="option" data-correct="false" onclick="handleClick(this,15)">D</div></div><button class="explanation-btn" onclick="showExp(15)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp15"><h4>✓ Đáp án đúng: B. a – c – e – d – b</h4><p>Giải thích: Hội thoại giữa Emma và John về việc làm tự do.<br>a: Emma hỏi John định bắt đầu sự nghiệp thế nào → mở đầu.<br>c: John trả lời đang cân nhắc làm tự do → phản hồi.<br>e: Emma hỏi lý do tại sao → câu hỏi tiếp nối.<br>d: John giải thích lợi ích → trả lời câu e.<br>b: Emma đưa ra ý kiến trái chiều → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>a. Emma: Cậu định bắt đầu sự nghiệp bằng cách nào thế?<br>c. John: Tớ đang cân nhắc làm việc tự do.<br>e. Emma: Sao lại là làm tự do?<br>d. John: Nó linh hoạt và tớ có thể chọn dự án của riêng mình.<br>b. Emma: Làm tự do có vẻ khó đoán. Tớ không chắc tớ sẽ làm thế.</p></div></div>
+
+            <!-- Câu 16 -->
+            <div class="question" id="q16"><div class="question-header"><div class="question-number">16</div><div class="question-text">a. Alex: That’s awesome! I hope to try some of the dishes you learned soon.<br>b. Alex: How was your cooking class yesterday, Sam?<br>c. Sam: It was fantastic! I learned a lot of new recipes and cooking techniques.<br>A. b – c – a B. a – c – b C. b – a – c D. c – b – a</div></div><div class="options"><div class="option" data-correct="true" onclick="handleClick(this,16)">A</div><div class="option" data-correct="false" onclick="handleClick(this,16)">B</div><div class="option" data-correct="false" onclick="handleClick(this,16)">C</div><div class="option" data-correct="false" onclick="handleClick(this,16)">D</div></div><button class="explanation-btn" onclick="showExp(16)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp16"><h4>✓ Đáp án đúng: A. b – c – a</h4><p>Giải thích: Hội thoại giữa Alex và Sam về lớp học nấu ăn.<br>b: Alex hỏi Sam về lớp học nấu ăn → mở đầu.<br>c: Sam trả lời và kể về trải nghiệm → phản hồi.<br>a: Alex bày tỏ cảm xúc và hy vọng → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>b. Alex: Lớp học nấu ăn hôm qua của cậu thế nào, Sam?<br>c. Sam: Tuyệt lắm! Tớ đã học được rất nhiều công thức mới và kỹ thuật nấu ăn.<br>a. Alex: Tuyệt quá! Tớ hy vọng sớm được thử vài món cậu đã học.</p></div></div>
+
+            <!-- Câu 17 -->
+            <div class="question" id="q17"><div class="question-header"><div class="question-number">17</div><div class="question-text">a. Thanks also for recommending the online trainer - it’s way better than my previous one.<br>b. Maybe we could plan a workout together sometime. What do you think?<br>c. Thanks so much for sending those workout plans last week.<br>d. It’s great to try new exercises, but I’m swamped with projects, so I’m sticking to my usual routine for now.<br>e. But I did try a few moves, and they were quite challenging!<br>A. d – e – a – c – b B. a – d – e – c – b C. e – c – d – a – b D. c – d – e – a – b</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,17)">A</div><div class="option" data-correct="false" onclick="handleClick(this,17)">B</div><div class="option" data-correct="false" onclick="handleClick(this,17)">C</div><div class="option" data-correct="true" onclick="handleClick(this,17)">D</div></div><button class="explanation-btn" onclick="showExp(17)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp17"><h4>✓ Đáp án đúng: D. c – d – e – a – b</h4><p>Giải thích: Thư của Jack gửi Sarah về các bài tập thể dục.<br>c: Cảm ơn về kế hoạch tập luyện → mở đầu thư.<br>d: Nói về việc thử bài tập mới nhưng đang bận → chuyển ý.<br>e: "But" → nối tiếp d, nói rằng đã thử vài động tác.<br>a: "Also" → bổ sung về huấn luyện viên trực tuyến.<br>b: Đề nghị tập cùng nhau → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>c. Cảm ơn bạn rất nhiều vì đã gửi kế hoạch tập luyện tuần trước.<br>d. Thử các bài tập mới rất tốt, nhưng tôi đang ngập trong dự án, nên tôi sẽ theo thói quen thường ngày.<br>e. Nhưng tôi đã thử một vài động tác, và chúng khá thử thách!<br>a. Cũng cảm ơn bạn đã giới thiệu huấn luyện viên trực tuyến - nó tốt hơn nhiều so với cái trước của tôi.<br>b. Có lẽ chúng ta có thể lên kế hoạch tập cùng nhau vào lúc nào đó. Cậu nghĩ sao?</p></div></div>
+
+            <!-- Câu 18 -->
+            <div class="question" id="q18"><div class="question-header"><div class="question-number">18</div><div class="question-text">a. However, despite this expansion, Greenwood still lacks a central park, as the nearest one is over 10 miles away.<br>b. Once-vast green fields in the northern area have been replaced by residential complexes, marking a shift toward suburban living.<br>c. This transformation has attracted a mix of businesses, from cafes to retail stores, increasing Greenwood's appeal as a residential hub.<br>d. Over the last decade, Greenwood has seen rapid urban expansion.<br>e. This urban growth has also led to a 20% increase in population, bringing challenges like crowded public transportation.<br>A. d – b – c – e – a B. d – c – a – e – b C. d – a – b – e – c D. d – e – a – b – c</div></div><div class="options"><div class="option" data-correct="true" onclick="handleClick(this,18)">A</div><div class="option" data-correct="false" onclick="handleClick(this,18)">B</div><div class="option" data-correct="false" onclick="handleClick(this,18)">C</div><div class="option" data-correct="false" onclick="handleClick(this,18)">D</div></div><button class="explanation-btn" onclick="showExp(18)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp18"><h4>✓ Đáp án đúng: A. d – b – c – e – a</h4><p>Giải thích: Đoạn văn về sự mở rộng đô thị ở Greenwood.<br>d: Câu chủ đề: Greenwood đã mở rộng đô thị nhanh chóng.<br>b: Mô tả cụ thể sự thay đổi từ cánh đồng thành khu dân cư → phát triển ý.<br>c: "This transformation has attracted..." → hệ quả: thu hút doanh nghiệp.<br>e: "This urban growth has also led to..." → hệ quả tiếp theo: gia tăng dân số.<br>a: "However" → mặt trái: thiếu công viên trung tâm.</p><p><strong>Dịch nghĩa:</strong><br>d. Trong thập kỷ qua, Greenwood đã chứng kiến sự mở rộng đô thị nhanh chóng.<br>b. Những cánh đồng xanh rộng lớn ở khu vực phía bắc đã được thay thế bằng khu dân cư, đánh dấu sự chuyển dịch sang lối sống ngoại ô.<br>c. Sự chuyển đổi này đã thu hút nhiều doanh nghiệp, từ quán cà phê đến cửa hàng bán lẻ, làm tăng sức hấp dẫn của Greenwood như một trung tâm dân cư.<br>e. Sự tăng trưởng đô thị này cũng dẫn đến gia tăng dân số 20%, mang đến những thách thức như giao thông công cộng đông đúc.<br>a. Tuy nhiên, bất chấp sự mở rộng này, Greenwood vẫn thiếu công viên trung tâm, vì công viên gần nhất cách hơn 10 dặm.</p></div></div>
+
+            <!-- Câu 19 -->
+            <div class="question" id="q19"><div class="question-header"><div class="question-number">19</div><div class="question-text">a. Tom: It allows me to help others and gain new experiences.<br>b. Lily: I think volunteering takes a lot of time. I’d rather get a job.<br>c. Tom: I’m thinking about volunteering abroad.<br>d. Lily: Why volunteer work?<br>e. Lily: How are you planning to spend your gap year?<br>A. b – a – e – c – d B. e – c – b – a – d C. b – c – d – a – e D. e – c – d – a – b</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,19)">A</div><div class="option" data-correct="false" onclick="handleClick(this,19)">B</div><div class="option" data-correct="false" onclick="handleClick(this,19)">C</div><div class="option" data-correct="true" onclick="handleClick(this,19)">D</div></div><button class="explanation-btn" onclick="showExp(19)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp19"><h4>✓ Đáp án đúng: D. e – c – d – a – b</h4><p>Giải thích: Hội thoại giữa Lily và Tom về việc làm tình nguyện.<br>e: Lily hỏi Tom định làm gì trong năm nghỉ → mở đầu.<br>c: Tom trả lời đang nghĩ đến việc làm tình nguyện ở nước ngoài → phản hồi.<br>d: Lily hỏi lý do tại sao → câu hỏi tiếp nối.<br>a: Tom giải thích lợi ích → trả lời câu d.<br>b: Lily đưa ra ý kiến trái chiều → kết thúc.</p><p><strong>Dịch nghĩa:</strong><br>e. Lily: Cậu định dùng năm nghỉ của mình như thế nào?<br>c. Tom: Tớ đang nghĩ đến việc làm tình nguyện ở nước ngoài.<br>d. Lily: Sao lại là công việc tình nguyện?<br>a. Tom: Nó cho phép tớ giúp đỡ người khác và có được trải nghiệm mới.<br>b. Lily: Tớ nghĩ làm tình nguyện tốn rất nhiều thời gian. Tớ thà đi làm còn hơn.</p></div></div>
+
+            <!-- Câu 20 -->
+            <div class="question" id="q20"><div class="question-header"><div class="question-number">20</div><div class="question-text">a. My concern for the environment and a desire to protect natural resources inspired me to work in conservation.<br>b. In conclusion, this career is truly fulfilling, as it aligns with my values and goals for a better planet.<br>c. Spending time outdoors and observing nature firsthand reminds me why I chose this role.<br>d. Currently, I am part of a non-profit organisation where I help with initiatives focused on wildlife preservation and sustainable practices.<br>e. Although the work can be challenging due to limited resources, the positive impact we make makes this job immensely rewarding.<br>A. d – e – a – c – b B. a – d – c – e – b C. e – a – c – d – b D. c – d – a – e – b</div></div><div class="options"><div class="option" data-correct="false" onclick="handleClick(this,20)">A</div><div class="option" data-correct="true" onclick="handleClick(this,20)">B</div><div class="option" data-correct="false" onclick="handleClick(this,20)">C</div><div class="option" data-correct="false" onclick="handleClick(this,20)">D</div></div><button class="explanation-btn" onclick="showExp(20)">📝 Xem giải thích chi tiết</button><div class="explanation-content" id="exp20"><h4>✓ Đáp án đúng: B. a – d – c – e – b</h4><p>Giải thích: Đoạn văn tự sự về công việc bảo tồn thiên nhiên.<br>a: Lý do dẫn đến nghề nghiệp (mối quan tâm về môi trường) → mở đầu.<br>d: Giới thiệu công việc hiện tại tại tổ chức phi lợi nhuận → phát triển ý.<br>c: Mô tả trải nghiệm thực tế (dành thời gian ngoài trời) → bổ sung.<br>e: "Although" → nói về khó khăn nhưng sự hài lòng.<br>b: "In conclusion" → kết luận chung.</p><p><strong>Dịch nghĩa:</strong><br>a. Mối quan tâm về môi trường và mong muốn bảo vệ tài nguyên thiên nhiên đã truyền cảm hứng cho tôi làm việc trong lĩnh vực bảo tồn.<br>d. Hiện tại, tôi làm việc cho một tổ chức phi lợi nhuận, nơi tôi giúp đỡ các sáng kiến về bảo vệ động vật hoang dã và thực hành bền vững.<br>c. Dành thời gian ngoài trời và quan sát thiên nhiên tận mắt nhắc tôi nhớ tại sao tôi chọn vai trò này.<br>e. Dù công việc có thể thử thách do nguồn lực hạn chế, tác động tích cực mà chúng tôi tạo ra khiến công việc này vô cùng bổ ích.<br>b. Kết luận lại, sự nghiệp này thực sự trọn vẹn, vì nó phù hợp với giá trị và mục tiêu của tôi vì một hành tinh tốt đẹp hơn.</p></div></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© Ôn thi THPTQG - Sắp xếp câu / Đoạn | Thiết kế cho mục đích học tập</p>
+    </div>
+
+    <script>
+        function openTab(tabNum) {
+            // Ẩn tất cả các tab
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Bỏ active của tất cả các nút
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Hiển thị tab được chọn
+            const selectedTab = document.getElementById('tab' + tabNum);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            // Active nút tương ứng
+            const btns = document.querySelectorAll('.tab-btn');
+            if (btns[tabNum - 1]) {
+                btns[tabNum - 1].classList.add('active');
+            }
+        }
+
+        function handleClick(option, qNum) {
+            const qDiv = document.getElementById('q' + qNum);
+            const allOptions = qDiv.querySelectorAll('.option');
+            // Xóa class cũ
+            allOptions.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            option.classList.add('selected');
+            const isCorrect = option.getAttribute('data-correct') === 'true';
+            if (isCorrect) {
+                option.classList.add('correct');
+            } else {
+                option.classList.add('incorrect');
+                // Highlight đáp án đúng
+                allOptions.forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            // Tự động hiển thị giải thích
+            showExp(qNum);
+        }
+
+        function showExp(qNum) {
+            // Ẩn tất cả giải thích
+            document.querySelectorAll('.explanation-content').forEach(exp => {
+                exp.classList.remove('active');
+            });
+            const expDiv = document.getElementById('exp' + qNum);
+            if (expDiv) {
+                expDiv.classList.add('active');
+                expDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+    </script>
+</body>
+</html>
