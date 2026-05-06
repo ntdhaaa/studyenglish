@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Ôn tập cuối kì 2 - Word form & Viết lại câu (Đầy đủ 4 đề)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2d6a4f;
+            --primary-light: #40916c;
+            --secondary: #1b4332;
+            --accent: #d8f3dc;
+            --correct: #2e7d32;
+            --wrong: #d32f2f;
+            --bg: #f4faf7;
+            --card: #ffffff;
+            --text-dark: #081c15;
+            --text-muted: #2d6a4f;
+            --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--primary-light);
+            padding: 0.5rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .quiz-card {
+            background: var(--card);
+            border-radius: 28px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9f5ef;
+            transition: all 0.2s;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px dashed #cfe8df;
+            padding-bottom: 0.75rem;
+        }
+
+        .badge-type {
+            background: var(--primary-light);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-dept {
+            background: var(--accent);
+            color: var(--secondary);
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1.2rem 0 1rem 0;
+            line-height: 1.4;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid #d0e2d9;
+            border-radius: 20px;
+            font-family: 'Inter', monospace;
+            transition: 0.1s;
+            margin-bottom: 1rem;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.2);
+        }
+
+        .answer-input.correct {
+            border-color: var(--correct);
+            background: #ebf7eb;
+        }
+
+        .answer-input.wrong {
+            border-color: var(--wrong);
+            background: #ffe8e8;
+        }
+
+        .hint-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .hint-content {
+            display: none;
+            background: var(--accent);
+            padding: 0.9rem;
+            border-radius: 18px;
+            margin: 0.5rem 0 1rem 0;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--primary);
+            white-space: pre-wrap;
+        }
+
+        .check-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .check-btn:active {
+            transform: scale(0.96);
+        }
+
+        .feedback {
+            margin-left: 1rem;
+            font-weight: 500;
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 1.2rem;
+            padding: 1rem;
+            background: #f0f7f3;
+            border-radius: 20px;
+            border-left: 5px solid var(--primary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .footer-bar {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            width: fit-content;
+            margin: 2rem auto 0;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #cfe8df;
+        }
+
+        .submit-final {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .score-text {
+            font-weight: 700;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background: white;
+            max-width: 500px;
+            width: 90%;
+            padding: 2rem;
+            border-radius: 40px;
+            text-align: center;
+        }
+
+        .final-score-big {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        canvas#confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @media (max-width: 700px) {
+            .quiz-card {
+                padding: 1.2rem;
+            }
+
+            .question-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="container">
+    <div class="header">
+        <h1>📘 Ôn tập cuối kì 2 - Word form & Viết lại câu</h1>
+        <div class="sub">🌿 Lớp 11 | Units 6-7-8 | 4 đề tổng hợp (50 câu chuẩn)</div>
+    </div>
+    <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">📌 Tất cả</button>
+        <button class="filter-btn" data-filter="wordform">🔤 Word Form</button>
+        <button class="filter-btn" data-filter="rewrite">✍️ Viết lại câu</button>
+    </div>
+    <div id="quizList" class="quiz-list"></div>
+    <div class="footer-bar">
+        <span class="score-text">📊 Đã kiểm tra: <span id="checkedCount">0</span>/<span id="totalCount">0</span></span>
+        <button class="submit-final" id="finalSubmitBtn">🏆 Xem tổng kết</button>
+    </div>
+</div>
+<div id="resultModal" class="modal">
+    <div class="modal-card">
+        <h2>🎯 Kết quả ôn tập</h2>
+        <div class="final-score-big" id="finalScore"></div>
+        <p id="finalMessage"></p>
+        <button class="check-btn" onclick="location.reload()">🔄 Làm lại</button>
+    </div>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // DỮ LIỆU ĐẦY ĐỦ: WORD FORM + VIẾT LẠI CÂU (4 đề, giữ nguyên nội dung chi tiết)
+    // --------------------------------------------------------------
+    const questionsData = [
+        // ================= ĐỀ 1 - WORD FORM =================
+        { type: "wordform", text: "Extreme dieting can lead to severe _____________ and unhealthy eating habits. (ANXIOUS)", hint: "💡 Gợi ý: Sau tính từ 'severe' cần một danh từ.", answer: "anxiety", explanation: "📖 Giải thích: 'Anxiety' (sự lo lắng) là danh từ. Dịch: Ăn kiêng cực đoan có thể dẫn đến lo lắng nghiêm trọng và thói quen ăn uống không lành mạnh." },
+        { type: "wordform", text: "Young people need strong communication abilities to succeed in professional _____________ in the future. (DEVELOP)", hint: "💡 Gợi ý: Sau tính từ 'professional' cần một danh từ.", answer: "development", explanation: "📖 Giải thích: 'Development' (sự phát triển) là danh từ. 'Professional development' = phát triển chuyên môn." },
+        { type: "wordform", text: "The ancient temples were beautifully _____________ through detailed carvings on the stone walls. (DEPICT)", hint: "💡 Gợi ý: Câu bị động (were + P2), sau trạng từ cần P2.", answer: "depicted", explanation: "📖 Giải thích: 'Depicted' (được khắc họa) là quá khứ phân từ của 'depict'." },
+        { type: "wordform", text: "The government is developing new policies to improve the long-term _____________ of coastal areas. (RESILIENT)", hint: "💡 Sau 'long-term' và trước 'of' cần một danh từ.", answer: "resilience", explanation: "📖 'Resilience' (khả năng phục hồi) là danh từ của 'resilient'." },
+        { type: "wordform", text: "Excessive use of agricultural _____________ can damage soil quality and harm ecosystems. (CHEMISTRY)", hint: "💡 Sau 'agricultural' cần danh từ (thường số nhiều).", answer: "chemicals", explanation: "📖 'Chemicals' (hóa chất) là danh từ số nhiều. 'Chemistry' là môn hóa học." },
+        { type: "wordform", text: "Climate change has increased the _____________ of extreme weather events in many regions. (FREQUENT)", hint: "💡 Mạo từ 'the' + danh từ + 'of'.", answer: "frequency", explanation: "📖 'Frequency' (tần suất) là danh từ phù hợp." },
+        { type: "wordform", text: "Visitors were amazed by the _____________ landscape of the mountainous region. (MAGNIFY)", hint: "💡 Trước danh từ 'landscape' cần tính từ.", answer: "magnificent", explanation: "📖 'Magnificent' (tráng lệ) là tính từ. 'Magnify' là động từ 'phóng to'." },
+        { type: "wordform", text: "The scientist made a highly _____________ discovery that changed the field of medicine. (INFLUENCE)", hint: "💡 Sau trạng từ 'highly' cần tính từ.", answer: "influential", explanation: "📖 'Influential' (có ảnh hưởng lớn) là tính từ." },
+        { type: "wordform", text: "Income _____________ remains a major challenge in many developing communities. (STABLE)", hint: "💡 'remains a major challenge' → nghĩa tiêu cực.", answer: "instability", explanation: "📖 'Instability' (sự bất ổn) phù hợp. Dịch: Sự bất ổn về thu nhập vẫn là thách thức lớn." },
+        { type: "wordform", text: "Environmental degradation can lead to the _____________ of natural ecosystems over time. (STABLE)", hint: "💡 Sau 'the' và trước 'of' cần danh từ tiêu cực.", answer: "destabilization", explanation: "📖 'Destabilization' (sự gây mất ổn định) nhấn mạnh quá trình." },
+        // ================= ĐỀ 1 - REWRITE =================
+        { type: "rewrite", text: "Sarah met her best friend for the first time at a summer camp. (Use cleft sentence)", hint: "💡 Nhấn mạnh nơi chốn: It was ... that ...", answer: "It was at a summer camp that Sarah met her best friend for the first time.", explanation: "📖 Câu chẻ (cleft sentence) nhấn mạnh trạng ngữ chỉ nơi chốn: It was + [phần nhấn mạnh] + that + mệnh đề còn lại." },
+        { type: "rewrite", text: "They invested a large amount of money in the cyber-security system, but several data breaches still occurred. (Use 'nonetheless')", hint: "💡 'nonetheless' = tuy nhiên, dùng dấu chấm phẩy.", answer: "They invested a large amount of money in the cyber-security system; nonetheless, several data breaches still occurred.", explanation: "📖 'Nonetheless' mang nghĩa nhượng bộ, có thể dùng dấu chấm phẩy hoặc tách câu." },
+        { type: "rewrite", text: "The witness admitted that she had seen the suspect leave the building. (Use 'having')", hint: "💡 admit + having + P2", answer: "The witness admitted having seen the suspect leave the building.", explanation: "📖 Cấu trúc 'admit + having + P2' rút gọn mệnh đề danh từ thì quá khứ hoàn thành." },
+        { type: "rewrite", text: "After he had repaired the broken fence, he went back to the house to rest. (Use 'Having')", hint: "💡 Having + P2, mệnh đề chính", answer: "Having repaired the broken fence, he went back to the house to rest.", explanation: "📖 Phân từ hoàn thành (Having + P2) diễn tả hành động xảy ra trước trong quá khứ." },
+        { type: "rewrite", text: "Many schools overlook the seriousness of online harassment among students. (Use 'blind')", hint: "💡 be blind to something", answer: "Many schools are blind to the seriousness of online harassment among students.", explanation: "📖 Cụm 'be blind to something' = phớt lờ, không nhận thấy." },
+        // ================= ĐỀ 2 - WORD FORM =================
+        { type: "wordform", text: "His _____________ causes a lot of trouble and financial damages to the company. (RESPONSIBLE)", hint: "💡 'causes trouble' -> nghĩa tiêu cực.", answer: "irresponsibility", explanation: "📖 'Irresponsibility' (sự vô trách nhiệm) phù hợp." },
+        { type: "wordform", text: "Not many people have the _____________ to deal with difficult situations. (CONFIDENT)", hint: "💡 Sau 'have the' cần danh từ.", answer: "confidence", explanation: "📖 'Confidence' (sự tự tin) là danh từ." },
+        { type: "wordform", text: "Parents play an important part in children’s process of becoming _____________. (DEPEND)", hint: "💡 Sau 'becoming' cần tính từ, nghĩa độc lập.", answer: "independent", explanation: "📖 'Independent' (độc lập) phù hợp quá trình trưởng thành." },
+        { type: "wordform", text: "He’s a _____________ person. He likes parties and chatting with his friends. (SOCIETY)", hint: "💡 Tính từ chỉ tính cách hòa đồng.", answer: "sociable", explanation: "📖 'Sociable' (hòa đồng) mô tả đúng." },
+        { type: "wordform", text: "Many mega cities in the world are facing the problem of _____________ as more people are moving to large urban areas. (POPULATE)", hint: "💡 Dân số quá đông -> over + population", answer: "overpopulation", explanation: "📖 'Overpopulation' (sự quá tải dân số)." },
+        { type: "wordform", text: "Between 2009 and 2018, it was declared endangered because of pollution and the _____________ of its ecosystems. (DESTROY)", hint: "💡 Mạo từ 'the' + danh từ + 'of'", answer: "destruction", explanation: "📖 'Destruction' (sự hủy diệt)." },
+        { type: "wordform", text: "The company made a _____________ decision that led to huge financial losses. (DISASTER)", hint: "💡 Trước danh từ 'decision' cần tính từ.", answer: "disastrous", explanation: "📖 'Disastrous' (thảm họa, tai hại)." },
+        { type: "wordform", text: "_____________ energy is the energy that does not come from fossil fuels... (ALTER)", hint: "💡 'Alternative energy' là cụm cố định.", answer: "Alternative", explanation: "📖 'Alternative' (thay thế) là tính từ." },
+        { type: "wordform", text: "_____________ contaminated water from a nearby river, lots of people in this village suffer from cancers. (DRINK)", hint: "💡 Danh động từ làm chủ ngữ.", answer: "Drinking", explanation: "📖 'Drinking contaminated water' (uống nước ô nhiễm) – Gerund." },
+        { type: "wordform", text: "_____________ has increased significantly due to the economic downturn. (EMPLOY)", hint: "💡 Suy thoái -> thất nghiệp tăng.", answer: "Unemployment", explanation: "📖 'Unemployment' (sự thất nghiệp) phù hợp." },
+        // ================= ĐỀ 2 - REWRITE =================
+        { type: "rewrite", text: "People believe that climate change is the biggest threat to our planet. (Use cleft sentence)", hint: "💡 Nhấn mạnh chủ ngữ climate change", answer: "It is climate change that people believe is the biggest threat to our planet.", explanation: "📖 Câu chẻ nhấn mạnh chủ ngữ: It is + S + that + mệnh đề." },
+        { type: "rewrite", text: "The air pollution is getting worse. People are still using private cars a lot. (Use 'despite')", hint: "💡 Despite + N / V-ing / the fact that", answer: "Despite the fact that the air pollution is getting worse, people are still using private cars a lot.", explanation: "📖 'Despite' + cụm danh từ hoặc mệnh đề với 'the fact that'." },
+        { type: "rewrite", text: "He denied that he had used AI tools to complete the assignment. (Use 'having')", hint: "💡 deny + having + P2", answer: "He denied having used AI tools to complete the assignment.", explanation: "📖 Rút gọn mệnh đề danh từ quá khứ hoàn thành." },
+        { type: "rewrite", text: "After she had finished her project on renewable energy, she presented it to the class. (Use 'Having')", hint: "💡 Having + P2 + mệnh đề chính", answer: "Having finished her project on renewable energy, she presented it to the class.", explanation: "📖 Phân từ hoàn thành diễn tả hành động trước." },
+        { type: "rewrite", text: "People are cutting down too many trees, which causes serious environmental problems. (Use 'deforestation')", hint: "💡 Deforestation = nạn phá rừng", answer: "Deforestation causes serious environmental problems.", explanation: "📖 Danh từ 'deforestation' diễn tả hành động chặt phá rừng." },
+        // ================= ĐỀ 3 - WORD FORM =================
+        { type: "wordform", text: "Local authorities are implementing a comprehensive plan for the long-term _____________ (preserve) of the ancient citadel.", hint: "💡 Sau tính từ 'long-term' cần danh từ.", answer: "preservation", explanation: "📖 'Preservation' (sự bảo tồn). Dịch: Kế hoạch bảo tồn lâu dài." },
+        { type: "wordform", text: "Many high school leavers feel deeply anxious due to a lack of specialized _____________ (vocation) guidance.", hint: "💡 Trước danh từ 'guidance' cần tính từ.", answer: "vocational", explanation: "📖 'Vocational guidance' = hướng nghiệp." },
+        { type: "wordform", text: "I distinctly remember _____________ (meet) the prominent activist who delivered a lecture on marine ecosystems.", hint: "💡 remember + V-ing: nhớ đã làm.", answer: "meeting", explanation: "📖 'Remember meeting' = nhớ đã gặp." },
+        { type: "wordform", text: "Cultivating emotional resilience and financial _____________ (independent) is a vital milestone for young adults.", hint: "💡 Sau tính từ 'financial' cần danh từ.", answer: "independence", explanation: "📖 'Independence' (sự độc lập)." },
+        { type: "wordform", text: "Recent archaeological findings provide compelling _____________ (history) evidence that this site was a trade hub.", hint: "💡 Trước 'evidence' cần tính từ.", answer: "historical", explanation: "📖 'Historical evidence' = bằng chứng lịch sử." },
+        { type: "wordform", text: "Many educators are increasingly alarmed by the _____________ (harm) effects of cyberharassment on student well-being.", hint: "💡 Trước 'effects' cần tính từ.", answer: "harmful", explanation: "📖 'Harmful effects' = tác hại." },
+        { type: "wordform", text: "The school's new curriculum is designed to be highly _____________ (education), addressing complex social issues.", hint: "💡 Sau 'highly' cần tính từ.", answer: "educational", explanation: "📖 'Educational' = mang tính giáo dục." },
+        { type: "wordform", text: "The rapid loss of _____________ (biodiverse) in tropical regions is now considered a global emergency.", hint: "💡 Sau giới từ 'of' cần danh từ.", answer: "biodiversity", explanation: "📖 'Biodiversity' = đa dạng sinh học." },
+        { type: "wordform", text: "After completing the intensive life-skills program, Nam felt significantly more _____________ (confidence) in his future.", hint: "💡 Sau 'felt' cần tính từ.", answer: "confident", explanation: "📖 'Confident' (tự tin)." },
+        { type: "wordform", text: "It is imperative for modern corporations to operate _____________ (environment) to mitigate their carbon footprint.", hint: "💡 Trước động từ 'operate' cần trạng từ.", answer: "environmentally", explanation: "📖 'Environmentally' (về mặt môi trường)." },
+        // ================= ĐỀ 3 - REWRITE =================
+        { type: "rewrite", text: "People believe that climate change is the biggest threat to our planet. (Use Cleft Sentence)", hint: "💡 Cleft sentence nhấn mạnh đối tượng.", answer: "It is climate change that people believe is the biggest threat to our planet.", explanation: "📖 Cấu trúc: It is/ was + thành phần được nhấn mạnh + that + mệnh đề." },
+        { type: "rewrite", text: "Many students use smartphones in class. They still achieve good results. (Use 'Although')", hint: "💡 Although + mệnh đề nhượng bộ", answer: "Although many students use smartphones in class, they still achieve good results.", explanation: "📖 Liên từ chỉ sự nhượng bộ." },
+        { type: "rewrite", text: "He denied that he had used AI tools to complete the assignment. (Use 'having')", hint: "💡 deny + having + P2", answer: "He denied having used AI tools to complete the assignment.", explanation: "📖 Rút gọn mệnh đề danh từ." },
+        { type: "rewrite", text: "After she had finished her project on renewable energy, she presented it to the class. (Use 'Having')", hint: "💡 Having + P2, mệnh đề chính", answer: "Having finished her project on renewable energy, she presented it to the class.", explanation: "📖 Phân từ hoàn thành thay cho mệnh đề thời gian." },
+        { type: "rewrite", text: "People are cutting down too many trees, which causes serious environmental problems. (Use 'Deforestation')", hint: "💡 Deforestation là danh từ chỉ hành động phá rừng.", answer: "Deforestation causes serious environmental problems.", explanation: "📖 Chuyển mệnh đề nguyên nhân thành danh từ chủ ngữ." },
+        // ================= ĐỀ 4 - WORD FORM =================
+        { type: "wordform", text: "The _____________ of the Internet has changed the way we communicate. (INVENT)", hint: "💡 Mạo từ 'The' + danh từ số ít", answer: "invention", explanation: "📖 'Invention' (sự phát minh)." },
+        { type: "wordform", text: "The country is known for its cultural _____________. (DIVERSE)", hint: "💡 Sau tính từ sở hữu 'its' cần danh từ.", answer: "diversity", explanation: "📖 'Cultural diversity' = sự đa dạng văn hóa." },
+        { type: "wordform", text: "The graph was thoroughly _____________, making the data easier to understand. (ILLUSTRATE)", hint: "💡 Bị động (was + P2)", answer: "illustrated", explanation: "📖 'Illustrated' = được minh họa." },
+        { type: "wordform", text: "Children are often financially _____________ on their parents. (DEPEND)", hint: "💡 dependent on = phụ thuộc vào", answer: "dependent", explanation: "📖 Tính từ 'dependent' đi với giới từ 'on'." },
+        { type: "wordform", text: "She spoke very _____________ during the interview. (CONFIDENT)", hint: "💡 Sau động từ thường cần trạng từ.", answer: "confidently", explanation: "📖 'Confidently' (một cách tự tin)." },
+        { type: "wordform", text: "The building is a masterpiece of modern _____________. (ARCHITECT)", hint: "💡 Sau giới từ 'of' cần danh từ.", answer: "architecture", explanation: "📖 'Architecture' = kiến trúc." },
+        { type: "wordform", text: "The teacher gave us a lot of useful _____________. (INFORM)", hint: "💡 a lot of + danh từ không đếm được.", answer: "information", explanation: "📖 'Information' (thông tin)." },
+        { type: "wordform", text: "The _____________ of the environment should be our priority. (PROTECT)", hint: "💡 Mạo từ 'The' + danh từ + of", answer: "protection", explanation: "📖 'Protection' = sự bảo vệ." },
+        { type: "wordform", text: "His speech was full of _____________ and motivated everyone. (INSPIRE)", hint: "💡 full of + danh từ", answer: "inspiration", explanation: "📖 'Inspiration' = cảm hứng." },
+        { type: "wordform", text: "Social workers who look after abused or _____________ children often have stressful days at work. (DANGER)", hint: "💡 Tính từ song song với 'abused'.", answer: "endangered", explanation: "📖 'Endangered' (lâm nguy, bị đe dọa), phù hợp ngữ cảnh trẻ em." },
+        // ================= ĐỀ 4 - REWRITE =================
+        { type: "rewrite", text: "She made an important decision that changed her life last night. (Use cleft sentence)", hint: "💡 Nhấn mạnh thời gian 'last night'", answer: "It was last night that she made an important decision that changed her life.", explanation: "📖 Câu chẻ nhấn mạnh trạng ngữ thời gian." },
+        { type: "rewrite", text: "She prefers studying at night, but her brother studies better in the morning. (Use 'whereas')", hint: "💡 'whereas' thay cho 'but' chỉ sự đối lập.", answer: "She prefers studying at night, whereas her brother studies better in the morning.", explanation: "📖 Liên từ 'whereas' nối hai mệnh đề tương phản." },
+        { type: "rewrite", text: "The students denied that they had studied the topic before. (Use 'having')", hint: "💡 denied having + P2", answer: "The students denied having studied the topic before.", explanation: "📖 Rút gọn mệnh đề quá khứ hoàn thành." },
+        { type: "rewrite", text: "After she had completed all her assignments, she went out with her friends. (Use 'Having')", hint: "💡 Having + P2, mệnh đề chính", answer: "Having completed all her assignments, she went out with her friends.", explanation: "📖 Phân từ hoàn thành chỉ hành động xảy ra trước." },
+        { type: "rewrite", text: "We must not allow the poacher to enter the safari. (Use 'circumstances')", hint: "💡 Đảo ngữ với 'Under no circumstances'", answer: "Under no circumstances must we allow the poacher to enter the safari.", explanation: "📖 Cấu trúc đảo ngữ: Under no circumstances + trợ động từ + S + V." }
+    ];
+
+    let userAnswers = new Array(questionsData.length).fill('');
+    let checkedStatus = new Array(questionsData.length).fill(false);
+    let currentFilter = 'all';
+
+    function render() {
+        const container = document.getElementById('quizList');
+        const filtered = questionsData.filter((_, idx) => {
+            if (currentFilter === 'all') return true;
+            return questionsData[idx].type === currentFilter;
+        });
+        container.innerHTML = '';
+        filtered.forEach((q, filteredIdx) => {
+            const originalIdx = questionsData.findIndex((item, i) => 
+                item.text === q.text && item.type === q.type && item.answer === q.answer
+            );
+            const isChecked = checkedStatus[originalIdx];
+            const answerVal = userAnswers[originalIdx];
+            let inputClass = '';
+            if (isChecked && answerVal.trim().toLowerCase() === q.answer.toLowerCase()) inputClass = 'correct';
+            if (isChecked && answerVal.trim().toLowerCase() !== q.answer.toLowerCase() && answerVal.trim() !== '') inputClass = 'wrong';
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            card.innerHTML = `
+                <div class="quiz-header">
+                    <span class="badge-type">${q.type === 'wordform' ? '🔤 WORD FORM' : '✍️ VIẾT LẠI CÂU'}</span>
+                    <span class="badge-dept">📚 Đề tổng hợp</span>
+                </div>
+                <div class="question-text">${escapeHtml(q.text)}</div>
+                <input type="text" class="answer-input ${inputClass}" id="input-${originalIdx}" value="${escapeHtml(answerVal)}" placeholder="Nhập câu trả lời..." data-idx="${originalIdx}">
+                <div><button class="hint-btn" data-idx="${originalIdx}">💡 Gợi ý</button></div>
+                <div class="hint-content" id="hint-${originalIdx}">${escapeHtml(q.hint)}</div>
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <button class="check-btn" data-idx="${originalIdx}">🔍 Kiểm tra</button>
+                    <span class="feedback" id="fb-${originalIdx}"></span>
+                </div>
+                <div class="explanation" id="exp-${originalIdx}"><strong>📖 Giải thích chi tiết:</strong><br> ${escapeHtml(q.explanation).replace(/\n/g, '<br>')}</div>
+            `;
+            container.appendChild(card);
+        });
+        attachEvents();
+        document.getElementById('totalCount').innerText = questionsData.length;
+        const checkedTotal = checkedStatus.filter(v => v === true).length;
+        document.getElementById('checkedCount').innerText = checkedTotal;
+    }
+
+    function escapeHtml(str) { 
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m){
+            if(m==='&') return '&amp;';
+            if(m==='<') return '&lt;';
+            if(m==='>') return '&gt;';
+            return m;
+        }); 
+    }
+
+    function attachEvents() {
+        document.querySelectorAll('.answer-input').forEach(inp => {
+            inp.removeEventListener('input', handleInput);
+            inp.addEventListener('input', handleInput);
+        });
+        document.querySelectorAll('.check-btn').forEach(btn => {
+            btn.removeEventListener('click', handleCheck);
+            btn.addEventListener('click', handleCheck);
+        });
+        document.querySelectorAll('.hint-btn').forEach(btn => {
+            btn.removeEventListener('click', handleHint);
+            btn.addEventListener('click', handleHint);
+        });
+    }
+
+    function handleInput(e) {
+        const idx = parseInt(e.target.dataset.idx);
+        userAnswers[idx] = e.target.value;
+    }
+
+    function playBeep(correct) {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            if (correct) { osc.type = 'sine'; osc.frequency.value = 880; gain.gain.value = 0.2; osc.start(); osc.stop(audioCtx.currentTime + 0.2); }
+            else { osc.type = 'triangle'; osc.frequency.value = 440; gain.gain.value = 0.15; osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
+            audioCtx.resume();
+        } catch(e) {}
+    }
+
+    function handleCheck(e) {
+        const idx = parseInt(e.target.dataset.idx);
+        const inputEl = document.getElementById(`input-${idx}`);
+        const userAns = (userAnswers[idx] || '').trim().toLowerCase();
+        const correctAns = questionsData[idx].answer.toLowerCase();
+        const fbSpan = document.getElementById(`fb-${idx}`);
+        const expDiv = document.getElementById(`exp-${idx}`);
+        if (!userAns) {
+            inputEl.style.borderColor = 'var(--wrong)';
+            setTimeout(() => inputEl.style.borderColor = '', 800);
+            return;
+        }
+        const isCorrect = (userAns === correctAns);
+        if (isCorrect) {
+            inputEl.classList.add('correct'); inputEl.classList.remove('wrong');
+            fbSpan.innerHTML = '✅ Đúng!'; fbSpan.style.color = 'var(--correct)';
+            playBeep(true);
+        } else {
+            inputEl.classList.add('wrong'); inputEl.classList.remove('correct');
+            fbSpan.innerHTML = `❌ Sai. Đáp án: ${questionsData[idx].answer}`; fbSpan.style.color = 'var(--wrong)';
+            playBeep(false);
+        }
+        expDiv.style.display = 'block';
+        if (!checkedStatus[idx]) {
+            checkedStatus[idx] = true;
+            document.getElementById('checkedCount').innerText = checkedStatus.filter(v=>v).length;
+        }
+        inputEl.disabled = true;
+        e.target.disabled = true;
+    }
+
+    function handleHint(e) {
+        const idx = parseInt(e.target.dataset.idx);
+        const hintDiv = document.getElementById(`hint-${idx}`);
+        if (hintDiv.style.display === 'block') hintDiv.style.display = 'none';
+        else hintDiv.style.display = 'block';
+    }
+
+    function triggerConfetti() {
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particles = [];
+        for(let i=0;i<120;i++) particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height-canvas.height, vx:Math.random()*4-2, vy:Math.random()*5+3, color:`hsl(${Math.random()*360},70%,60%)`, size:Math.random()*7+4});
+        let start = performance.now();
+        function animate(now) {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            let active=false;
+            particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.y<canvas.height) active=true; ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.size,p.size); });
+            if(active && now-start<2000) requestAnimationFrame(animate);
+            else ctx.clearRect(0,0,canvas.width,canvas.height);
+        }
+        requestAnimationFrame(animate);
+    }
+
+    document.getElementById('finalSubmitBtn').addEventListener('click', () => {
+        let correctCount = 0;
+        for(let i=0;i<questionsData.length;i++) {
+            const inp = document.getElementById(`input-${i}`);
+            if(inp && inp.classList.contains('correct')) correctCount++;
+        }
+        const percent = (correctCount/questionsData.length)*100;
+        let msg = '';
+        if(percent===100) { msg = '🎉 Xuất sắc! Bạn thành thạo cả word form và viết lại câu!'; triggerConfetti(); }
+        else if(percent>=80) msg = '🔥 Rất tốt! Cố gắng thêm chút nữa nhé.';
+        else if(percent>=50) msg = '📘 Khá ổn, hãy xem lại giải thích để cải thiện.';
+        else msg = '🌱 Đừng nản, ôn lại kỹ hơn và thử lại nhé!';
+        document.getElementById('finalScore').innerText = `${correctCount}/${questionsData.length}`;
+        document.getElementById('finalMessage').innerText = msg;
+        document.getElementById('resultModal').style.display = 'flex';
+    });
+    window.onclick = function(e) { if(e.target === document.getElementById('resultModal')) document.getElementById('resultModal').style.display = 'none'; };
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            render();
+        });
+    });
+    render();
+</script>
+</body>
+</html>
