@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SẮP XẾP CÂU THPTQG (P2)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        :root {
+            --primary: #2c3e66;
+            --secondary: #1abc9c;
+            --correct: #2ecc71;
+            --wrong: #e74c3c;
+            --background: #eef2f7;
+            --card-bg: #ffffff;
+            --text-main: #1e2a3e;
+            --text-light: #4a627a;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--background);
+            background-image: linear-gradient(145deg, #e0e7f0 0%, #f4f9ff 100%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #1e2f4e, #2c3e66);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            font-size: 2rem;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .sub {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .timer-bar {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .timer-box {
+            background: #2c3e66;
+            color: white;
+            padding: 10px 32px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            box-shadow: 0 6px 0 #141e30;
+        }
+        .timer-box.warning {
+            background: #e67e22;
+            box-shadow: 0 6px 0 #b45d1a;
+        }
+
+        .quiz-container {
+            max-width: 850px;
+            margin: 0 auto 100px auto;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            padding: 20px 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 12px 20px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--secondary);
+            padding-left: 15px;
+        }
+
+        .q-tag {
+            background: var(--secondary);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.55;
+            background: #f8fafd;
+            padding: 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .option-btn {
+            background: #ffffff;
+            border: 2px solid #dee4ec;
+            border-radius: 60px;
+            padding: 12px 20px;
+            font-family: 'Nunito', monospace;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: 0.1s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .option-btn:hover {
+            background: #f2f6fc;
+            border-color: #bdd3ff;
+        }
+        .option-btn.selected-correct {
+            background: var(--correct);
+            border-color: #229954;
+            color: white;
+            box-shadow: 0 4px 10px rgba(46,204,113,0.3);
+        }
+        .option-btn.selected-wrong {
+            background: var(--wrong);
+            border-color: #c0392b;
+            color: white;
+        }
+        .option-btn.correct-reveal {
+            background: var(--correct);
+            border-color: #229954;
+            color: white;
+            opacity: 0.95;
+        }
+        .option-btn.disabled-btn {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .explanation-instant {
+            margin-top: 20px;
+            background: #fef9e6;
+            border-left: 6px solid var(--primary);
+            padding: 18px 20px;
+            border-radius: 20px;
+            animation: fadeSlide 0.25s ease;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .explanation-instant strong {
+            color: #2c3e66;
+        }
+
+        .footer-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(8px);
+            padding: 12px 24px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        .submit-btn, .retry-footer-btn {
+            border: none;
+            padding: 10px 32px;
+            font-size: 1rem;
+            font-weight: 800;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 0 #141e30;
+        }
+        .retry-footer-btn {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 4px 0 #0e7c64;
+        }
+        .score-display {
+            font-weight: 700;
+            background: #eef2fa;
+            padding: 6px 16px;
+            border-radius: 60px;
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-6px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        .final-score {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .wrong-list {
+            background: #fdf0f0;
+            border-radius: 20px;
+            padding: 12px;
+            margin: 16px 0;
+            text-align: left;
+            max-height: 200px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-container">
+    <h1>📝 SẮP XẾP CÂU THPTQG (P2)</h1>
+    <div class="sub">✨ Chọn đáp án → Hiện ngay đúng/sai + giải thích chi tiết ✨</div>
+    <div class="timer-bar">
+        <div class="timer-box" id="timer">60:00</div>
+    </div>
+</div>
+
+<div class="quiz-container" id="quiz-area"></div>
+
+<div class="footer-controls">
+    <div class="score-display">✅ Đã chọn: <span id="progress-text">0</span>/<span id="total-text">20</span></div>
+    <button class="submit-btn" id="submitQuizBtn">NỘP BÀI</button>
+    <button class="retry-footer-btn" id="resetQuizBtn">🔄 LÀM LẠI</button>
+</div>
+
+<div class="modal-overlay" id="result-modal">
+    <div class="modal-content">
+        <h2 style="color:var(--secondary);">📊 KẾT QUẢ</h2>
+        <div class="final-score" id="final-score-display">0/20</div>
+        <div id="wrong-questions-list" class="wrong-list"></div>
+        <p id="feedback-msg"></p>
+        <div>
+            <button class="submit-btn" id="closeModalBtn">Đóng</button>
+            <button class="retry-footer-btn" id="modalRetryBtn">Làm lại</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ---------- TOÀN BỘ NỘI DUNG GỐC (20 CÂU, ĐÁP ÁN, GIẢI THÍCH CHI TIẾT) ----------
+    const ORIGINAL_DATA = [
+        { q: "Question 1.\na. All in all, I am proud of this career, as it allows me to make a difference in people’s lives every day.\nb. The fast-paced environment keeps this role challenging and teaches me something new every day.\nc. I currently work as a nurse in a busy hospital, providing care to patients and supporting doctors during procedures.\nd. While the hours can be long and exhausting, the gratitude from patients makes this job worthwhile.\ne. My commitment to helping others and interest in science led me to a career in healthcare.", opts: ["A. c – b – e – d – a", "B. b – c – d – e – a", "C. d – c – e – b – a", "D. e – c – b – d – a"], correct: 3, explanation: "Đáp án D. e – c – b – d – a\nGiải thích chi tiết:\nĐây là đoạn văn tự sự (narrative paragraph), thường có cấu trúc: Lý do chọn nghề (Past) -> Công việc hiện tại (Present) -> Trải nghiệm/Cảm xúc (Present) -> Kết luận (Conclusion).\ne (Mở đầu): \"My commitment to helping others...\" (Sự tận tâm giúp đỡ người khác đã dẫn tôi đến nghề chăm sóc sức khỏe). Đây là câu lý do / nguồn cội, rất tự nhiên để bắt đầu một câu chuyện về nghề nghiệp.\nc (Phát triển): \"I currently work as a nurse...\" (Hiện tại tôi làm y tá...). Sau khi nói lý do, người viết giới thiệu công việc cụ thể hiện tại.\nb (Triển khai): \"The fast-paced environment...\" (Môi trường làm việc nhanh chóng...). Tiếp tục mô tả tính chất công việc (môi trường bận rộn, luôn học hỏi).\nd (Triển khai): \"While the hours can be long...\" (Dù giờ giấc có thể dài...). Dùng từ nối \"While\" (mặc dù) để đưa ra mặt trái (giờ giấc dài) nhưng sau đó là mặt tích cực (sự biết ơn từ bệnh nhân).\na (Kết luận): \"All in all, I am proud...\" (Tóm lại, tôi tự hào...). Dùng cụm từ kết luận \"All in all\" để tổng kết lại cảm xúc và sự hài lòng với nghề.\n\nPhân tích các phương án nhiễu:\nA (c-b-e-d-a): Bắt đầu bằng công việc hiện tại (c) rồi quay về lý do (e) có thể chấp nhận nhưng không tự nhiên bằng việc kể lý do trước.\nB (b-c-d-e-a): Bắt đầu bằng \"fast-paced environment\" (môi trường bận rộn) khi chưa giới thiệu mình là ai, làm gì -> Rất lủng củng.\nC (d-c-e-b-a): Mở đầu bằng khó khăn (d) ngay câu đầu tiên khi chưa có bối cảnh -> Gây hụt hẫng." },
+        
+        { q: "Question 2.\na. Dan: Hi, Lily. Not too much, but I spent some time gardening, which was relaxing.\nb. Lily: That sounds lovely! Gardening is a great way to unwind and enjoy nature.\nc. Lily: Hi, Dan! Did you do anything exciting over the weekend?", opts: ["A. c – b – a", "B. c – a – b", "C. a – c – b", "D. b – a – c"], correct: 1, explanation: "Đáp án: B. c – a – b\nGiải thích chi tiết:\nĐây là đoạn hội thoại, cần theo trình tự: Chào / Mở chủ đề (câu hỏi) -> Trả lời -> Phản hồi lại câu trả lời.\nc (Mở đầu): Lily: \"Hi, Dan! Did you do anything exciting over the weekend?\" – Lời chào kèm câu hỏi mở đầu cuộc trò chuyện.\na (Trả lời): Dan: \"Hi, Lily. Not too much, but I spent some time gardening...\" – Đáp lại lời chào và trả lời câu hỏi (không có gì nhiều, chỉ làm vườn).\nb (Phản hồi): \"That sounds lovely! Gardening is a great way to unwind...\" – Lily phản hồi tích cực về câu trả lời của Dan.\n\nCác phương án sai:\nA (c-b-a): Đặt lời phản hồi (b) trước khi Dan trả lời câu hỏi (a) -> Vô lý.\nC (a-c-b): Dan tự nhiên nói \"Not too much\" khi chưa được hỏi -> Không tự nhiên.\nD (b-a-c): Mở đầu bằng phản hồi \"That sounds lovely\" khi chưa biết chuyện gì." },
+        
+        { q: "Question 3.\na. Mr. Thompson: With the upgraded equipment, they’re able to conduct experiments they couldn’t before.\nb. Mr. Thompson: Have you noticed how engaged the students are with the new science lab?\nc. Ms. Rivera: Absolutely! The hands-on experiments make the lessons much more exciting for them.", opts: ["A. a – c – b", "B. b – a – c", "C. c – b – a", "D. b – c – a"], correct: 3, explanation: "Đáp án: D. b – c – a\nGiải thích chi tiết:\nĐây là mẫu hội thoại: Hỏi về nhận xét -> Khẳng định + Lý do -> Đưa thêm thông tin.\nb (Mở đầu): Mr Thompson: \"Have you noticed how engaged the students are with the new science lab?\" – Đưa ra một nhận xét và hỏi ý kiến người kia.\nc (Phản hồi + giải thích): Ms Rivera: \"Absolutely! The hands-on experiments make the lessons much more exciting...\" – Đồng ý (\"Absolutely!\") và đưa ra lý do.\na (Bổ sung thông tin): \"With the upgraded equipment, they’re able to conduct experiments they couldn’t before.\" – Mr Thompson bổ sung thêm một lợi ích khác của phòng lab mới, nối tiếp mạch hội thoại.\n\nPhân tích:\nB (b-a-c): Sau câu hỏi của Mr Thompson, Ms Rivera chưa kịp trả lời thì Mr Thompson đã tự nói tiếp (a) -> Rất kỳ cục.\nC (c-b-a): Ms Rivera đồng ý (c) khi chưa có câu hỏi (b) -> Không hợp lý." },
+        
+        { q: "Hi Jenna,\na. Thanks also for the tip on where to get ingredients cheaper - it’s much better than my usual store.\nb. Baking is really fun, but I’m quite busy right now, so I’ll try those recipes another time.\nc. Maybe we can bake together soon. What do you think?\nd. But the cookie recipe looked delicious, and I can’t wait to make it!\ne. Thanks a lot for the baking recipes you shared last week.\nWrite back soon, Ella", opts: ["A. c – e – a – d – b", "B. b – d – e – a – c", "C. a – b – c – e – d", "D. e – b – d – a – c"], correct: 3, explanation: "Đáp án: D. e – b – d – a – c\nGiải thích chi tiết:\nThư từ thường có bố cục: Cảm ơn chung -> Cảm xúc / Tình trạng hiện tại -> Thông tin chi tiết -> Bổ sung -> Đề nghị / Lời kết.\ne (Cảm ơn đầu thư): \"Thanks a lot for the baking recipes you shared last week.\" – Mở đầu thư bằng lời cảm ơn trực tiếp. Thông thường cảm ơn là câu đầu tiên.\nb (Tình trạng hiện tại): \"Baking is really fun, but I’m quite busy right now, so I’ll try those recipes another time.\" – Nói về việc mình bận, chưa làm được ngay. Rất tự nhiên khi đứng sau câu cảm ơn.\nd (Mặt đối lập - nhưng): \"But the cookie recipe looked delicious, and I can’t wait to make it!\" – Dùng \"But\" để tạo sự tương phản. Dù bận nhưng có một công thức làm tôi rất thích.\na (Bổ sung ý khác): \"Thanks also for the tip on where to get ingredients cheaper...\" – Dùng \"Also\" để cảm ơn thêm về một điều khác. Đứng sau câu d rất hợp lý.\nc (Lời đề nghị / Kết thư): \"Maybe we can bake together soon. What do you think?\" – Lời đề nghị kết thúc thư, rất phổ biến.\n\nPhân tích phương án nhiễu (A: c-e-a-d-b): Nếu bắt đầu bằng \"Maybe we can bake together soon\" (c) khi chưa cảm ơn, chưa nói gì -> Rất khiên cưỡng." },
+        
+        { q: "Question 5.\na. For people, prolonged exposure to noise can lead to stress, sleep disturbances, and health problems.\nb. The constant sounds from traffic, construction, and industrial activities create a background noise that is difficult to escape.\nc. This excessive noise impacts local wildlife, as animals rely on natural sounds to communicate and navigate.\nd. In response, many cities are exploring measures to curb noise pollution, such as sound barriers and quiet zones.\ne. Noise pollution has become a growing issue in urban areas around the world.", opts: ["A. e – b – c – a – d", "B. e – c – a – d – b", "C. e – a – d – c – b", "D. e – d – b – a – c"], correct: 0, explanation: "Đáp án: A. e – b – c – a – d\nGiải thích chi tiết:\nĐây là đoạn văn giải thích nguyên nhân - hậu quả - giải pháp (Problem - Effects - Solutions). Cấu trúc chuẩn: Giới thiệu vấn đề -> Nguyên nhân / Biểu hiện -> Tác động đến sinh vật (wildlife) -> Tác động đến con người (people) -> Giải pháp.\ne (Giới thiệu chủ đề): \"Noise pollution has become a growing issue in urban areas.\" – Câu chủ đề, giới thiệu vấn đề ô nhiễm tiếng ồn.\nb (Nguyên nhân / Biểu hiện): \"The constant sounds from traffic, construction, and industrial activities...\" – Giải thích chi tiết về các nguồn gây ra tiếng ồn.\nc (Tác động đến động vật): \"This excessive noise impacts local wildlife, as animals rely on natural sounds...\" – Nói về ảnh hưởng đến động vật (thường được đề cập trước con người trong bài khoa học).\na (Tác động đến con người): \"For people, prolonged exposure to noise can lead to stress, sleep disturbances...\" – Nói về ảnh hưởng đến con người.\nd (Giải pháp): \"In response, many cities are exploring measures...\" – \"In response\" (Để đáp lại) dùng để chuyển sang phần giải pháp. Câu này phải ở cuối.\n\nCác đáp án B, C, D đều làm xáo trộn thứ tự tác động dẫn đến logic bị phá vỡ." },
+        
+        { q: "Question 6.\na. While troubleshooting can be frustrating, the satisfaction of creating functional software makes this job worth the effort.\nb. My curiosity about technology and problem-solving led me to a rewarding career in software development.\nc. Ultimately, I am grateful for this career, as it allows me to pursue my passion while making a meaningful impact.\nd. Over the past three years, I’ve worked at a tech startup, developing innovative applications that solve real-world problems.\ne. Working in a collaborative environment helps me grow and improve my skills continuously in this role.", opts: ["A. b – d – e – a – c", "B. a – d – b – e – c", "C. d – b – a – e – c", "D. e – b – a – d – c"], correct: 0, explanation: "Đáp án: A. b – d – e – a – c\nGiải thích chi tiết:\nCấu trúc chuẩn: Lý do chọn nghề (Past) -> Công việc hiện tại & kinh nghiệm (Present) -> Trải nghiệm / Tính chất công việc -> Đối lập / Thử thách -> Kết luận.\nb: \"My curiosity about technology... led me to a rewarding career.\" – Lý do chọn ngành.\nd: \"Over the past three years, I’ve worked at a tech startup...\" – Kinh nghiệm làm việc cụ thể.\ne: \"Working in a collaborative environment helps me grow...\" – Tính chất công việc hiện tại.\na: \"While troubleshooting can be frustrating, the satisfaction...\" – Mặt trái (frustrating) và mặt phải (satisfaction). Dùng \"While\" rất hợp lý sau khi đã mô tả công việc.\nc: \"Ultimately, I am grateful for this career...\" – Từ kết luận \"Ultimately\" (Cuối cùng) đứng cuối đoạn.\n\nPhân tích phương án nhiễu (C: d-b-a-e-c): Bắt đầu bằng \"Over the past three years\" (d) khi chưa giới thiệu lý do chọn nghề -> Hơi lạc lõng." },
+        
+        { q: "Question 7.\na. This work is physically demanding but incredibly satisfying, especially knowing that we’re contributing to a greener environment.\nb. Over the past few months, I have been actively involved in this effort, planting trees, setting up flower beds, and maintaining community gardens.\nc. My love for gardening led me to join a community project focused on creating green spaces in urban areas.\nd. This experience has not only deepened my appreciation for nature but also taught me valuable skills in teamwork and project management.\ne. Despite challenges like limited funding and occasional vandalism, the enthusiasm of the volunteers keeps us going.", opts: ["A. c – b – a – e – d", "B. e – a – c – b – d", "C. b – a – c – e – d", "D. a – b – e – c – d"], correct: 0, explanation: "Đáp án: A. c – b – a – e – d\nGiải thích chi tiết:\nCấu trúc: Lý do tham gia -> Hoạt động cụ thể -> Trải nghiệm / Cảm xúc về công việc -> Thử thách -> Bài học / Kết luận.\nc: \"My love for gardening led me to join a community project.\" – Giới thiệu lý do và hoạt động.\nb: \"Over the past few months, I have been actively involved...\" – Mô tả chi tiết công việc đã làm (trồng cây, tạo luống hoa).\na: \"This work is physically demanding but incredibly satisfying...\" – Cảm nhận về công việc.\ne: \"Despite challenges like limited funding...\" – Nêu khó khăn (Dùng \"Despite\" để nối tiếp). Rất tự nhiên khi đứng sau khi nói về sự hài lòng.\nd: \"This experience has not only deepened my appreciation for nature but also taught me skills.\" – Kết luận về bài học kinh nghiệm. \"This experience\" (Trải nghiệm này) là cụm từ tổng kết rất hay dùng ở cuối đoạn." },
+        
+        { q: "Question 8.\na. For the last five years, I’ve been reporting for a local newspaper, covering everything from community events to breaking news.\nb. Though deadlines can be stressful, the opportunity to inform the public makes this job worth the effort.\nc. My passion for storytelling and uncovering the truth brought me to a career in journalism.\nd. In summary, I am deeply committed to this career, as it combines my love for writing and my desire to impact society positively.\ne. The excitement of being on the scene and capturing stories as they unfold is what makes this role so fulfilling.", opts: ["A. e – c – a – b – d", "B. a – e – b – c – d", "C. c – a – e – b – d", "D. b – c – e – a – d"], correct: 2, explanation: "Đáp án: C. c – a – e – b – d\nGiải thích chi tiết:\nCấu trúc: Lý do chọn nghề -> Kinh nghiệm hiện tại -> Cảm xúc/Tính chất công việc -> Thách thức -> Kết luận.\nc: \"My passion for storytelling... brought me to a career in journalism.\" – Giới thiệu đam mê dẫn đến nghề.\na: \"For the last five years, I’ve been reporting for a local newspaper...\" – Kinh nghiệm thực tế trong quá khứ gần.\ne: \"The excitement of being on the scene... is what makes this role fulfilling.\" – Cảm giác hồi hộp, phấn khích của nghề.\nb: \"Though deadlines can be stressful, the opportunity to inform the public...\" – Mặt trái (áp lực) và mặt phải (cơ hội được cung cấp thông tin). Dùng \"Though\" (Mặc dù) rất chuẩn.\nd: \"In summary, I am deeply committed to this career...\" – \"In summary\" (Tóm lại) – kết luận cuối cùng." },
+        
+        { q: "Question 9.\na. Ben: Why a language exchange programme?\nb. Sarah: I’m going to try a language exchange programme.\nc. Ben: How do you plan to practice your Spanish?\nd. Ben: I think language exchange programmes take too much time. I don’t think I’ll do one.\ne. Sarah: It gives me speaking practice, and I get to meet native speakers.", opts: ["A. c – b – a – e – d", "B. d – b – a – e – c", "C. c – e – d – b – a", "D. d – e – a – b – c"], correct: 0, explanation: "Đáp án: A. c – b – a – e – d\nGiải thích chi tiết:\nĐây là dạng hội thoại \"Hỏi - Đáp - Hỏi lý do - Giải thích - Bình luận\". Cần xác định ai là người hỏi đầu tiên.\nc (Ben hỏi): \"How do you plan to practice your Spanish?\" – Ben hỏi kế hoạch luyện tiếng Tây Ban Nha.\nb (Sarah đáp): \"I’m going to try a language exchange programme.\" – Sarah trả lời câu hỏi về cách luyện tập.\na (Ben hỏi lý do): \"Why a language exchange programme?\" – Thấy bạn chọn phương pháp này, Ben hỏi lý do.\ne (Sarah giải thích): \"It gives me speaking practice, and I get to meet native speakers.\" – Sarah giải thích lợi ích.\nd (Ben bình luận): \"I think language exchange programmes take too much time...\" – Ben đưa ra ý kiến trái chiều (cho rằng tốn thời gian). Đây là câu kết tự nhiên.\n\nPhân tích phương án nhiễu (D: d-b-a-e-c): Nếu Ben nói \"I think it takes too much time\" (d) trước khi Sarah nói mình định làm gì (b) -> Ben đoán mò, không tự nhiên." },
+        
+        { q: "Question 10.\na. Mia: I’m considering it. I heard they’re a great way to meet new people and learn new skills.\nb. Mia: Definitely! Plus, it’s a nice break from studying all the time.\nc. Sarah: Do you think it would be worth the extra time commitment?\nd. Sarah: Are you planning to join any extracurricular activities this year?\ne. Sarah: That does sound appealing, but I’m worried it might take away from my study time.", opts: ["A. c – a – d – b – e", "B. c – b – e – a – d", "C. d – a – c – e – b", "D. d – a – e – b – c"], correct: 2, explanation: "Đáp án: C. d – a – c – e – b\nGiải thích chi tiết:\nHội thoại theo trình tự: Hỏi về dự định -> Trả lời + Khẳng định -> Hỏi về giá trị -> Bày tỏ lo ngại -> Phản hồi / Giải quyết lo ngại.\nd (Sarah hỏi): \"Are you planning to join any extracurricular activities this year?\" – Mở đầu chủ đề.\na (Mia trả lời + khẳng định): \"I’m considering it. I heard they’re a great way to meet new people.\" – Trả lời \"đang cân nhắc\" và nêu mặt lợi.\nc (Sarah hỏi sâu): \"Do you think it would be worth the extra time commitment?\" – Hỏi về việc có xứng đáng với thời gian không.\ne (Sarah bày tỏ lo ngại): \"That does sound appealing, but I’m worried it might take away from my study time.\" – \"That sounds appealing\" (Nghe hấp dẫn đấy) là phản hồi cho câu trả lời của Mia, sau đó \"but\" để nói lo ngại.\nb (Mia phản hồi / giải quyết): \"Definitely! Plus, it’s a nice break from studying all the time.\" – Đáp lại sự lo ngại bằng cách khẳng định và thêm lợi ích (giải lao sau học tập)." },
+        
+        { q: "Hi Jamie,\na. It took a while to adjust to this level of precision, but I’m getting used to it.\nb. Another unexpected aspect was the food culture; meals here are an art form, beautifully presented and crafted.\nc. Living in Japan has been quite the experience, with its unique customs and lifestyle.\nd. Despite the adjustments, I’m grateful for this opportunity to immerse myself in such a fascinating culture.\ne. One thing I found surprising was the punctuality; everything runs exactly on time, even public transport!", opts: ["A. c – e – a – b – d", "B. c – b – a – e – d", "C. a – e – c – b – d", "D. e – b – a – d – c"], correct: 0, explanation: "Đáp án: A. c – e – a – b – d\nGiải thích chi tiết:\nCấu trúc thư kể trải nghiệm: Giới thiệu chung -> Điểm bất ngờ thứ 1 (Đúng giờ) -> Cảm nhận về điểm bất ngờ 1 -> Điểm bất ngờ thứ 2 (Văn hóa ẩm thực) -> Kết luận chung.\nc (Giới thiệu): \"Living in Japan has been quite the experience, with its unique customs and lifestyle.\" – Câu chủ đề, giới thiệu khái quát về trải nghiệm sống ở Nhật.\ne (Điểm bất ngờ 1): \"One thing I found surprising was the punctuality; everything runs exactly on time.\" – Kể về sự đúng giờ. Cấu trúc \"One thing I found surprising...\" rất hay để liệt kê.\na (Cảm nhận về điểm 1): \"It took a while to adjust to this level of precision, but I’m getting used to it.\" – Cảm nhận về việc thích nghi. \"This level of precision\" (mức độ chính xác này) chính là \"punctuality\" được nhắc ở câu e.\nb (Điểm bất ngờ 2): \"Another unexpected aspect was the food culture; meals here are an art form.\" – Từ nối \"Another\" (Một điều khác nữa) dùng để liệt kê thêm một điểm mới.\nd (Kết luận): \"Despite the adjustments, I’m grateful for this opportunity...\" – Kết luận, thể hiện cảm xúc biết ơn dù có khó khăn.\n\nPhân tích: B (c-b-a-e-d): Đặt \"Another unexpected aspect\" (b) lên đầu danh sách, sau đó mới kể \"One thing I found surprising\" (e) -> Mất cân bằng." },
+        
+        { q: "Question 12.\na. Liam: Have you decided on a theme for the party yet?\nb. Liam: That sounds great! I can help you with decorations if you’d like.\nc. Sarah: Not yet, but I’m thinking of something fun and colorful.", opts: ["A. b – a – c", "B. b – c – a", "C. c – a – b", "D. a – c – b"], correct: 3, explanation: "Đáp án: D. a – c – b\nGiải thích chi tiết:\na (Liam hỏi): \"Have you decided on a theme for the party yet?\" – Hỏi về chủ đề bữa tiệc.\nc (Sarah trả lời): \"Not yet, but I’m thinking of something fun and colorful.\" – Trả lời \"Chưa, nhưng tôi đang nghĩ đến một thứ gì đó vui vẻ đầy màu sắc\".\nb (Liam đề nghị giúp): \"That sounds great! I can help you with decorations if you’d like.\" – Phản hồi lại ý tưởng của Sarah và đề nghị giúp đỡ." },
+        
+        { q: "Question 13.\na. Tom: I think so, but I’m still a bit nervous. I’ve been practicing answers all week.\nb. Lisa: Are you feeling ready for your interview tomorrow, Tom?\nc. Lisa: You’ve prepared really well, so I’m sure you’ll do great. Just stay confident.", opts: ["A. c – a – b", "B. c – b – a", "C. a – b – c", "D. b – a – c"], correct: 3, explanation: "Đáp án: D. b – a – c\nGiải thích chi tiết:\nb (Lisa hỏi): \"Are you feeling ready for your interview tomorrow, Tom?\" – Hỏi về cảm xúc trước buổi phỏng vấn.\na (Tom trả lời): \"I think so, but I’m still a bit nervous. I’ve been practicing answers all week.\" – Trả lời \"Tạm ổn nhưng vẫn hơi lo\".\nc (Lisa động viên): \"You’ve prepared really well, so I’m sure you’ll do great. Just stay confident.\" – Lisa động viên Tom dựa trên thông tin \"I’ve been practicing\"." },
+        
+        { q: "Question 14.\na. Various environmental groups have formed, tackling projects like tree planting, recycling drives, and sustainable gardening workshops.\nb. The commitment from locals has led the city council to provide funding and support for expanding these green initiatives.\nc. Greendale has become a hub for eco-friendly initiatives in recent years.\nd. These efforts have brought residents closer together, creating a strong community bond focused on environmental responsibility.\ne. The success of these projects has even sparked conversations about creating an environmental education center in Greendale for future generations.", opts: ["A. c – a – d – b – e", "B. c – d – b – a – e", "C. c – e – a – b – d", "D. c – b – e – d – a"], correct: 0, explanation: "Đáp án: A. c – a – d – b – e\nGiải thích chi tiết:\nCấu trúc chuẩn: Giới thiệu chung -> Hành động cụ thể -> Kết quả trực tiếp (gắn kết cộng đồng) -> Hỗ trợ từ bên ngoài (chính quyền) -> Tầm nhìn tương lai.\nc: \"Greendale has become a hub for eco-friendly initiatives in recent years.\" – Giới thiệu chủ đề.\na: \"Various environmental groups have formed, tackling projects like tree planting...\" – Mô tả các nhóm và dự án cụ thể.\nd: \"These efforts have brought residents closer together, creating a strong community bond...\" – Kết quả của các dự án này (gắn kết cộng đồng).\nb: \"The commitment from locals has led the city council to provide funding...\" – Hệ quả tiếp theo (chính quyền địa phương hỗ trợ tài chính).\ne: \"The success of these projects has even sparked conversations about creating an environmental education center...\" – Tầm nhìn xa hơn." },
+        
+        { q: "Question 15.\na. As a consequence, the town’s streets have become cluttered with plastic and other waste materials, affecting both aesthetics and public health.\nb. While these efforts have had some success, many residents remain concerned about the long-term sustainability of these solutions and the impact on the town’s environment.\nc. Over the past decade, the town of Riverton, once famous for its scenic landscapes, has struggled with rising waste management issues.\nd. In response, the local government has implemented stricter regulations on waste disposal and introduced community clean-up initiatives.\ne. The establishment of new industries on the outskirts has resulted in an increase in waste production, overwhelming the town's recycling systems.", opts: ["A. c – b – d – a – e", "B. c – d – e – a – b", "C. c – a – d – b – e", "D. c – e – a – d – b"], correct: 3, explanation: "Đáp án: D. c – e – a – d – b\nGiải thích chi tiết:\nCấu trúc chuẩn \"Problem - Solution - Evaluation\" (Vấn đề - Giải pháp - Đánh giá):\nc (Giới thiệu vấn đề): \"Over the past decade, the town of Riverton... has struggled with rising waste management issues.\" – Giới thiệu vấn đề rác thải.\ne (Nguyên nhân chi tiết): \"The establishment of new industries on the outskirts has resulted in an increase in waste production...\" – Giải thích nguyên nhân gây ra vấn đề.\na (Hậu quả): \"As a consequence, the town’s streets have become cluttered with plastic...\" – \"As a consequence\" (Kết quả là) chỉ hậu quả.\nd (Giải pháp): \"In response, the local government has implemented stricter regulations...\" – \"In response\" -> Chính quyền đưa ra giải pháp.\nb (Đánh giá giải pháp): \"While these efforts have had some success, many residents remain concerned...\" – \"While\" đánh giá hiệu quả giải pháp." },
+        
+        { q: "Question 16.\na. Mike: I think budget travel is uncomfortable. I’d rather travel in comfort.\nb. Mike: Why budget travel?\nc. Mike: How do you plan to travel more often?\nd. Karen: It’s affordable, and I get to see more places.\ne. Karen: I’m considering doing budget travel.", opts: ["A. a – e – b – d – c", "B. c – e – a – d – b", "C. a – d – c – e – b", "D. c – e – b – d – a"], correct: 3, explanation: "Đáp án: D. c – e – b – d – a\nGiải thích chi tiết:\nc (Mike hỏi): \"How do you plan to travel more often?\" – Hỏi về kế hoạch.\ne (Karen đáp): \"I’m considering doing budget travel.\" – Trả lời về kế hoạch (du lịch tiết kiệm).\nb (Mike hỏi lý do): \"Why budget travel?\" – Hỏi lý do.\nd (Karen giải thích): \"It’s affordable, and I get to see more places.\" – Giải thích (vì giá cả phải chăng).\na (Mike bình luận): \"I think budget travel is uncomfortable. I’d rather travel in comfort.\" – Mike đưa ra ý kiến trái chiều." },
+        
+        { q: "Question 17.\na. Old clinics in rural areas have been upgraded to include modern facilities, providing better care to underserved communities.\nb. These healthcare improvements have also reduced patient wait times by nearly 30% across the country.\nc. However, despite this progress, many remote villages still lack specialised medical services, forcing residents to travel long distances.\nd. The national healthcare system has improved remarkably over the past few years.\ne. This development has attracted more healthcare professionals to rural regions, enhancing the quality of care.", opts: ["A. d – a – e – b – c", "B. d – b – a – c – e", "C. d – c – a – b – e", "D. d – e – c – a – b"], correct: 0, explanation: "Đáp án: A. d – a – e – b – c\nGiải thích chi tiết:\nCấu trúc: Giới thiệu cải thiện -> Thay đổi cụ thể (nông thôn) -> Hệ quả (thu hút nhân lực) -> Hệ quả khác (giảm thời gian chờ) -> Hạn chế (Tuy nhiên).\nd: \"The national healthcare system has improved remarkably over the past few years.\" – Câu chủ đề.\na: \"Old clinics in rural areas have been upgraded to include modern facilities...\" – Thay đổi cụ thể đầu tiên.\ne: \"This development has attracted more healthcare professionals to rural regions...\" – Hệ quả trực tiếp.\nb: \"These healthcare improvements have also reduced patient wait times by nearly 30%...\" – Hệ quả khác.\nc: \"However, despite this progress, many remote villages still lack specialised medical services...\" – Dùng \"However\" để chỉ mặt hạn chế." },
+        
+        { q: "Hi Emma,\na. I also checked the weather, and it’s supposed to be sunny and warm all day.\nb. We should aim to get there early to secure a good spot. Does that work for you?\nc. I’ll bring an umbrella and a cooler for drinks. Let me know if there’s anything else we should add.\nd. Thanks for suggesting the beach day! I’m really looking forward to relaxing by the sea.\ne. I’m organising some essentials we’ll need, like sunscreen, towels, and snacks.", opts: ["A. c – a – b – d – e", "B. b – e – a – d – c", "C. a – c – b – d – e", "D. d – e – a – c – b"], correct: 3, explanation: "Đáp án: D. d – e – a – c – b\nGiải thích chi tiết:\nCấu trúc thư hồi đáp: Cảm ơn / Bày tỏ cảm xúc -> Hành động chuẩn bị -> Bổ sung thông tin (thời tiết) -> Hành động thêm -> Đề xuất kế hoạch.\nd (Mở đầu): \"Thanks for suggesting the beach day! I’m really looking forward to...\" – Cảm ơn và hào hứng.\ne (Hành động 1): \"I’m organising some essentials we’ll need, like sunscreen, towels, and snacks.\" – Kể về việc đang chuẩn bị đồ.\na (Bổ sung thông tin): \"I also checked the weather, and it’s supposed to be sunny and warm all day.\" – Dùng \"also\" để thêm thông tin về thời tiết.\nc (Hành động 2): \"I’ll bring an umbrella and a cooler for drinks. Let me know if there’s anything else...\" – Nói thêm về việc sẽ mang theo.\nb (Kết luận - Kế hoạch): \"We should aim to get there early to secure a good spot. Does that work for you?\" – Đề xuất thời gian và hỏi ý kiến." },
+        
+        { q: "Hi Tom,\na. Also, the gardening blog you recommended is amazing - it has more helpful info than my previous sources.\nb. Thanks so much for sending those gardening tips last week.\nc. We should work on a garden project together sometime. What do you think?\nd. It’s nice to learn about growing new plants, but I’m focusing on my current garden setup since I’m a bit busy.\ne. But I tried planting some herbs, and it was a fun experience.", opts: ["A. b – a – c – e – d", "B. d – e – a – b – c", "C. b – d – e – a – c", "D. a – b – d – c – e"], correct: 2, explanation: "Đáp án: C. b – d – e – a – c\nGiải thích chi tiết:\nCấu trúc: Cảm ơn chung -> Tình trạng hiện tại (bận) -> Chuyển ý (nhưng) -> Bổ sung thông tin khác (cảm ơn) -> Lời đề nghị.\nb (Cảm ơn): \"Thanks so much for sending those gardening tips last week.\" – Mở đầu thư cảm ơn.\nd (Tình trạng hiện tại): \"It’s nice to learn about growing new plants, but I’m focusing on my current garden setup since I’m a bit busy.\" – Nói rằng mình đang bận.\ne (Chuyển ý - But): \"But I tried planting some herbs, and it was a fun experience.\" – Dù bận nhưng vẫn thử trồng một chút.\na (Bổ sung): \"Also, the gardening blog you recommended is amazing...\" – Dùng \"Also\" để cảm ơn về một thứ khác.\nc (Đề nghị): \"We should work on a garden project together sometime. What do you think?\" – Kết thư bằng lời đề nghị." },
+        
+        { q: "Question 20.\na. Alex: Do you find it hard to keep up with it regularly?\nb. Jamie: I started practicing yoga. It’s really helped me stay calm and focused.\nc. Alex: That sounds ideal! I might try it out myself.\nd. Jamie: Not really, since I do it at home, so it’s easy to fit into my day.\ne. Alex: How do you manage stress with such a busy schedule?", opts: ["A. e – d – c – b – a", "B. b – a – d – c – e", "C. e – b – a – d – c", "D. b – c – d – a – e"], correct: 2, explanation: "Đáp án: C. e – b – a – d – c\nGiải thích chi tiết:\nĐây là dạng hội thoại hỏi - đáp về \"cách làm gì\".\ne (Alex hỏi): \"How do you manage stress with such a busy schedule?\" – Hỏi về phương pháp quản lý căng thẳng.\nb (Jamie trả lời): \"I started practicing yoga. It’s really helped me stay calm and focused.\" – Trả lời cụ thể (tập yoga).\na (Alex hỏi sâu): \"Do you find it hard to keep up with it regularly?\" – Hỏi về việc có khó để duy trì đều đặn không.\nd (Jamie trả lời): \"Not really, since I do it at home, so it’s easy to fit into my day.\" – Trả lời là không khó.\nc (Alex phản hồi): \"That sounds ideal! I might try it out myself.\" – Kết thúc bằng nhận xét và ý định sẽ thử." }
+    ];
+
+    // Hàm xáo trộn thứ tự đáp án (shuffle options) và cập nhật chỉ số đúng
+    function shuffleOptionsForQuestion(q) {
+        const correctText = q.opts[q.correct];
+        const optsWithIndex = q.opts.map((text, idx) => ({ text, originalIdx: idx }));
+        for (let i = optsWithIndex.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [optsWithIndex[i], optsWithIndex[j]] = [optsWithIndex[j], optsWithIndex[i]];
+        }
+        const newOpts = optsWithIndex.map(item => item.text);
+        const newCorrect = newOpts.findIndex(opt => opt === correctText);
+        return { ...q, opts: newOpts, correct: newCorrect };
+    }
+
+    let currentQuestions = [];
+    let selectedAnswers = [];
+    let answerStatus = [];
+    let quizSubmitted = false;
+    let timerInterval = null;
+    let timeLeft = 60 * 60;
+    const totalQuestions = 20;
+
+    const quizContainer = document.getElementById('quiz-area');
+    const progressSpan = document.getElementById('progress-text');
+    const totalSpan = document.getElementById('total-text');
+    const timerBox = document.getElementById('timer');
+
+    function updateProgress() {
+        const answered = selectedAnswers.filter(a => a !== null).length;
+        progressSpan.innerText = answered;
+    }
+
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (quizSubmitted) return;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                autoSubmit();
+                return;
+            }
+            timeLeft--;
+            let mins = Math.floor(timeLeft / 60);
+            let secs = timeLeft % 60;
+            timerBox.textContent = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+            if (timeLeft <= 60) timerBox.classList.add('warning');
+        }, 1000);
+    }
+
+    function autoSubmit() {
+        if (!quizSubmitted) {
+            alert('⏰ Hết thời gian! Tự động nộp bài.');
+            submitQuiz();
+        }
+    }
+
+    function handleSelectOption(qIndex, optIndex) {
+        if (quizSubmitted) return;
+        if (selectedAnswers[qIndex] !== null) return;
+
+        const question = currentQuestions[qIndex];
+        const isCorrect = (optIndex === question.correct);
+        selectedAnswers[qIndex] = optIndex;
+        answerStatus[qIndex] = isCorrect ? 'correct' : 'wrong';
+        updateProgress();
+        renderSingleCard(qIndex);
+    }
+
+    function renderSingleCard(idx) {
+        const q = currentQuestions[idx];
+        const selected = selectedAnswers[idx];
+        const status = answerStatus[idx];
+        const cardDiv = document.getElementById(`card-${idx}`);
+        if (!cardDiv) return;
+
+        const optionsHtml = q.opts.map((opt, optIdx) => {
+            let additionalClass = '';
+            let disabledAttr = '';
+            if (selected !== null) {
+                disabledAttr = 'disabled';
+                if (optIdx === q.correct) additionalClass = 'correct-reveal';
+                else if (optIdx === selected && status === 'wrong') additionalClass = 'selected-wrong';
+                else if (optIdx === selected && status === 'correct') additionalClass = 'selected-correct';
+            }
+            return `<button class="option-btn ${additionalClass}" ${disabledAttr} onclick="handleSelectOption(${idx}, ${optIdx})">${opt}</button>`;
+        }).join('');
+
+        let explanationHtml = '';
+        if (selected !== null) {
+            const correctWrongText = status === 'correct' ? '✅ Đúng' : '❌ Sai';
+            explanationHtml = `<div class="explanation-instant"><strong>${correctWrongText}</strong><br>${q.explanation}</div>`;
+        }
+
+        cardDiv.innerHTML = `
+            <div class="question-header"><span class="q-tag">Câu ${idx+1}</span></div>
+            <div class="question-text">${q.q.replace(/\n/g, '<br>')}</div>
+            <div class="options-grid" id="options-${idx}">${optionsHtml}</div>
+            ${explanationHtml}
+        `;
+    }
+
+    function renderAllCards() {
+        quizContainer.innerHTML = '';
+        for (let i = 0; i < totalQuestions; i++) {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `card-${i}`;
+            quizContainer.appendChild(card);
+            renderSingleCard(i);
+        }
+    }
+
+    function initQuiz(resetTime = true) {
+        currentQuestions = ORIGINAL_DATA.map(q => shuffleOptionsForQuestion({ ...q }));
+        selectedAnswers = new Array(totalQuestions).fill(null);
+        answerStatus = new Array(totalQuestions).fill(null);
+        quizSubmitted = false;
+        if (resetTime) {
+            timeLeft = 60 * 60;
+            if (timerInterval) clearInterval(timerInterval);
+            timerBox.textContent = '60:00';
+            timerBox.classList.remove('warning');
+            startTimer();
+        }
+        updateProgress();
+        renderAllCards();
+    }
+
+    function submitQuiz() {
+        if (quizSubmitted) return;
+        let unanswered = [];
+        for (let i = 0; i < totalQuestions; i++) {
+            if (selectedAnswers[i] === null) unanswered.push(i+1);
+        }
+        if (unanswered.length > 0) {
+            if (!confirm(`Bạn chưa trả lời câu ${unanswered.join(', ')}. Nộp bài không?`)) {
+                const firstCard = document.getElementById(`card-${unanswered[0]-1}`);
+                if (firstCard) firstCard.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+        }
+        quizSubmitted = true;
+        if (timerInterval) clearInterval(timerInterval);
+        
+        let correctCount = 0;
+        for (let i = 0; i < totalQuestions; i++) {
+            if (selectedAnswers[i] !== null && selectedAnswers[i] === currentQuestions[i].correct) correctCount++;
+        }
+        
+        const modal = document.getElementById('result-modal');
+        const finalSpan = document.getElementById('final-score-display');
+        const wrongDiv = document.getElementById('wrong-questions-list');
+        const feedback = document.getElementById('feedback-msg');
+        finalSpan.innerText = `${correctCount}/${totalQuestions}`;
+        const wrongList = [];
+        for (let i = 0; i < totalQuestions; i++) {
+            if (selectedAnswers[i] === null || selectedAnswers[i] !== currentQuestions[i].correct) wrongList.push(i+1);
+        }
+        if (wrongList.length === 0) wrongDiv.innerHTML = '<p style="color:green;">🎉 Hoàn hảo! Bạn đã đúng tất cả!</p>';
+        else wrongDiv.innerHTML = `<p><strong>Câu sai/chưa làm:</strong> ${wrongList.join(', ')}</p>`;
+        let percent = (correctCount/totalQuestions)*100;
+        if(percent===100) feedback.innerText = "Xuất sắc! 🌟";
+        else if(percent>=80) feedback.innerText = "Rất tốt! 🔥";
+        else if(percent>=50) feedback.innerText = "Cố gắng xem lại giải thích nhé! 📘";
+        else feedback.innerText = "Làm lại để cải thiện nào! 💪";
+        modal.style.display = 'flex';
+    }
+
+    function resetQuiz() {
+        initQuiz(true);
+        document.getElementById('result-modal').style.display = 'none';
+        quizSubmitted = false;
+    }
+
+    window.handleSelectOption = handleSelectOption;
+    window.submitQuiz = submitQuiz;
+    window.resetQuiz = resetQuiz;
+
+    document.getElementById('submitQuizBtn').onclick = () => submitQuiz();
+    document.getElementById('resetQuizBtn').onclick = () => resetQuiz();
+    document.getElementById('closeModalBtn').onclick = () => document.getElementById('result-modal').style.display = 'none';
+    document.getElementById('modalRetryBtn').onclick = () => resetQuiz();
+
+    totalSpan.innerText = totalQuestions;
+    initQuiz(true);
+</script>
+</body>
+</html>
